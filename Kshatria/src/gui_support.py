@@ -12,8 +12,119 @@ import ConfigParser
 import protocolwrapper
 import Communications
 import time
+import sys
 framer = protocolwrapper.ProtocolWrapper()
 
+class GuiSupport(object):
+    '''
+    classdocs
+    '''
+
+
+    def __init__(self):
+        '''
+        Constructor
+        '''
+        self.command_num_bits = 8
+        self.command_len_bits = 8
+        self.bits_per_byte = 8
+        
+        #where command number is the number of command
+        # and command_length is the number of bytes in payload
+        self.command_list = {
+        #
+        'jog_z'  :{'command_number' : 0 , 'command_length' : 4}, #bit 0 = direction, bits 1-31 = number of steps
+        'jog_y'  :{'command_number' : 1 , 'command_length' : 4}, 
+        'jog_x'  :{'command_number' : 2 , 'command_length' : 4}, 
+        'jog_xy' :{'command_number' : 3 , 'command_length' : 8}, #first 4 bytes = x_dir(1),x_step(31. next 4 bytes = y_dir(1), y_step(31) 
+        'pw_z'   :{'command_number' : 4 , 'command_length' : 8}, #first 8 bytes pulse width high count, next 4 bytes pulse width low count
+        'pw_y'   :{'command_number' : 5 , 'command_length' : 8},
+        'pw_x'   :{'command_number' : 6 , 'command_length' : 8},
+
+        'G1_XY'  :{'command_number' : 7 , 'command_length' : 8}, #GCode ommands 
+        }
+        print 'Gui support initialized'
+        #self.cfg_file_handle.load_settings()
+        host = "127.0.0.1"#"10.88.143.235" # set to IP address of target computer
+        port = 2055
+        addr = (host, port)
+        #self._send_handle = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        #self._send_handle.connect(addr)
+        
+    
+        self.get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[3:].zfill(n)
+        self.gs_step_z = 0
+        self.gs_step_y = 0
+        self.gs_step_x = 0
+        self.gs_dir_z = 0
+        self.gs_dir_y = 0
+        self.gs_dir_x = 0
+        self.gs_pw_z_h = 0
+        self.gs_pw_z_l = 0
+        self.gs_pw_y_h = 0
+        self.gs_pw_y_l = 0        
+        self.gs_pw_x_h = 0
+        self.gs_pw_x_l = 0
+                
+
+        
+    def _send(self,command = 'ADEAD',payload = ''):
+        '''
+        payload should be a binary string in the format of the length of payload
+        '''
+        cmd_num = self.get_bin(self.command_list[command]['command_number'] ,self.command_num_bits)
+        cmd_len =  self.get_bin(self.command_list[command]['command_length'],self.command_len_bits)
+        full_command_bin = cmd_num + cmd_len + payload #build full binary string
+        full_command_hex = format(int(full_command_bin,2),'#04x')[2:] #build full hex string
+        #print 'full_command_decode',full_command_hex.decode('hex')
+        #full_command_ascii = binascii.b2a_uu(full_command_bin)
+        #self._send_handle.send(full_command_hex.decode('hex'))
+        print 'command ',command
+        Communications.transmit(full_command_hex.decode('hex'))
+        print 'full_command binary:',full_command_bin
+        #print 'full_command hex:',full_command_hex
+        #print 'full_command ascii:',full_command_ascii
+        
+    def quit(self):
+        print 'closed handle'
+        self._send_handle.close()
+        sys.exit()
+
+    def move_z(self):
+        self._send(command= 'jog_z')    
+#     def GlobalDisable(self):
+#         print 'send disable command'
+#         self._send(command = 'GlobalDisable')
+# 
+#     def GlobalEnable(self):
+#         print 'send enable command'
+#         self._send(command = 'GlobalEnable')
+# 
+# 
+#     def SetFrequency(self):
+#         command = 'SetFrequency'
+#         payload = self.get_bin(self.frequency,self.command_list[command]['command_length'] *self.bits_per_byte)
+#         self._send(command, payload)  
+#         
+#     def ClusterControl(self):
+#         print 'send enable command'
+#         spare_bit = 0
+#         payload =   self.get_bin(self.cl_address    , 2) + \
+#                     self.get_bin(spare_bit          ,1) + \
+#                     self.get_bin(self.cl_output_status,1)  + \
+#                     self.get_bin(self.cl_amplitude_a, 11)  + \
+#                     self.get_bin(self.cl_phase_a    , 9)   + \
+#                     self.get_bin(self.cl_amplitude_b, 11)  + \
+#                     self.get_bin(self.cl_phase_b    , 9)   + \
+#                     self.get_bin(self.cl_amplitude_c, 11)  + \
+#                     self.get_bin(self.cl_phase_c    , 9)
+#         print 'clustercontrol payload:',payload
+#         if len(payload) == 64: 
+#             self._send(command = 'ClusterControl', payload = payload)
+#         else:
+#             print 'clustercontrol payload length:',len(payload)
+#             print 'did not generate correct payload, check range of cluster data values'  
+        
 class Enum(set):
     def __getattr__(self, name):
         if name in self:
@@ -149,7 +260,9 @@ class CfgData:
         
         name_of_config_data_objects =[#'HMin','HMax',
                                       #'LMin','LMax',
-                                      'LVal','HVal',
+                                      'pulsewidth_x_h','pulsewidth_x_l',
+                                      'pulsewidth_y_h','pulsewidth_y_l',
+                                      'pulsewidth_z_h','pulsewidth_z_l',
                                       #'SPer','SInc'
                                       ]
         
