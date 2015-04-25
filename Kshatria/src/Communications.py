@@ -8,6 +8,13 @@ Created on Aug 9, 2014
                                 buffer serial transmitted messages in a queue and send in a parallel process
         
 04/20/2015 updated SerialSendProcess.run to open serial port instead of when Set_Active_Serial_Channel is called
+04/22/2015 @todo when transmit() writes to message_queue sometimes its not pushed into the queue, this results in
+                 a problem where msg_queue.qsize() > 0 and msg_queue.empty() is both true because there is an item
+                 going to the queue so qsize() is more than 0 but its not in the queue so empty() == True.
+                 there seems to be a bug in gtk where the GUI cycle is refreshing too fast. when i click a button
+                 i need to add a delay inside the call back function. A temporary workaround has been implemented;
+                 by adding some time.sleep() after the transmit() function all the buttons that causes some item to
+                 be added to message_queue will experience a delay. 
 '''
 import os
 
@@ -45,38 +52,29 @@ class SerialSendProcess(object):
         #print 'self.active_serial = ',self.active_serial
         thread = multiprocessing.Process(name = 'serial sending thread', target =self.run,args=(message_queue,))
         thread.daemon = True                            # Daemonize thread
+        
         thread.start()                                  # Start the execution
  
     def run(self,msg_queue):
         """ Method that runs forever """
-#         while True:
-#             # Do something
-#             time.sleep(1)
-#             size  = message_queue.qsize()
-#             print 'size',size
-#             if not message_queue.empty():
-#                 msg= '\nitems in queue = ' +str(size)+ 'message dequeued:'+message_queue.get() 
-#                 message_queue.task_done() 
-#                 print msg
         self.talker = serial.Serial(port = self.port,baudrate = self.baud)
         if not self.talker == None:
-            #print 'active_serial is:',self.active_serial
-            print 'found active serial'
-            #print self.active_serial
-            queue_empty_status = msg_queue.empty()
             while True:
-                # Do something
-                #print 'waiting', self.talker
-                time.sleep(self.interval)
-                queue_empty_status = msg_queue.empty()
-                while not queue_empty_status:
+                time.sleep(1)
+                if msg_queue.qsize() > 0 and msg_queue.empty():
+                    time.sleep(0.1)
+                    print 'bug'
+                while not msg_queue.empty():#que_size>0:
                     msg = msg_queue.get()
-                    queue_empty_status = msg_queue.empty()
-                    print 'dequeued msg:',msg
-                    for ch in msg:
-                        print 'ch',ch
+    
+                    print 'dequeued msg:',msg    
+                    for ch in msg:    
+                        #print 'ch',ch
                         self.talker.write(ch)
                         time.sleep(0.005)
+                    #queue_lock.release()
+                    
+                    
         else:
             print 'no active_serial, cannot start SerialSendProcess active_serial = ',self.talker
 
@@ -87,10 +85,17 @@ def transmit(messages):
     #if not active_serial == None:
     if serial_activated:
         for framed_data in messages:
-            message_queue.put(framed_data)
+            message_queue.put(framed_data,block=False)
+            try:
+                message_queue.join()
+            except:
+                pass
             print 'queued msg:',framed_data
         #04/20/15 empty() must be called by the parallel process
-        message_queue.empty()
+#         while message_queue.empty():
+#             print 'empty'
+#             time.sleep(0.01)
+        
         #04/19/15not sure why but i need to call empty()
         #or the parallel process will wait till the 3rd queued item before sending
         #the second item, all items afterwards seems to send okay
@@ -126,8 +131,10 @@ def transmit(messages):
 #         for framed_data in messages:
 #             print framed_data,
         print 'no serial to send:',messages
+    time.sleep(0.3)
     #print '\n'
-    
+    #print 'end transmit'
+
 def list_serial_ports():
     # Windows
     if os.name == 'nt':
