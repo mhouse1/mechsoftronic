@@ -1,3 +1,14 @@
+'''
+Created on Aug 9, 2014
+
+@author: Mike
+
+@brief    wraps string messages with fields and crc. This may be useful to enhance something like
+          serial communication. A C++ version of this module is also available and is part of the 
+          project RAPTOR firmware source code.
+          
+04/20/2015 modified ProtocolWrapper.wrapfieldscrc so it always return a list because, Communications
+'''
 import crck
 # The response type returned by ProtocolWrapper
 class ProtocolStatus(object):
@@ -122,7 +133,7 @@ class ProtocolWrapper(object):
         """ message is a list of fields, this function returns
             wrapped fields with crc appended to the front
             eg. for my_fields_list = [field1,field2,field3]
-                this function will build wrapped_fields_crc_appended 
+                this function will build wrapped_fields_crc_preppended 
                     "[crc32][field1][field2][field3]"
                 then a final completed message is built that includes
                 header and footer and escaping.
@@ -181,7 +192,7 @@ class ProtocolWrapper(object):
         #print 'layer1 ',layer1 #[8885F03D][#[gcode#]#[G90#]]
         layer2 = self.wrap(layer1)
         #print 'decouple3 ',layer2 #[#[8885F03D#]#[###[gcode###]###[G90###]#]]
-        return layer2        
+        return [layer2]        
 
     # internal state 
     (WAIT_HEADER, IN_MSG, AFTER_DLE) = range(3)
@@ -245,23 +256,31 @@ class ProtocolWrapper(object):
 
 
 if __name__ == '__main__':
-    '''example use
+    '''using protocoWrapper().wrapfields()
     '''
     pw = ProtocolWrapper()
-#     pww = pw.wrap('[Hello][w wor][ld i ][am mich][ael]')
-#     print pww #[hel\\lo world!]
-    myList = ['hello','world','i','am','michael']#3966c523
-    pww = pw.wrapfieldscrc(myList)
-    print pww #[\[14524a2b\]\[hello\]\[world\]\[i\]\[am\]\[michael\]]
-    #input string
-    message = '[#[14524A2B#]#[hello#]#[world#]#[i#]#[am#]#[michael#]]'
+    fields = ['cfdata', 'StepNumX', '2000']
+    msg_encodded = pw.wrapfieldscrc(fields)
+    print 'encoded = ',msg_encodded
+    #encoded =  [#[F709D151#]#[###[cfdata###]###[StepNumX###]###[2000###]#]]
     
-    #build message
-    for byte in message:
-        pw.input(byte) #returns protocol status
-    print pw.last_message #[14524a2b][hello][world][i][am][michael]
-    print pw.get_fields() #['14524a2b', 'hello', 'world', 'i', 'am', 'michael']
-    
+#     '''example use
+#     '''
+#     pw = ProtocolWrapper()
+# #     pww = pw.wrap('[Hello][w wor][ld i ][am mich][ael]')
+# #     print pww #[hel\\lo world!]
+#     myList = ['hello','world','i','am','michael']#3966c523
+#     pww = pw.wrapfieldscrc(myList)
+#     print pww #[\[14524a2b\]\[hello\]\[world\]\[i\]\[am\]\[michael\]]
+#     #input string
+#     message = '[#[14524A2B#]#[hello#]#[world#]#[i#]#[am#]#[michael#]]'
+#     
+#     #build message
+#     for byte in message:
+#         pw.input(byte) #returns protocol status
+#     print pw.last_message #[14524a2b][hello][world][i][am][michael]
+#     print pw.get_fields() #['14524a2b', 'hello', 'world', 'i', 'am', 'michael']
+#     
     
 #     '''for using with serial port 
 #     '''

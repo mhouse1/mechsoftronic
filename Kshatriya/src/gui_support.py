@@ -1,7 +1,10 @@
 '''
 Created on Aug 24, 2014
-I love michelle
 @author: Dynames
+
+@brief    contains functions to support a GUI interface
+04/20/2015 moved class HardwareTest out of this script and into test_kshatria.py
+           renamed classes in gui_support to use CamelCase naming convention
 '''
 import gtk
 import os
@@ -17,111 +20,13 @@ class Enum(set):
             return name
         raise AttributeError
     
-class hardware_test:
-    
-    def __init__(self,builder):
-        builder_object = builder
-        cfg_file_handle  = cfg_file(builder_object)
 
-        self.CNCConfigData = CfData(builder_object, cfg_file_handle)
-        self.ManualControlData = ManualControlData(builder_object,cfg_file_handle)
-        self.CNCCommand = CncCommand(builder_object, cfg_file_handle)
-        
-        self.pulse_width_high = builder_object.get_object('HVal')
-        self.pulse_width_low = builder_object.get_object('LVal')
-        self.x_steps = builder_object.get_object('StepNumX')
-        self.y_steps = builder_object.get_object('StepNumY')
-        self.move_command = builder_object.get_object('Move')
-        self.DirX = builder_object.get_object('DirX')
-        self.DirY = builder_object.get_object('DirY')
-
-
-        print 'hardware_test initialized'
-    def test1(self):
-        self.test_draw_square(test_name ='draw square')
-#         self.test_decrease_pulse_high_width(test_name = 'hpw test1', start = 20000,stop=5000, step = -5000, low_pulse_width = 15000)
-#         self.test_decrease_pulse_high_width(test_name = 'hpw test2', start = 200,stop=50, step = -50, low_pulse_width = 15000)
-#         self.test_decrease_pulse_high_width(test_name = 'hpw test3', start = 200,stop=50, step = -50, low_pulse_width = 7000)
-
-
-    def test_draw_square(self,test_name):   
-        print " "      
-        print "#####################################################################"
-        print 'running ',test_name
-        self.set_pulse_config(pulse_width_high = self.pulse_width_high.get_text(), pulse_width_low = self.pulse_width_low.get_text())
-        self.set_steps(stepXnum = 2000, stepYnum = 1)
-        self.set_xdir(dir = 'up')
-        self.move()
-        self.set_steps(stepXnum = 1, stepYnum = 2000)
-        self.set_ydir(dir = 'up')
-        self.move()
-        self.set_steps(stepXnum = 2000, stepYnum = 1)
-        self.set_xdir(dir = 'down')
-        self.move()
-        self.set_steps(stepXnum = 1, stepYnum = 2000)
-        self.set_ydir(dir = 'down')
-        self.move()        
-
-    def test_decrease_pulse_high_width(self,test_name,start,stop,step,low_pulse_width):   
-        print " "      
-        print "#####################################################################"
-        print 'running ',test_name
-        pulse_width_low = low_pulse_width
-        for pulse_high_width in range (start, stop, step):
-            print "=================================================================="
-            self.set_pulse_config(pulse_width_high = pulse_high_width, pulse_width_low = pulse_width_low)
-            self.set_steps(stepXnum = 2000, stepYnum = 2000)
-            direction = 'up'
-            self.set_xdir(dir = direction)
-            self.set_ydir(dir = direction)
-            print 'moving ',direction,' with pulse_high_width = ',pulse_high_width, 'pulse_low_width = ',pulse_width_low
-
-            self.move()
-            time.sleep(2)
-            direction = 'down'
-            self.set_xdir(dir = direction)
-            self.set_ydir(dir = direction)
-            print 'moving ',direction,' with pulse_high_width = ',pulse_high_width, 'pulse_low_width = ',pulse_width_low            
-            self.move()
-            time.sleep(2)
-        print 'completed ',test_name
-        print "#####################################################################"
-     
-    def set_xdir(self,dir):
-        if dir == 'up':
-            self.DirX.set_active(1)
-        elif dir == 'down': 
-            self.DirX.set_active(2)
-        else:
-            print 'unsupported direction: ',dir
-        #self.ManualControlData.send(self.DirX)
-        
-    def set_ydir(self,dir):
-        if dir == 'up':
-            self.DirY.set_active(1)
-        elif dir == 'down': 
-            self.DirY.set_active(2)
-        else:
-            print 'unsupported direction: ',dir
-        #self.ManualControlData.send(self.DirY)
-                
-    def set_pulse_config(self, pulse_width_high = 123, pulse_width_low = 456):
-        #set pulse data
-        self.pulse_width_high.set_text(str(pulse_width_high))
-        self.pulse_width_low.set_text(str(pulse_width_low))
-        
-        #send pulse data
-        self.CNCConfigData.send()
-                
-    def set_steps(self,stepXnum = 0, stepYnum = 0):
-        self.x_steps.set_text(str(stepXnum))
-        self.y_steps.set_text(str(stepYnum))
-        self.ManualControlData.send(self.x_steps)
-        self.ManualControlData.send(self.y_steps)
-    
-    def move(self):
-        self.CNCCommand.send(self.move_command)
-class cfg_file:
+class CfgFile:
+    ''' manages a GUI configuration file 
+    has the ability to create, save, and load configuration file
+    configuration data saved is typically data in text boxes, combo boxes, and other object states
+    on GUI startup if a configuration file exists it is loaded 
+    '''
     def __init__(self,builder):
         self.builder = builder
         self.config_object = ConfigParser.ConfigParser()
@@ -134,35 +39,36 @@ class cfg_file:
         config_object.add_section('settings')
         config_object.write(f)
         f.close()
-        print 'created config file'
+        print 'created Kshatria config file'
         
     def save_config_file(self):
         #self.config_object.set('settings', 'g-code file','none')
         for item in self.settings:
             obj = self.builder.get_object(item)
-            print item
+            #print item
             if obj.__class__.__name__ == 'Entry':
                 try:
                     self.config_object.set('settings', item,obj.get_text())
                 except Exception, err:
                     print err
         self.config_object.write(open(self.config_file_name,'w'))
+        print 'saved Kshatria config file'
         
     def load_settings(self):
-        #create instance of ConfigParser
-        #create and fill config file if it does not exist
-        #load_settings should be called only after self.settings has been appended to
+        '''create and fill config file if it does not exist
+        load_settings should be called only after self.settings has been appended to
+        '''
         if not os.path.isfile(self.config_file_name) :
             
             self.create_config_file(self.config_object, self.config_file_name)
         else:#read config file
             self.config_object.read(self.config_file_name)
-        print self.settings
+        #print self.settings
         #get object then set as value in config file
         for item in self.settings:
             obj = self.builder.get_object(item)
             
-            print item
+            #print item
             #if obj.__class__ == ''
             try:
                 obj.set_text(self.config_object.get('settings', item))
@@ -170,7 +76,7 @@ class cfg_file:
                 print 'load settings exception',err
         #self.GTKGCode_File.set_text(self.config_object.get('settings', 'g-code file'))
 
-
+        print 'loaded Kshatria config file'
 
 class SendSinleCFData:
     def __init__(self,builder,cfg_file_handle):
@@ -185,7 +91,8 @@ class CncCommand:
     def __init__(self,builder,cfg_file_handle):
         self.classification = 'command'
         name_of_command_data_objects = ['StepNumX',
-                                        'StepNumY']#,
+                                        'StepNumY',
+                                        'StepNumZ']#,
                                         #'DirXComboBox',
                                         #'DirYComboBox']
         
@@ -205,7 +112,8 @@ class ManualControlData:
         self.classification ='cfdata'
         
         name_of_command_data_objects = ['StepNumX',
-                                        'StepNumY']#,
+                                        'StepNumY',
+                                        'StepNumZ']#,
         
         cfg_handle.settings.extend(name_of_command_data_objects)
 
@@ -215,16 +123,24 @@ class ManualControlData:
         #print 'widget class = ',widget.__class__.__name__
         if widget.__class__.__name__ == 'Entry':
             fields = [self.classification,gtk.Buildable.get_name(widget),widget.get_text()]
+            #print fields #['cfdata', 'StepNumX', '2000']
+            #raw_input('fields')
         elif widget.__class__.__name__ == 'ComboBox':
             index = widget.get_active() #indicate nth item selection
             model = widget.get_model()
             item = model[index][1]
             fields = [self.classification,gtk.Buildable.get_name(widget),item]
         #print fields
-        if not Communications.active_serial == None:
-            Communications.transmit(framer.wrapfieldscrc(fields))
+        if Communications.serial_activated:
+            #fields = ['cfdata', 'StepNumX', '2000']
+            #msg_encodded = pw.wrapfieldscrc(fields)
+            #print 'encoded = ',msg_encodded
+            ##encoded =  [#[F709D151#]#[###[cfdata###]###[StepNumX###]###[2000###]#]]
+            value = framer.wrapfieldscrc(fields)
+            #print 'class ManualControlData is sending: ',value
+            Communications.transmit(value)
     
-class CfData:
+class CfgData:
     def __init__(self, builder,cfg_handle):
         #cfg_file.__init__(self)
         self.CfObjects = []
@@ -256,16 +172,16 @@ class CfData:
     def unpack(self):
         pw = protocolwrapper.ProtocolWrapper()
         print 'Erase FIFO button activated'
-        while Communications.active_serial.inWaiting():
-            #if there are BytesInBuffer then read one byte   
-            #read one byte 
-            byte = Communications.active_serial.read(1)
-            #use byte as input
-            if pw.input(byte) == protocolwrapper.ProtocolStatus.MSG_OK:
-                #get fields if footer received
-                fields_list = pw.get_fields()
-                print fields_list
-     
+#         while Communications.active_serial.inWaiting():
+#             #if there are BytesInBuffer then read one byte   
+#             #read one byte 
+#             byte = Communications.active_serial.read(1)
+#             #use byte as input
+#             if pw.input(byte) == protocolwrapper.ProtocolStatus.MSG_OK:
+#                 #get fields if footer received
+#                 fields_list = pw.get_fields()
+#                 print fields_list
+#      
     def get_packedData(self):
         #returns a list of framed data of the form
         #['[crc][classification][type][data]','[crc][classification][type][data]']
@@ -294,7 +210,12 @@ class CfData:
         '''
         #print self.get_packedData()[0]
         #if not Communications.active_serial == None:
-        Communications.transmit(self.get_packedData())
+#         print self.get_packedData()
+#         raw_input('packed data')
+#         for data in self.get_packedData():
+#             C
+        for data in self.get_packedData():
+            Communications.transmit(data)
 
 def send_file(filename):
     #create an object of protocol wrapper
@@ -309,7 +230,8 @@ def send_file(filename):
             fields = ['gcode'] #initialieze fields list with classification
             fields.extend(stripped.split()) #tokenize on white spaces
             PackedData.append(framer.wrapfieldscrc(fields)) #wrap with crc
-    Communications.transmit(PackedData)#transmit
+    for data in PackedData:
+        Communications.transmit(data)#transmit
     
 def get_com_port_list():
     
@@ -348,7 +270,7 @@ class ComCombo:
         self.Com_channel_combo.set_model(get_com_port_list())
         
 class DirectionCombo:
-    '''deals with the combo box that allow selection of com port to use
+    '''deals with the combo box that allow selection direction
     '''
     def __init__(self,builder,name):
         '''initialize the combo box

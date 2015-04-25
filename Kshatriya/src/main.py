@@ -2,6 +2,8 @@
 Created on Aug 13, 2014
 
 @author: Mike
+
+04/20/2015 added support for z axis movement and testing buttons
 '''
 import gtk
 # import os
@@ -11,6 +13,7 @@ import gtk
 
 import Communications
 import gui_support
+import test_kshatria
 
 # path = os.path.dirname(gtk.__file__)
 # print path
@@ -28,7 +31,7 @@ class Kshatria_GUI:
         self.builder = gtk.Builder()
         self.builder.add_from_file(self.gladefile)
         self.builder.connect_signals(self)
-        self.cfg_file_handle  = gui_support.cfg_file(self.builder)
+        self.cfg_file_handle  = gui_support.CfgFile(self.builder)
          
         self.ComComboHandle = gui_support.ComCombo(self.builder,self.cfg_file_handle)
 
@@ -36,13 +39,14 @@ class Kshatria_GUI:
         
 
         #pass CfData cfg_file_handle because we want those items to be saved to cfg file too
-        self.CNCConfigData = gui_support.CfData(self.builder,self.cfg_file_handle)
+        self.CNCConfigData = gui_support.CfgData(self.builder,self.cfg_file_handle)
         
         self.CNCCommand = gui_support.CncCommand(self.builder,self.cfg_file_handle)
         self.SendSinleCFData = gui_support.SendSinleCFData(self.builder,self.cfg_file_handle)
         self.ManualControlData = gui_support.ManualControlData(self.builder,self.cfg_file_handle)
         self.DirXComboHandle = gui_support.DirectionCombo(self.builder,'DirX')
         self.DirYComboHandle = gui_support.DirectionCombo(self.builder,'DirY')
+        self.DirZComboHandle = gui_support.DirectionCombo(self.builder,'DirZ')
 
         self.window = self.builder.get_object("window1")
         #print 'class of window ',self.window.__class__
@@ -50,16 +54,26 @@ class Kshatria_GUI:
         
         self.cfg_file_handle.load_settings()
         
+        self.hw_test = test_kshatria.HardwareTest(self.builder)
+        
+        
     ###################### Actions for all signals#########################
     
     def on_servo_clicked(self, widget, data = None):
         
         self.SendSinleCFData.send(self.builder.get_object('servo_value'))
+    def on_tst_gr1_button1_clicked(self,widget,data=None):
+        self.hw_test.test1()     
         
-    def on_Move_clicked(self, widget, data = None):
-        
+    def on_MoveXY_clicked(self, widget, data = None):
+        self.ManualControlData.send(self.builder.get_object('StepNumX'))
+        self.ManualControlData.send(self.builder.get_object('StepNumY'))
         self.CNCCommand.send(widget)
         print "move!"
+    def on_MoveZ_clicked(self,widget, data=None):
+        self.ManualControlData.send(self.builder.get_object('StepNumZ'))
+        self.CNCCommand.send(widget)
+        print "move Z!"
     def on_write_settings_clicked(self, widget, data = None):
         
         self.CNCCommand.send(widget)
@@ -69,14 +83,17 @@ class Kshatria_GUI:
         self.CNCCommand.send(widget)
     
     def on_StepNumX_activate(self,widget, data = None):
-        print 'enter key pressed from step num x text box'
-        self.ManualControlData.send(widget)
-        widget.get_toplevel().child_focus(gtk.DIR_TAB_FORWARD)
+        pass
+#         print 'enter key pressed from step num x text box'
+#         self.ManualControlData.send(widget)
+#         widget.get_toplevel().child_focus(gtk.DIR_TAB_FORWARD)
         
     
     def on_StepNumY_activate(self,widget,data=None):
-        self.ManualControlData.send(widget)
-        widget.get_toplevel().child_focus(gtk.DIR_TAB_FORWARD)
+        pass
+#         self.ManualControlData.send(widget)
+#         widget.get_toplevel().child_focus(gtk.DIR_TAB_FORWARD)
+        
 #     def on_StepNumX_focus_out_event(self, widget, data = None):
 #         print "StepNumX submit"
 #         self.ManualControlData.send(widget)
@@ -91,7 +108,16 @@ class Kshatria_GUI:
         
     def on_DirY_changed(self,widget, data=None):
         self.ManualControlData.send(widget)
+    
+    def on_DirZ_changed(self,widget, data=None):
+        self.ManualControlData.send(widget)
         
+
+
+    def on_StepNumZ_activate(self,widget, data=None):
+        pass
+        #self.ManualControlData.send(widget)
+                
     def on_Transfer_Config_clicked(self, widget, data = None):
         self.CNCConfigData.send()
         #sent data is of the form:
@@ -107,8 +133,8 @@ class Kshatria_GUI:
         #to only resend that data and not the whole message
         
     def on_Erase_FIFO_clicked(self, widget, data = None):
-        hw_test = gui_support.hardware_test(self.builder)
-        hw_test.test1()
+        pass
+
         
         #self.CNCConfigData.unpack()
 #         print 'Erase FIFO button activated'
@@ -143,11 +169,11 @@ class Kshatria_GUI:
         print 'switched to page ',self.switched_page
     
     def on_Quit_activate(self,widget, data = None):
-        print 'Quit from menu'
+        print 'quitting...'
         self.quit_program()
     
     def on_window1_destroy(self, widget, data = None):
-        print 'Quit with cancel'
+        print 'quitting...'
         self.quit_program()
     
     def on_Browse_For_GCode_pressed(self, widget, data = None):
