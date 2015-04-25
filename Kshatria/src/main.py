@@ -3,21 +3,13 @@ Created on Aug 13, 2014
 
 @author: Mike
 
-04/20/2015 added support for z axis movement and testing buttons
 '''
 import gtk
-# import os
-# import ConfigParser
-# import sys
-
 
 import Communications
 import gui_support
-import test_kshatria
-import time
 from gui_support import GuiSupport
-# path = os.path.dirname(gtk.__file__)
-# print path
+
 class KshatriaGUI(GuiSupport):
 
 
@@ -45,16 +37,45 @@ class KshatriaGUI(GuiSupport):
         self.CNCCommand = gui_support.CncCommand(self.builder,self.cfg_file_handle)
         self.SendSinleCFData = gui_support.SendSinleCFData(self.builder,self.cfg_file_handle)
         self.ManualControlData = gui_support.ManualControlData(self.builder,self.cfg_file_handle)
-        self.DirXComboHandle = gui_support.DirectionCombo(self.builder,'DirX')
-        self.DirYComboHandle = gui_support.DirectionCombo(self.builder,'DirY')
-        self.DirZComboHandle = gui_support.DirectionCombo(self.builder,'DirZ')
+        
+        direction_combo_options = ['down','up']
+        self.DirXComboHandle = gui_support.GsComboBox(self.builder,'DirX',direction_combo_options)
+        self.DirYComboHandle = gui_support.GsComboBox(self.builder,'DirY',direction_combo_options)
+        self.DirZComboHandle = gui_support.GsComboBox(self.builder,'DirZ',direction_combo_options)
+        
+        #text box objects
+        self.StepNumZ       = self.builder.get_object('StepNumZ')
+        self.StepNumY       = self.builder.get_object('StepNumY')
+        self.StepNumX       = self.builder.get_object('StepNumX')
+        self.pulsewidth_z_h = self.builder.get_object('pulsewidth_z_h')
+        self.pulsewidth_z_l = self.builder.get_object('pulsewidth_z_l')
+        self.pulsewidth_y_h = self.builder.get_object('pulsewidth_y_h')
+        self.pulsewidth_y_l = self.builder.get_object('pulsewidth_y_l')
+        self.pulsewidth_x_h = self.builder.get_object('pulsewidth_x_h')
+        self.pulsewidth_x_l = self.builder.get_object('pulsewidth_x_l')
+                        
         self.cfg_file_handle.load_settings()
         
-        self.hw_test = test_kshatria.HardwareTest(self.builder)
         self.window = self.builder.get_object("window1")
         #print 'class of window ',self.window.__class__
         self.window.show()
+        #self._update_data()
         
+
+    def _update_data(self):
+        self.gs_dir_z = self.DirZComboHandle.get_selection_index()
+        self.gs_dir_y = self.DirYComboHandle.get_selection_index()
+        self.gs_dir_x = self.DirXComboHandle.get_selection_index()
+        self.gs_step_z = int(self.StepNumZ.get_text())      
+        self.gs_step_y = int(self.StepNumY.get_text())      
+        self.gs_step_x = int(self.StepNumX.get_text())      
+        self.gs_pw_z_h = int(self.pulsewidth_z_h.get_text())
+        self.gs_pw_z_l = int(self.pulsewidth_z_l.get_text())
+        self.gs_pw_y_h = int(self.pulsewidth_y_h.get_text())
+        self.gs_pw_y_l = int(self.pulsewidth_y_l.get_text())
+        self.gs_pw_x_h = int(self.pulsewidth_x_h.get_text())
+        self.gs_pw_x_l = int(self.pulsewidth_x_l.get_text())
+
 
         
         
@@ -64,89 +85,45 @@ class KshatriaGUI(GuiSupport):
         
         self.SendSinleCFData.send(self.builder.get_object('servo_value'))
     def on_tst_gr1_button1_clicked(self,widget,data=None):
-        self.hw_test.testtestfull_command_hex.decode('hex')  
-        
-    def on_MoveXY_clicked(self, widget, data = None):
-        self.ManualControlData.send(self.builder.get_object('StepNumX'))
-        self.ManualControlData.send(self.builder.get_object('StepNumY'))
-        self.CNCCommand.send(widget)
-        #time.sleep(0.3)
-        #print "move!"
-    def on_MoveZ_clicked(self,widget, data=None):
-        self.move_z()
-#         self.ManualControlData.send(self.builder.get_object('StepNumZ'))
-#         self.CNCCommand.send(widget)
-
-    def on_write_settings_clicked(self, widget, data = None):
-        
-        self.CNCCommand.send(widget)
-        print "on write settings!"
-    def on_Start_Routing_clicked(self, widget, data = None):
-        print 'starting router'
-        self.CNCCommand.send(widget)
-    
-    def on_StepNumX_activate(self,widget, data = None):
-        pass
-#         print 'enter key pressed from step num x text box'
-#         self.ManualControlData.send(widget)
-#         widget.get_toplevel().child_focus(gtk.DIR_TAB_FORWARD)
-        
-    
-    def on_StepNumY_activate(self,widget,data=None):
-        pass
-#         self.ManualControlData.send(widget)
-#         widget.get_toplevel().child_focus(gtk.DIR_TAB_FORWARD)
-        
-#     def on_StepNumX_focus_out_event(self, widget, data = None):
-#         print "StepNumX submit"
-#         self.ManualControlData.send(widget)
-#         
-#     def on_StepNumY_focus_out_event(self, widget, data = None):
-#         print "StepNumY submit"
-#         self.ManualControlData.send(widget)
-#         
-    def on_DirX_changed(self,widget, data=None):
-        #set combo box selection as active serial channel
-        self.ManualControlData.send(widget)
-        
-    def on_DirY_changed(self,widget, data=None):
-        self.ManualControlData.send(widget)
-    
-    def on_DirZ_changed(self,widget, data=None):
-        self.ManualControlData.send(widget)
-        
-
-
-    def on_StepNumZ_activate(self,widget, data=None):
-        print 'items in queue ', Communications.message_queue.qsize()
-        pass
-        #self.ManualControlData.send(widget)
-                
-    def on_Transfer_Config_clicked(self, widget, data = None):
-        self.CNCConfigData.send()
-        #sent data is of the form:
-#         [\[4d12e37f\]\[cfdata\]\[HMin\]\[fas\]]
-#         [\[e4d37dfc\]\[cfdata\]\[HMax\]\[\]]
-#         [\[c79a985\]\[cfdata\]\[LMin\]\[\]]
-#         [\[69be47af\]\[cfdata\]\[LMax\]\[\]]
-#         [\[6bc04b8b\]\[cfdata\]\[SPer\]\[\]]
-#         [\[b8da039c\]\[cfdata\]\[HVal\]\[qwr\]]
-#         [\[2f66a067\]\[cfdata\]\[LVal\]\[hello\]]
-#         [\[8fa222b3\]\[cfdata\]\[SInc\]\[555\]]
-        #if lets say LMin checksum does not match a request can be sent 
-        #to only resend that data and not the whole message
-        
-    def on_Erase_FIFO_clicked(self, widget, data = None):
         pass
 
+    def on_jog_xy_clicked(self,widget):
+        self._update_data()
+        self.jog_xy()
         
-        #self.CNCConfigData.unpack()
-#         print 'Erase FIFO button activated'
-#         BytesInBuffer = Communications.active_serial.inWaiting()
-#         print BytesInBuffer,' Bytes in buffer'
-#         data = Communications.active_serial.read(BytesInBuffer)
-#         print data
+    def on_jog_x_clicked(self,widget):
+        self._update_data()
+        self.jog_x()
         
+    def on_jog_y_clicked(self,widget):
+        self._update_data()
+        self.jog_y()
+        
+    def on_jog_z_clicked(self,widget):
+        self._update_data()
+        self.jog_z()
+
+    def on_set_pw_z_clicked(self,widget):
+        self._update_data()
+        self.set_pw_z()
+
+    def on_set_pw_y_clicked(self,widget):
+        self._update_data()
+        self.set_pw_y()
+
+    def on_set_pw_x_clicked(self,widget):
+        self._update_data()
+        self.set_pw_x()
+
+    def on_start_routing_clicked(self, widget):
+        self.start_routing()
+
+    def on_cancel_routing_clicked(self, widget):
+        self.cancel_routing()
+
+    def on_pause_routing_clicked(self, widget):
+        self.pause_routing()
+            
     def on_Transfer_Coord_clicked(self, widget, data = None):
         print 'Transfer Coord button activated'
         
@@ -161,10 +138,9 @@ class KshatriaGUI(GuiSupport):
         self.model = widget.get_model()
         self.item = self.model[self.index][1] #item is the text in combo box
 
-        #set selection state
-        selection_state = False if self.index == 0 else True
-        
-        Communications.Set_Active_Serial_Channel(port_name = self.item, valid = selection_state)
+        #set selection state 0 as a false state
+        if not self.index == 0:
+            Communications.Set_Active_Serial_Channel(port_name = self.item)
         #self.builder.get_object("label1").set_text(self.item)
     
     def notebook1_switch_page_cb(self,  notebook, page, page_num, data=None):
@@ -195,8 +171,4 @@ class KshatriaGUI(GuiSupport):
     ###################### End of actions for all signals#################
 if __name__ == "__main__":
     main = KshatriaGUI()
-#     import multiprocessing
-#     mt = multiprocessing.Process(name='Kshatria GUI', target = gtk.main(), args = ())
-#     mt.daemon = True
-#     mt.start()
     gtk.main()

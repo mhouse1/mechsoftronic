@@ -3,8 +3,6 @@ Created on Aug 24, 2014
 @author: Dynames
 
 @brief    contains functions to support a GUI interface
-04/20/2015 moved class HardwareTest out of this script and into test_kshatria.py
-           renamed classes in gui_support to use CamelCase naming convention
 '''
 import gtk
 import os
@@ -19,8 +17,6 @@ class GuiSupport(object):
     '''
     classdocs
     '''
-
-
     def __init__(self):
         '''
         Constructor
@@ -33,32 +29,36 @@ class GuiSupport(object):
         # and command_length is the number of bytes in payload
         self.command_list = {
         #
-        'jog_z'  :{'command_number' : 0 , 'command_length' : 4}, #bit 0 = direction, bits 1-31 = number of steps
-        'jog_y'  :{'command_number' : 1 , 'command_length' : 4}, 
-        'jog_x'  :{'command_number' : 2 , 'command_length' : 4}, 
-        'jog_xy' :{'command_number' : 3 , 'command_length' : 8}, #first 4 bytes = x_dir(1),x_step(31. next 4 bytes = y_dir(1), y_step(31) 
-        'pw_z'   :{'command_number' : 4 , 'command_length' : 8}, #first 8 bytes pulse width high count, next 4 bytes pulse width low count
-        'pw_y'   :{'command_number' : 5 , 'command_length' : 8},
-        'pw_x'   :{'command_number' : 6 , 'command_length' : 8},
-
-        'G1_XY'  :{'command_number' : 7 , 'command_length' : 8}, #GCode ommands 
+        'jog_z'   :{'command_number' : 0 , 'command_length' : 4},
+        'jog_y'   :{'command_number' : 1 , 'command_length' : 4},
+        'jog_x'   :{'command_number' : 2 , 'command_length' : 4},
+        'jog_xy'  :{'command_number' : 3 , 'command_length' : 8},
+        'set_pw_z':{'command_number' : 4 , 'command_length' : 8},
+        'set_pw_y':{'command_number' : 5 , 'command_length' : 8},
+        'set_pw_x':{'command_number' : 6 , 'command_length' : 8},
+        'start'   :{'command_number' : 7 , 'command_length' : 0},
+        'pause'   :{'command_number' : 8 , 'command_length' : 0},
+        'cancel'  :{'command_number' : 9 , 'command_length' : 0},
+        #'G1_XY'   :{'command_number' : 8 , 'command_length' : 8},
         }
-        print 'Gui support initialized'
+        print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
-        host = "127.0.0.1"#"10.88.143.235" # set to IP address of target computer
-        port = 2055
-        addr = (host, port)
+        #host = "127.0.0.1"#"10.88.143.235" # set to IP address of target computer
+        #port = 2055
+        #addr = (host, port)
         #self._send_handle = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         #self._send_handle.connect(addr)
         
     
-        self.get_bin = lambda x, n: x >= 0 and str(bin(x))[2:].zfill(n) or "-" + str(bin(x))[3:].zfill(n)
+        self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
+
+        self.gs_dir_z  = 0
+        self.gs_dir_y  = 0
+        self.gs_dir_x  = 0
+        
         self.gs_step_z = 0
         self.gs_step_y = 0
         self.gs_step_x = 0
-        self.gs_dir_z = 0
-        self.gs_dir_y = 0
-        self.gs_dir_x = 0
         self.gs_pw_z_h = 0
         self.gs_pw_z_l = 0
         self.gs_pw_y_h = 0
@@ -66,64 +66,136 @@ class GuiSupport(object):
         self.gs_pw_x_h = 0
         self.gs_pw_x_l = 0
                 
-
+        
         
     def _send(self,command = 'ADEAD',payload = ''):
         '''
         payload should be a binary string in the format of the length of payload
         '''
+        payload_len = self.command_list[command]['command_length']
+        received_payload_len = len(payload)/self.bits_per_byte
         cmd_num = self.get_bin(self.command_list[command]['command_number'] ,self.command_num_bits)
-        cmd_len =  self.get_bin(self.command_list[command]['command_length'],self.command_len_bits)
+        
+        cmd_len =  self.get_bin(payload_len,self.command_len_bits)
+        
+        #verify length of payload matches the specified length
+        
+        if not payload_len== received_payload_len:
+            print 'specified payload {} does not match recevied payload size {}'.format(payload_len,received_payload_len)
         full_command_bin = cmd_num + cmd_len + payload #build full binary string
-        full_command_hex = format(int(full_command_bin,2),'#04x')[2:] #build full hex string
+        hex_fill = '{0:0>'+str(len(full_command_bin)/4)+'}'
+        print '%x'% int(full_command_bin,2)
+        full_command_hex = hex_fill.format('%x'% int(full_command_bin,2)) #build hex string zero fill
         #print 'full_command_decode',full_command_hex.decode('hex')
         #full_command_ascii = binascii.b2a_uu(full_command_bin)
         #self._send_handle.send(full_command_hex.decode('hex'))
-        print 'command ',command
-        Communications.transmit(full_command_hex.decode('hex'))
-        print 'full_command binary:',full_command_bin
-        #print 'full_command hex:',full_command_hex
+        #print 'command ',command, cmd_num, cmd_len
+        
+        print 'full_command binary:',command, cmd_num, cmd_len,payload
+        #print 'full_command hex: ',full_command_hex
         #print 'full_command ascii:',full_command_ascii
+        Communications.transmit(full_command_hex.decode('hex'))
         
     def quit(self):
         print 'closed handle'
         self._send_handle.close()
         sys.exit()
 
-    def move_z(self):
-        self._send(command= 'jog_z')    
-#     def GlobalDisable(self):
-#         print 'send disable command'
-#         self._send(command = 'GlobalDisable')
-# 
-#     def GlobalEnable(self):
-#         print 'send enable command'
-#         self._send(command = 'GlobalEnable')
-# 
-# 
-#     def SetFrequency(self):
-#         command = 'SetFrequency'
-#         payload = self.get_bin(self.frequency,self.command_list[command]['command_length'] *self.bits_per_byte)
-#         self._send(command, payload)  
-#         
-#     def ClusterControl(self):
-#         print 'send enable command'
-#         spare_bit = 0
-#         payload =   self.get_bin(self.cl_address    , 2) + \
-#                     self.get_bin(spare_bit          ,1) + \
-#                     self.get_bin(self.cl_output_status,1)  + \
-#                     self.get_bin(self.cl_amplitude_a, 11)  + \
-#                     self.get_bin(self.cl_phase_a    , 9)   + \
-#                     self.get_bin(self.cl_amplitude_b, 11)  + \
-#                     self.get_bin(self.cl_phase_b    , 9)   + \
-#                     self.get_bin(self.cl_amplitude_c, 11)  + \
-#                     self.get_bin(self.cl_phase_c    , 9)
-#         print 'clustercontrol payload:',payload
-#         if len(payload) == 64: 
-#             self._send(command = 'ClusterControl', payload = payload)
-#         else:
-#             print 'clustercontrol payload length:',len(payload)
-#             print 'did not generate correct payload, check range of cluster data values'  
+    def start_routing(self):
+        ''' send command to start routing, no payload
+        '''
+        command= 'start'
+        self._send(command)
+
+    def pause_routing(self):
+        ''' send command to pause routing, no payload
+        '''
+        command= 'pause'
+        self._send(command)
+
+    def cancel_routing(self):
+        ''' send command to cancel routing, no payload
+        '''
+        command= 'cancel'
+        self._send(command)
+
+    def jog_z(self):
+        ''' payload contains direction and number of steps
+        bit 31 = direction
+        bit [30 to 0] = number of steps
+        '''
+        command= 'jog_z'
+        payload = self.get_bin(self.gs_dir_z,1) + \
+                  self.get_bin(self.gs_step_z,31)
+        self._send(command,payload)
+        
+    def jog_y(self):
+        ''' payload contains direction and number of steps
+        bit 31 = direction
+        bit [30 to 0] = number of steps
+        '''
+        command= 'jog_y'
+        payload = self.get_bin(self.gs_dir_y,1) + \
+                  self.get_bin(self.gs_step_y,31)
+        self._send(command,payload)
+        
+    def jog_x(self):
+        ''' payload contains direction and number of steps
+        bit 31 = direction
+        bit [30 to 0] = number of steps
+        '''
+        command= 'jog_x'
+        payload = self.get_bin(self.gs_dir_x,1) + \
+                  self.get_bin(self.gs_step_x,31)
+        self._send(command,payload)
+        
+    def jog_xy(self):
+        ''' payload contains direction and number of steps for x and y axis
+        first 4 bytes
+        bit 31 = direction x
+        bit [30 to 0] = number of steps x
+        next 4 bytes
+        bit 31 = direction y
+        bit [30 to 0] = number of steps y
+        '''
+        command= 'jog_xy'
+        payload = self.get_bin(self.gs_dir_x,1) + \
+                  self.get_bin(self.gs_step_x,31) +\
+                  self.get_bin(self.gs_dir_y,1) + \
+                  self.get_bin(self.gs_step_y,31)
+        self._send(command,payload)
+
+    def set_pw_z(self):
+        ''' payload contains pulse width high and low count
+        first 4 bytes = pulse high width counts
+        next 4 bytes = pulse low width counts
+        '''
+        command= 'set_pw_z'
+        payload = self.get_bin(self.gs_pw_z_h,32) +\
+                  self.get_bin(self.gs_pw_x_l,32)
+        self._send(command,payload)
+
+    def set_pw_y(self):
+        ''' payload contains pulse width high and low count
+        first 4 bytes = pulse high width counts
+        next 4 bytes = pulse low width counts
+        '''
+        command= 'set_pw_y'
+        payload = self.get_bin(self.gs_pw_y_h,32) +\
+                  self.get_bin(self.gs_pw_y_l,32)
+        self._send(command,payload)
+
+    def set_pw_x(self):
+        ''' payload contains pulse width high and low count
+        first 4 bytes = pulse high width counts
+        next 4 bytes = pulse low width counts
+        '''
+        command= 'set_pw_x'
+        payload = self.get_bin(self.gs_pw_x_h,32) +\
+                  self.get_bin(self.gs_pw_x_l,32)
+        self._send(command,payload)
+            
+
         
 class Enum(set):
     def __getattr__(self, name):
@@ -381,7 +453,50 @@ class ComCombo:
     def rescan(self):
         #get a updated com port list and set as combo box options
         self.Com_channel_combo.set_model(get_com_port_list())
+    
+
+class GsComboBox:
+    '''deals with the combo box that allow selection of com port to use
+    '''
+    def __init__(self,builder,obj_name, options):
+        '''initialize the combo box
+        '''
+        self.name = obj_name
+        self.builder = builder
+        #get an instance of the combo box
+        self.combo_obj = self.builder.get_object(self.name)
+        #set the ListStore as the Model of the ComboBox
         
+        
+        #create an instance of the gtk CellRendererText object and pack into
+        self.cell = gtk.CellRendererText()
+        self.combo_obj.pack_start(self.cell,True)
+        self.combo_obj.add_attribute(self.cell,'text',1)
+        self.combo_obj.set_active(0)
+        self.combo_obj.set_model(self._get_options(options))
+        
+    def _get_options(self,options):
+        #create an instance of Liststore with data
+        liststore = gtk.ListStore(int,str)
+#         liststore.append([0,"set_direction"])
+#         liststore.append([1,"up"])
+#         liststore.append([2,"down"])
+        for index, option in enumerate(options):
+            liststore.append([index,option])
+        print 'list store',self.name,liststore
+        return liststore
+                    
+
+    def get_selection(self):
+        index = self.combo_obj.get_active()
+        model = self.combo_obj.get_model()
+        item = model[index][1]
+        return item
+
+    def get_selection_index(self):
+        index = self.combo_obj.get_active()
+        return index        
+                    
 class DirectionCombo:
     '''deals with the combo box that allow selection direction
     '''

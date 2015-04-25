@@ -6,8 +6,8 @@ Created on Aug 9, 2014
 @brief    wraps string messages with fields and crc. This may be useful to enhance something like
           serial communication. A C++ version of this module is also available and is part of the 
           project RAPTOR firmware source code.
-          
-04/20/2015 modified ProtocolWrapper.wrapfieldscrc so it always return a list because, Communications
+
+@details no longer used as of 04/25/2015
 '''
 import crck
 # The response type returned by ProtocolWrapper

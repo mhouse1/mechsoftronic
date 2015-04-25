@@ -6,15 +6,6 @@ Created on Aug 9, 2014
 @brief    contains serial communication functionality
             Supported features: ability to list serial ports available, set active serial port,
                                 buffer serial transmitted messages in a queue and send in a parallel process
-        
-04/20/2015 updated SerialSendProcess.run to open serial port instead of when Set_Active_Serial_Channel is called
-04/22/2015 @todo when transmit() writes to message_queue sometimes its not pushed into the queue, this results in
-                 a problem where msg_queue.qsize() > 0 and msg_queue.empty() is both true because there is an item
-                 going to the queue so qsize() is more than 0 but its not in the queue so empty() == True.
-                 there seems to be a bug in gtk where the GUI cycle is refreshing too fast. when i click a button
-                 i need to add a delay inside the call back function. A temporary workaround has been implemented;
-                 by adding some time.sleep() after the transmit() function all the buttons that causes some item to
-                 be added to message_queue will experience a delay. 
 '''
 import os
 
@@ -79,18 +70,13 @@ class SerialSendProcess(object):
             print 'no active_serial, cannot start SerialSendProcess active_serial = ',self.talker
 
 
-def transmit(messages):
+def transmit(message):
     #where messages is a list of framed data
     #print 'transmitting...'
     #if not active_serial == None:
     if serial_activated:
-        for framed_data in messages:
-            message_queue.put(framed_data,block=False)
-            try:
-                message_queue.join()
-            except:
-                pass
-            print 'queued msg:',framed_data
+        message_queue.put(message,block=False)
+        print 'queued msg:',message
         #04/20/15 empty() must be called by the parallel process
 #         while message_queue.empty():
 #             print 'empty'
@@ -130,8 +116,8 @@ def transmit(messages):
 #         [#[D22EF06B#]#[###[gcode###]###[M02###]#]]        
 #         for framed_data in messages:
 #             print framed_data,
-        print 'no serial to send:',messages
-    time.sleep(0.3)
+        print 'no serial to send:',message
+    time.sleep(0.15)
     #print '\n'
     #print 'end transmit'
 
@@ -155,20 +141,19 @@ def list_serial_ports():
 
         #['/dev/cu.Michael-SerialServer-1', '/dev/cu.MikeHousesiPod-Wireless', '/dev/cu.Bluetooth-Modem', '/dev/cu.Bluetooth-Incoming-Port', '/dev/cu.MikeHousesiPhone-Wirele', '/dev/cu.SLAB_USBtoUART']
 
-def Set_Active_Serial_Channel(port_name, baud_rate = 19200, bytesize = 8, timeout = 1, valid = True):
+def Set_Active_Serial_Channel(port_name, baud_rate = 19200, bytesize = 8, timeout = 1):
     '''sets the active serial channel
     
         this function will be called once when the GUI first initializes
     '''
     global serial_activated
-    if valid:
-        #active_serial = serial.Serial(port = port_name,baudrate = baud_rate)
-        serial_activated = True
-        #print active_serial
-        print 'starting thread'
-        #active_serial.write('hello world')
-        #launch a process that sends data if data queue is not empty
-        transmitter = SerialSendProcess(port = port_name, baud = baud_rate, interval=1)
+    #active_serial = serial.Serial(port = port_name,baudrate = baud_rate)
+    serial_activated = True
+    #print active_serial
+    print 'starting thread'
+    #active_serial.write('hello world')
+    #launch a process that sends data if data queue is not empty
+    SerialSendProcess(port = port_name, baud = baud_rate, interval=1)
 
 #     #example read
 #     raw_data = active_serial.read()

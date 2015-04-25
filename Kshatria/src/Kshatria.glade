@@ -398,41 +398,8 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="Transfer_Config">
-                                <property name="label" translatable="yes">Transfer Configuration</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_Transfer_Config_clicked"/>
-                              </object>
-                              <packing>
-                                <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
-                                <property name="top_attach">3</property>
-                                <property name="bottom_attach">4</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkHSeparator" id="hseparator3"/>
                               <packing>
-                                <property name="top_attach">3</property>
-                                <property name="bottom_attach">4</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHSeparator" id="hseparator1"/>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="right_attach">2</property>
-                                <property name="top_attach">3</property>
-                                <property name="bottom_attach">4</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHSeparator" id="hseparator2"/>
-                              <packing>
-                                <property name="left_attach">3</property>
-                                <property name="right_attach">4</property>
                                 <property name="top_attach">3</property>
                                 <property name="bottom_attach">4</property>
                               </packing>
@@ -444,6 +411,51 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">5</property>
                                 <property name="bottom_attach">6</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="set_pw_y">
+                                <property name="label" translatable="yes">set pulse width Y</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_set_pw_y_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="set_pw_x">
+                                <property name="label" translatable="yes">set pulse width X</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_set_pw_x_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="right_attach">2</property>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="set_pw_z">
+                                <property name="label" translatable="yes">set pulse width Z</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_set_pw_z_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="right_attach">4</property>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
                               </packing>
                             </child>
                           </object>
@@ -549,35 +561,13 @@
                     <property name="visible">True</property>
                     <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkButton" id="Erase_FIFO">
-                        <property name="label" translatable="yes">Erase FIFO</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_Erase_FIFO_clicked"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">0</property>
-                      </packing>
+                      <placeholder/>
                     </child>
                     <child>
                       <placeholder/>
                     </child>
                     <child>
-                      <object class="GtkButton" id="write_settings">
-                        <property name="label" translatable="yes">Write settings</property>
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_write_settings_clicked"/>
-                      </object>
-                      <packing>
-                        <property name="expand">False</property>
-                        <property name="fill">False</property>
-                        <property name="position">2</property>
-                      </packing>
+                      <placeholder/>
                     </child>
                   </object>
                   <packing>
@@ -656,7 +646,6 @@
                             <child>
                               <object class="GtkComboBox" id="DirY">
                                 <property name="visible">True</property>
-                                <signal name="changed" handler="on_DirY_changed"/>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -668,7 +657,6 @@
                             <child>
                               <object class="GtkComboBox" id="DirX">
                                 <property name="visible">True</property>
-                                <signal name="changed" handler="on_DirX_changed"/>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -682,7 +670,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">&#x25CF;</property>
-                                <signal name="activate" handler="on_StepNumY_activate"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -696,7 +683,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">&#x25CF;</property>
-                                <signal name="activate" handler="on_StepNumX_activate"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -793,7 +779,6 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">&#x25CF;</property>
-                                <signal name="activate" handler="on_StepNumZ_activate"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -803,24 +788,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkComboBox" id="DirZ">
-                                <property name="visible">True</property>
-                                <signal name="changed" handler="on_DirZ_changed"/>
-                              </object>
-                              <packing>
-                                <property name="left_attach">2</property>
-                                <property name="right_attach">3</property>
-                                <property name="top_attach">3</property>
-                                <property name="bottom_attach">4</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkButton" id="MoveZ">
+                              <object class="GtkButton" id="jog_z">
                                 <property name="label" translatable="yes">Z</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_MoveZ_clicked"/>
+                                <signal name="clicked" handler="on_jog_z_clicked"/>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -830,11 +803,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="MoveY">
+                              <object class="GtkButton" id="jog_y">
                                 <property name="label" translatable="yes">Y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_jog_y_clicked"/>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -844,11 +818,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="MoveX">
+                              <object class="GtkButton" id="jog_x">
                                 <property name="label" translatable="yes">X</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_jog_x_clicked"/>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -858,12 +833,12 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="MoveXY">
+                              <object class="GtkButton" id="jog_xy">
                                 <property name="label" translatable="yes">X and Y</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
-                                <signal name="clicked" handler="on_MoveXY_clicked"/>
+                                <signal name="clicked" handler="on_jog_xy_clicked"/>
                               </object>
                               <packing>
                                 <property name="left_attach">3</property>
@@ -888,6 +863,17 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">5</property>
                                 <property name="bottom_attach">6</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkComboBox" id="DirZ">
+                                <property name="visible">True</property>
+                              </object>
+                              <packing>
+                                <property name="left_attach">2</property>
+                                <property name="right_attach">3</property>
+                                <property name="top_attach">3</property>
+                                <property name="bottom_attach">4</property>
                               </packing>
                             </child>
                           </object>
@@ -918,14 +904,26 @@
                   <object class="GtkHButtonBox" id="hbuttonbox1">
                     <property name="visible">True</property>
                     <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <object class="GtkButton" id="button6">
-                        <property name="label" translatable="yes">Stop</property>
+                      <object class="GtkButton" id="start_routing">
+                        <property name="label" translatable="yes">Start Routing</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_start_routing_clicked"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="pause_routing">
+                        <property name="label" translatable="yes">Pause</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <signal name="clicked" handler="on_pause_routing_clicked"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -934,12 +932,12 @@
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkButton" id="Start_Routing">
-                        <property name="label" translatable="yes">Start Routing</property>
+                      <object class="GtkButton" id="cancel_routing">
+                        <property name="label" translatable="yes">Cancel Routing</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">True</property>
-                        <signal name="clicked" handler="on_Start_Routing_clicked"/>
+                        <signal name="clicked" handler="on_cancel_routing_clicked"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
