@@ -2,6 +2,12 @@
 Created on Aug 9, 2014
 
 @author: Mike
+
+@brief    contains serial communication functionality
+            Supported features: ability to list serial ports available, set active serial port,
+                                buffer serial transmitted messages in a queue and send in a parallel process
+        
+04/20/2015 updated SerialSendProcess.run to open serial port instead of when Set_Active_Serial_Channel is called
 '''
 import os
 
@@ -11,8 +17,8 @@ import time
 import Queue
 from threading import Thread
 import multiprocessing
-active_serial = None
-
+#active_serial = None
+serial_activated = False
 message_queue = multiprocessing.Queue()
 
 class SerialSendProcess(object):
@@ -26,14 +32,17 @@ class SerialSendProcess(object):
     that this will not work, multiprocessing would work better for this.
     """
  
-    def __init__(self, interval=1):
+    def __init__(self,port, baud , interval=1):
         """ Constructor
 
         :type interval: int
         :param interval: Check interval, in seconds
         """
         self.interval = interval
- 
+        self.port = port
+        self.baud = baud
+        self.talker = ''
+        #print 'self.active_serial = ',self.active_serial
         thread = multiprocessing.Process(name = 'serial sending thread', target =self.run,args=(message_queue,))
         thread.daemon = True                            # Daemonize thread
         thread.start()                                  # Start the execution
@@ -49,30 +58,43 @@ class SerialSendProcess(object):
 #                 msg= '\nitems in queue = ' +str(size)+ 'message dequeued:'+message_queue.get() 
 #                 message_queue.task_done() 
 #                 print msg
-        while True:
-            # Do something
-            print 'waiting'
-            time.sleep(1)
-            while not msg_queue.empty():
-                print 'doing something'
-                msg = msg_queue.get()
-                for ch in msg:
-                    #print 'ch',ch
-                    active_serial.write(ch)
-                    time.sleep(0.01)
+        self.talker = serial.Serial(port = self.port,baudrate = self.baud)
+        if not self.talker == None:
+            #print 'active_serial is:',self.active_serial
+            print 'found active serial'
+            #print self.active_serial
+            queue_empty_status = msg_queue.empty()
+            while True:
+                # Do something
+                #print 'waiting', self.talker
+                time.sleep(self.interval)
+                queue_empty_status = msg_queue.empty()
+                while not queue_empty_status:
+                    msg = msg_queue.get()
+                    queue_empty_status = msg_queue.empty()
+                    print 'dequeued msg:',msg
+                    for ch in msg:
+                        print 'ch',ch
+                        self.talker.write(ch)
+                        time.sleep(0.005)
+        else:
+            print 'no active_serial, cannot start SerialSendProcess active_serial = ',self.talker
 
 
 def transmit(messages):
     #where messages is a list of framed data
-    print 'transmitting...'
-    if not active_serial == None:
+    #print 'transmitting...'
+    #if not active_serial == None:
+    if serial_activated:
         for framed_data in messages:
             message_queue.put(framed_data)
             print 'queued msg:',framed_data
-        #not sure why but i need to call empty()
+        #04/20/15 empty() must be called by the parallel process
+        message_queue.empty()
+        #04/19/15not sure why but i need to call empty()
         #or the parallel process will wait till the 3rd queued item before sending
         #the second item, all items afterwards seems to send okay
-        message_queue.empty()
+        #print ' message queue status', message_queue.empty()
         
             #msg = '\nqueued ' + framed_data+  'queue size = '+str(message_queue.qsize())
             #print msg
@@ -131,13 +153,15 @@ def Set_Active_Serial_Channel(port_name, baud_rate = 19200, bytesize = 8, timeou
     
         this function will be called once when the GUI first initializes
     '''
-    global active_serial
+    global serial_activated
     if valid:
-        active_serial = serial.Serial(port = port_name,baudrate = baud_rate)
-        print active_serial
-        #print 'starting thread'
+        #active_serial = serial.Serial(port = port_name,baudrate = baud_rate)
+        serial_activated = True
+        #print active_serial
+        print 'starting thread'
+        #active_serial.write('hello world')
         #launch a process that sends data if data queue is not empty
-        transmitter = SerialSendProcess()
+        transmitter = SerialSendProcess(port = port_name, baud = baud_rate, interval=1)
 
 #     #example read
 #     raw_data = active_serial.read()
