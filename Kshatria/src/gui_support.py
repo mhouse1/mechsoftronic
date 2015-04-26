@@ -2,7 +2,11 @@
 Created on Aug 24, 2014
 @author: Dynames
 
-@brief    contains functions to support a GUI interface
+@details  contains functions to support a GUI interface, by inheriting GuiSupport it is possible
+          to access all the same functionality a GUI user would have by simply calling the functions.
+          There is also a ConfigParser which saves and loads the user configurations in the GUI.
+          All the communication is sent via a parallel process that is launched when the user
+          configures the communication port.
 '''
 import gtk
 import os
@@ -483,7 +487,7 @@ class GsComboBox:
 #         liststore.append([2,"down"])
         for index, option in enumerate(options):
             liststore.append([index,option])
-        print 'list store',self.name,liststore
+        #print 'list store',self.name,liststore
         return liststore
                     
 

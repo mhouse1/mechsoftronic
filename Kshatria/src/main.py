@@ -3,6 +3,10 @@ Created on Aug 13, 2014
 
 @author: Mike
 
+@details    GUI interface allowing user to:
+                 configure pulse width for each axis
+                 jog the X, Y, Z axis or jog XY axis at the same time
+                 send in a basic gcode file to begin routing
 '''
 import gtk
 
