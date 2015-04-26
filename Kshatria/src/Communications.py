@@ -5,15 +5,13 @@ Created on Aug 9, 2014
 
 @brief    contains serial communication functionality
             Supported features: ability to list serial ports available, set active serial port,
-                                buffer serial transmitted messages in a queue and send in a parallel process
+                                buffer messages to be sent into a queue and send using a parallel process
 '''
 import os
 
 import serial
 from serial.tools import list_ports
 import time
-import Queue
-from threading import Thread
 import multiprocessing
 #active_serial = None
 serial_activated = False
@@ -51,13 +49,12 @@ class SerialSendProcess(object):
         self.talker = serial.Serial(port = self.port,baudrate = self.baud)
         if not self.talker == None:
             while True:
-                time.sleep(1)
-                if msg_queue.qsize() > 0 and msg_queue.empty():
-                    time.sleep(0.1)
-                    print 'bug'
+                time.sleep(0.5)
+                #if msg_queue.qsize() > 0 and msg_queue.empty():
+                #    time.sleep(0.1)
+                #    print 'bug'
                 while not msg_queue.empty():#que_size>0:
                     msg = msg_queue.get()
-    
                     print 'dequeued msg:',msg    
                     for ch in msg:    
                         #print 'ch',ch
