@@ -79,7 +79,6 @@ public:
 	void SetNumberOfStepsY(alt_u32 stepnum);
 	void Move();
 	TRAVERSALXY GetXYMovement(void);
-	void DisplayMovement(TRAVERSALXY movement);
 protected:
 	//Private functions
 	void WriteSettings(void);
