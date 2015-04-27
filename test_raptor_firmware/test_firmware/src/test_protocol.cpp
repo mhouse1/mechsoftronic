@@ -30,7 +30,8 @@ void Test2_protocolwrapper_wrapfieldscrc() {
 	ProtocolWrapper PW;
 	string encoded;
 	encoded = PW.wrap(myFields);
-
+	cout<<encoded;
+	ASSERT_EQUAL("[#[14524A2B#]#[hello#]#[world#]#[i#]#[am#]#[michael#]]",encoded);
 
 }
 
@@ -44,7 +45,7 @@ void Test1_protocolwrapper() {
 	 */
 	//ASSERTM("start writing tests", false);
 	ProtocolWrapper PS;
-	string message = "[\\[14524a2b\\]\\[hello\\]\\[world\\]\\[i\\]\\[am\\]\\[michael\\]]";
+	string message = "[#[8885F03D#]#[###[gcode###]###[G90###]#]]";
 	//iterate bytes in message
 	for (unsigned int i = 0; i<message.length(); i++)
 	{
@@ -52,7 +53,7 @@ void Test1_protocolwrapper() {
 		PS.input(c);
 	}
 	//cout<<PS.last_message<<endl;
-	ASSERT_EQUAL("[14524a2b][hello][world][i][am][michael]",PS.last_message);
+	ASSERT_EQUAL("[8885F03D][#[gcode#]#[G90#]]",PS.last_message);
 	list<string> fields_list;
 	fields_list = PS.get_fields();
 	//print fields

@@ -21,27 +21,33 @@
 
 using namespace std;
 typedef unsigned char UBYTE;
+typedef unsigned long ULONG;
+
 enum protocol_decode {WAIT_HEADER, IN_MSG, AFTER_DLE};
 enum protocol_status {START_MSG, BUILDING_MSG, MSG_OK, ERROR};
 
 class ProtocolWrapper
 {
 public:
-    ProtocolWrapper();
-    string wrap(list<string> fields);
+
     protocol_decode decode_state;
     protocol_status pstatus;
-    int input(UBYTE  byte);
     string message_buf;
     string last_message;
+
+    ProtocolWrapper();
+    string wrap(list<string> fields);
+    int input(UBYTE  byte);
     list<string> get_fields(void);
+    list<string> get_fields(string message);
+    string get_lastmessage();
 
 private:
     UBYTE Header;
     UBYTE Dle;
     UBYTE Footer;
 
-    int crc_value;
+    ULONG crc_value;
 
     bool keep_header;
     bool keep_footer;
