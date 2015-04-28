@@ -80,13 +80,9 @@ void Test1_crc()
 	ASSERT_EQUAL(248587473,mycrc);
 }
 
-void thisIsAtest_protocolTest() {
-	ASSERTM("hello", "hello");
-}
 
 cute::suite make_suite_test_protocol(){
 	cute::suite s;
-	s.push_back(CUTE(thisIsAtest_protocolTest));
 
 	//push_back tests to s
 	s.push_back(CUTE(Test1_crc));
