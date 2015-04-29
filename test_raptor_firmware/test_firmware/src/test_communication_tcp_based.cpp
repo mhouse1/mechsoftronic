@@ -24,42 +24,51 @@ void testReceiver()
 	CommSimple listener;
 
 	//JOGZ DIR =1 STEP = 000 0000 0000 0000
-	listener.input(0);
-	listener.input(4);
+	listener.input(0);     //command
+	listener.input(4);     //length
 	listener.input(128);
-	listener.input(0);
-	listener.input(0);
-	listener.input(0);
+	listener.input(52);
+	listener.input(21);
+	listener.input(7);
 
 	//JOGY DIR =1 STEP = 000 0000 0000 0000
-	listener.input(1);
-	listener.input(4);
+	listener.input(1);      //command
+	listener.input(4);      //length
 	listener.input(128);
 	listener.input(0);
 	listener.input(0);
 	listener.input(0);
 
 	//JOGX DIR =1 STEP = 000 0000 0000 0000
-	listener.input(2);
-	listener.input(4);
+	listener.input(2);      //command
+	listener.input(4);      //length
 	listener.input(128);
 	listener.input(0);
 	listener.input(0);
 	listener.input(0);
 
 	//JOGXY DIR =1 STEP = 000 0000 0000 0000
-	listener.input(3);
-	listener.input(4);
+	listener.input(3); 		//command
+	listener.input(8); 		//length
 	listener.input(128);
 	listener.input(0);
 	listener.input(0);
 	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
 
-	listener.input(3);
-	listener.input(3);
+	listener.input(3);     //command
+	listener.input(8);     //length
 	listener.input('h');
 	listener.input('i');
 	listener.input('j');
+	listener.input(0);
+	listener.input(0);
+	listener.input(3);
+	listener.input(2);
+	listener.input(1);
 }
 
 cute::suite make_suite_test_comm_tcp_based(){
