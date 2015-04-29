@@ -109,9 +109,10 @@ public:
 	void SetNumberOfStepsX(alt_u32 stepnum);
 	void SetNumberOfStepsY(alt_u32 stepnum);
 	void SetNumberOfStepsZ(alt_u32 stepnum);
-	void Move(void);
 	void MoveXY(void);
 	void MoveZ(void);
+	void MoveY(void);
+	void MoveX(void);
 	TRAVERSALXY GetXYMovement(void);
 	list<TRAVERSALXY> GetRoutes(void);
 	void DisplayMovement(TRAVERSALXY movement);
@@ -122,13 +123,19 @@ public:
 	void ReadStatus(void);
 
 protected:
-	//Private functions
-	void WriteStepNum(alt_u32 XSteps, alt_u32 YSteps);
+	alt_32  StepNumX;
+	alt_32  StepNumY;
+	alt_32  StepNumZ;
+	//protected functions
+	void WriteStepNumXY(alt_u32 XSteps, alt_u32 YSteps);
 	void WriteStepNumZ(alt_u32 ZSteps);
+	void WriteStepNumY(alt_u32 YSteps);
+	void WriteStepNumX(alt_u32 XSteps);
 	void WriteRouterPWM(alt_u32 PWMVal);
-	void WriteSettings(void);
-	void WritePulseInfo(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth, alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth);
+	void WritePulseInfoXY(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth, alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth);
 	void WritePulseInfoZ(alt_u32 ZHighPulseWidth,alt_u32 ZLowPulseWidth);
+	void WritePulseInfoY(alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth);
+	void WritePulseInfoX(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth);
 	void ClearControlRegister(void);
 	void WriteControlRegister(void);
 private:
@@ -143,9 +150,7 @@ private:
 	alt_u32 NextX;
 	alt_u32 NextY;
 	alt_u32 NextZ;
-	alt_32  StepNumX;
-	alt_32  StepNumY;
-	alt_32  StepNumZ;
+
 	alt_u32 MaxSpeed;
 	alt_u32 SpeedVal;
 	alt_u32 HighPulseWidthMin;

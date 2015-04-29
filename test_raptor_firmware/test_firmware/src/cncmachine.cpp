@@ -242,12 +242,21 @@ CncMachine::TRAVERSALXY CncMachine::GetXYMovement()
 	return data;
 }
 
-void CncMachine::WriteStepNum(alt_u32 XSteps, alt_u32 YSteps)
+void CncMachine::WriteStepNumXY(alt_u32 XSteps, alt_u32 YSteps)
 {
 	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_2*4),XSteps );
 	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_6*4),YSteps );
 }
 
+void CncMachine::WriteStepNumX(alt_u32 XSteps)
+{
+	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_2*4),XSteps );
+}
+
+void CncMachine::WriteStepNumY(alt_u32 YSteps)
+{
+	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_6*4),YSteps );
+}
 void CncMachine::WriteStepNumZ(alt_u32 ZSteps)
 {
 	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_10*4),ZSteps );
@@ -258,33 +267,12 @@ void CncMachine::WriteRouterPWM(alt_u32 PWMVal)
 	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_7*4),PWMVal );
 }
 
-/////////////////////////////////////////////////////////////////////////////
-///@brief Write XY setting value for each stepper motor into register
-/// this function is deprecated, try not to use (i will be removed soon)
-/// 04/14/2015 this function is called when routing begins, which may be
-/// 		   unnecessary now that WritePulseInfo() is available
-/////////////////////////////////////////////////////////////////////////////
-void CncMachine::WriteSettings()
-{
-	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_0*4),this->HighPulseWidthVal); //pulse_width_high_A
-	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_1*4),this->LowPulseWidthVal ); //pulse_width_low_A
 
-   //IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_3*4),0); //Control register
-	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_4*4),this->HighPulseWidthVal); //pulse_width_high_B
-	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_5*4),this->LowPulseWidthVal ); //pulse_width_low_B
-
-	 //IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_8*4),this->HighPulseWidthVal); //pulse_width_high_C
-	 //IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_9*4),this->LowPulseWidthVal ); //pulse_width_low_C
-
-	 //may need to uncomment this if gcode file is used
-	 WriteStepNum(this->StepNumX, this->StepNumY);
-
-}
 
 /////////////////////////////////////////////////////////////////////////////
 ///@brief Write pulse info for x and y axis
 /////////////////////////////////////////////////////////////////////////////
-void CncMachine::WritePulseInfo(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth, alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth)
+void CncMachine::WritePulseInfoXY(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth, alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth)
 {
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_0*4),XHighPulseWidth);
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_1*4),XLowPulseWidth);
@@ -296,8 +284,9 @@ void CncMachine::WritePulseInfo(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth,
 
 }
 
+
 /////////////////////////////////////////////////////////////////////////////
-///@brief Write pulse info for x and y axis
+///@brief Write pulse info for z axis
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::WritePulseInfoZ(alt_u32 ZHighPulseWidth,alt_u32 ZLowPulseWidth)
 {
@@ -305,6 +294,25 @@ void CncMachine::WritePulseInfoZ(alt_u32 ZHighPulseWidth,alt_u32 ZLowPulseWidth)
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_9*4),ZLowPulseWidth); //pulse_width_low_C
 
 
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief Write pulse info for y axis
+/////////////////////////////////////////////////////////////////////////////
+void CncMachine::WritePulseInfoY(alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth)
+{
+	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_4*4),YHighPulseWidth);
+	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_5*4),YLowPulseWidth );
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief Write pulse info for x axis
+/////////////////////////////////////////////////////////////////////////////
+void CncMachine::WritePulseInfoX(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth)
+{
+	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_0*4),XHighPulseWidth);
+	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_1*4),XLowPulseWidth);
 }
 void CncMachine::ReadStatus()
 {
@@ -325,8 +333,38 @@ void CncMachine::MoveZ()
 	WriteControlRegister();
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunZ = 0;
 	WriteControlRegister();
+	printf("Jog z axis in cnc machine\n");
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///@brief toggle run bit to cause axis to move
+/////////////////////////////////////////////////////////////////////////////
+void CncMachine::MoveY()
+{
+	WritePulseInfoY(this->HighPulseWidthVal,this->LowPulseWidthVal);
+	WriteStepNumY(this->StepNumY);
+	//Toggle run bit
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 1;
+	WriteControlRegister();
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 0;
+	WriteControlRegister();
+	printf("Jog y axis in cnc machine\n");
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief toggle run bit to cause axis to move
+/////////////////////////////////////////////////////////////////////////////
+void CncMachine::MoveX()
+{
+	WritePulseInfoX(this->HighPulseWidthVal,this->LowPulseWidthVal);
+	WriteStepNumX(this->StepNumX);
+	//Toggle run bit
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 1;
+	WriteControlRegister();
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 0;
+	WriteControlRegister();
+	printf("Jog x axis in cnc machine\n");
+}
 /////////////////////////////////////////////////////////////////////////////
 ///@brief toggle run bit to cause axis to move
 /////////////////////////////////////////////////////////////////////////////
@@ -340,18 +378,7 @@ void CncMachine::MoveXY()
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 0;
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 0;
 	WriteControlRegister();
-}
-
-/////////////////////////////////////////////////////////////////////////////
-///@brief	write high and low pulse width values for the xy-axis then move
-///			the xy axis, this is used when manually moving the axis.
-/////////////////////////////////////////////////////////////////////////////
-void CncMachine::Move()
-{
-	//write pulse settings to memory mapped RAM
-	WriteSettings();
-	MoveXY();
-
+	printf("Jog xy axis in cnc machine\n");
 }
 
 void CncMachine::DisplayMovement(CncMachine::TRAVERSALXY movement)
@@ -398,7 +425,6 @@ void CncMachine::ClearRoute()
 }
 void CncMachine::StartRouting()
 {
-	this->WriteSettings();
 	this->WriteRouterPWM(40000);
 	list<CncMachine::TRAVERSALXY> route_data;
 	route_data = GetRoutes();
@@ -410,10 +436,10 @@ void CncMachine::StartRouting()
 		movement = *it;
 		DisplayMovement(movement);
 
-		WriteStepNum(movement.X.StepNum, movement.Y.StepNum);
-		MotorXDir(movement.X.StepDir);
-		MotorYDir(movement.Y.StepDir);
-		WritePulseInfo(movement.X.HighPulseWidth,movement.X.LowPulseWidth,movement.Y.HighPulseWidth,movement.Y.LowPulseWidth);
+		WriteStepNumXY(movement.X.StepNum, movement.Y.StepNum);
+		this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = movement.X.StepDir;
+		this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = movement.Y.StepDir;
+		WritePulseInfoXY(movement.X.HighPulseWidth,movement.X.LowPulseWidth,movement.Y.HighPulseWidth,movement.Y.LowPulseWidth);
 
 		if (movement.router_state == on)
 		{
@@ -433,17 +459,21 @@ void CncMachine::StartRouting()
 			printf("router off\n");
 			//this->WriteRouterPWM(1700);
 		}
-		MoveXY();
 
+		//run x and y axis
+		this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 1;
+		this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 1;
+		WriteControlRegister();
+		this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 0;
+		this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 0;
+		WriteControlRegister();
+
+		//wait until stepping is done
 		ReadStatus();
 		while(!this->CNC_STATUS.STUS.STUS_BITS.XDONE || !this->CNC_STATUS.STUS.STUS_BITS.YDONE)
 		{
-			//printf("waiting for done\n");
-
 			ReadStatus();
-
 		}
-
 	}
 }
 
