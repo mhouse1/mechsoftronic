@@ -42,10 +42,12 @@ class KshatriaGUI(GuiSupport):
         self.SendSinleCFData = gui_support.SendSinleCFData(self.builder,self.cfg_file_handle)
         self.ManualControlData = gui_support.ManualControlData(self.builder,self.cfg_file_handle)
         
-        direction_combo_options = ['down','up']
-        self.DirXComboHandle = gui_support.GsComboBox(self.builder,'DirX',direction_combo_options)
-        self.DirYComboHandle = gui_support.GsComboBox(self.builder,'DirY',direction_combo_options)
-        self.DirZComboHandle = gui_support.GsComboBox(self.builder,'DirZ',direction_combo_options)
+        xdirection_combo_options = ['left','right']
+        ydirection_combo_options = ['backward','forward']
+        zdirection_combo_options = ['counter-clock','clockwise']
+        self.DirXComboHandle = gui_support.GsComboBox(self.builder,'DirX',xdirection_combo_options)
+        self.DirYComboHandle = gui_support.GsComboBox(self.builder,'DirY',ydirection_combo_options)
+        self.DirZComboHandle = gui_support.GsComboBox(self.builder,'DirZ',zdirection_combo_options)
         
         #text box objects
         self.StepNumZ       = self.builder.get_object('StepNumZ')
@@ -81,8 +83,6 @@ class KshatriaGUI(GuiSupport):
         self.gs_pw_x_l = int(self.pulsewidth_x_l.get_text())
 
 
-        
-        
     ###################### Actions for all signals#########################
     
     def on_servo_clicked(self, widget, data = None):
