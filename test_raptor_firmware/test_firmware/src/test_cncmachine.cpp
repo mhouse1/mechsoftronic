@@ -61,12 +61,12 @@ void InputCoordinateTest() {
 	list<COORDINATE>::iterator it;
 	CncMachine raptor;
 	COORDINATE pos;
-	COORDINATE old;
+	//COORDINATE old;
 	CncMachine::TRAVERSALXY data;
-	CncMachine::Direction dir;
+	//CncMachine::Direction dir;
 //	alt_32 val;
-	old.x = 0;
-	old.y = 0;
+	//old.x = 0;
+	//old.y = 0;
 	for(it = triangle.begin(); it != triangle.end(); it++)
 	{
 		pos = *it;
@@ -78,16 +78,16 @@ void InputCoordinateTest() {
 		//verify X direction
 //		val = (alt_32)data.X.Position - (alt_32)old.x;
 //		cout << "value position change = "<<val<<endl;
-		dir = ((alt_32)data.X.Position - (alt_32)old.x)>0?
-				CncMachine::up: CncMachine::down;
+		//dir = ((alt_32)data.X.Position - (alt_32)old.x)>0?
+		//		CncMachine::up: CncMachine::down;
 		//ASSERT_EQUAL(dir,data.X.StepDir);
 		//verify Y direction
-		dir = ((alt_32)data.Y.Position - (alt_32)old.y)>0?
-				CncMachine::up: CncMachine::down;
+		//dir = ((alt_32)data.Y.Position - (alt_32)old.y)>0?
+		//		CncMachine::up: CncMachine::down;
 		//ASSERT_EQUAL(dir,data.Y.StepDir);
 
-		old.x = data.X.Position;
-		old.y = data.Y.Position;
+		//old.x = data.X.Position;
+		//old.y = data.Y.Position;
 
 	}
 }
