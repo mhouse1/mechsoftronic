@@ -10,7 +10,7 @@
 /// @par Copyright (c) 2014 All rights reserved.
 /////////////////////////////////////////////////////////////////////////////
 
-#include <iostream>
+//#include <iostream>
 
 #include "cute.h"
 #include "test_communication_tcp_based.h"
