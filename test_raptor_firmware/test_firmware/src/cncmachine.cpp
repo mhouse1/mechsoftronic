@@ -16,14 +16,15 @@
 
 #include "types.hpp"
 #include "cncmachine.hpp"
+
 extern "C"
 {
 #include "system.h"
 #include "stdio.h"
 #include "altera_avalon_pio_regs.h"
 #include "slave_template_macros.h"
-
 }
+
 #include <cmath>
 using namespace std;
 
@@ -44,14 +45,13 @@ CncMachine::CncMachine()
 	this->StepNumX          = 50;
 	this->StepNumY          = 50;
 	this->StepNumZ          = 50;
-	this->MaxSpeed          = 0;
-	this->SpeedVal          = 0;
-	this->HighPulseWidthMin = 0;
-	this->HighPulseWidthVal = 20000;
-	this->HighPulseWidthMax = 0;
-	this->LowPulseWidthMin  = 0;
-	this->LowPulseWidthVal  = 1500;
-	this->LowPulseWidthMax  = 0;
+
+	this->PulseWidthZH      = 20000;
+	this->PulseWidthZL      = 3000;
+	this->PulseWidtHYH      = 20000;
+	this->PulseWidthYL      = 3000;
+	this->PulseWidthXH      = 20000;
+	this->PulseWidthXL      = 3000;
 	this->router_state = off;
 	this->FullRangeStepCount= 2000;
 	this->FullRangeDistance = 380000; //38mm scaled by 10000
@@ -82,6 +82,8 @@ void CncMachine::SetCurrentPosition(alt_u32 x, alt_u32 y)
 ///		for a given direction there is a certain amount of steps leftover to
 ///		to move, if the Step number calculated is not in range of steps
 ///		leftover for a given direction then return with error code
+///@todo	right now itll use pulse info for x axis as speed base
+///			will review this later
 /////////////////////////////////////////////////////////////////////////////
 alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 {
@@ -118,7 +120,7 @@ alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 	//code to be added here
 	//pulse period
 	//calculation is based on half period to prevent overflow
-	alt_u32 HalfPulsePeriod = (this->HighPulseWidthVal + this->LowPulseWidthVal)/2;
+	alt_u32 HalfPulsePeriod = (this->PulseWidthXH + this->PulseWidthXL)/2;
 	alt_u32 HalfTimeX = data.X.StepNum * HalfPulsePeriod;
 	alt_u32 HalfTimeY = data.Y.StepNum * HalfPulsePeriod;
 	//slow down the axis with less steps
@@ -127,16 +129,16 @@ alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 		alt_u32 HalfPeriod = HalfTimeX/data.Y.StepNum; //calculate half period for Y based on X
 		data.Y.HighPulseWidth = HalfPeriod;
 		data.Y.LowPulseWidth = HalfPeriod;
-		data.X.HighPulseWidth = this->HighPulseWidthVal;
-		data.X.LowPulseWidth = this->LowPulseWidthVal;
+		data.X.HighPulseWidth = this->PulseWidthXH;
+		data.X.LowPulseWidth = this->PulseWidthXL;
 	}
 	else //Y slower than X
 	{
 		alt_u32 HalfPeriod = HalfTimeY/data.X.StepNum; //calculate half period for Y based on X
 		data.X.HighPulseWidth = HalfPeriod;
 		data.X.LowPulseWidth = HalfPeriod;
-		data.Y.HighPulseWidth = this->HighPulseWidthVal;
-		data.Y.LowPulseWidth = this->LowPulseWidthVal;
+		data.Y.HighPulseWidth = this->PulseWidthXH;
+		data.Y.LowPulseWidth = this->PulseWidthXL;
 	}//@todo need to add checks in here to make sure that Pulses widths are in valid range
 
 
@@ -171,42 +173,7 @@ void CncMachine::MotorZDir(Direction z)
 	//set Y axis direction
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = z;
 }
-void CncMachine::SetMaxSpeed(alt_u32 speed)
-{
-	this->MaxSpeed = speed;
-}
-void CncMachine::SetSpeedVal(alt_u32 speed)
-{
-	this->SpeedVal = speed;
-}
-void CncMachine::SetHighPulseWidthMin(alt_u32 width)
-{
-	this->HighPulseWidthMin = width;
-	printf("set High Pulse Width Min = %lu\n",width);
-}
-void CncMachine::SetHighPulseWidthVal(alt_u32 width)
-{
-	this->HighPulseWidthVal = width;
-	printf("set High Pulse Width Val = %lu\n",this->HighPulseWidthVal);
-}
-void CncMachine::SetHighPulseWidthMax(alt_u32 width)
-{
-	this->HighPulseWidthMax = width;
-	printf("set High Pulse Width Max = %lu\n",width);
-}
-void CncMachine::SetLowPulseWidthMin(alt_u32 width)
-{
-	this->LowPulseWidthMin = width;
-}
-void CncMachine::SetLowPulseWidthVal(alt_u32 width)
-{
-	this->LowPulseWidthVal = width;
-	printf("set Low Pulse Width Val = %lu\n", this->LowPulseWidthVal);
-}
-void CncMachine::SetLowPulseWidthMax(alt_u32 width)
-{
-	this->LowPulseWidthMax = width;
-}
+
 void CncMachine::SetNumberOfStepsX(alt_u32 steps)
 {
 	this->StepNumX = steps;
@@ -290,6 +257,8 @@ void CncMachine::WritePulseInfoXY(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidt
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::WritePulseInfoZ(alt_u32 ZHighPulseWidth,alt_u32 ZLowPulseWidth)
 {
+	printf("set Z High Pulse Width Min = %lu\n",ZHighPulseWidth);
+	printf("set Z High Pulse Width Min = %lu\n",ZLowPulseWidth);
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_8*4),ZHighPulseWidth); //pulse_width_high_C
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_9*4),ZLowPulseWidth); //pulse_width_low_C
 
@@ -301,6 +270,8 @@ void CncMachine::WritePulseInfoZ(alt_u32 ZHighPulseWidth,alt_u32 ZLowPulseWidth)
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::WritePulseInfoY(alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth)
 {
+	printf("set Y High Pulse Width Min = %lu\n",YHighPulseWidth);
+	printf("set Y High Pulse Width Min = %lu\n",YLowPulseWidth);
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_4*4),YHighPulseWidth);
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_5*4),YLowPulseWidth );
 }
@@ -311,6 +282,8 @@ void CncMachine::WritePulseInfoY(alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::WritePulseInfoX(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth)
 {
+		printf("set X High Pulse Width Min = %lu\n",XHighPulseWidth);
+		printf("set X High Pulse Width Min = %lu\n",XLowPulseWidth);
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_0*4),XHighPulseWidth);
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_1*4),XLowPulseWidth);
 }
@@ -326,7 +299,6 @@ void CncMachine::ReadStatus()
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::MoveZ()
 {
-	WritePulseInfoZ(this->HighPulseWidthVal,this->LowPulseWidthVal);
 	WriteStepNumZ(this->StepNumZ);
 	//Toggle run bit
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunZ = 1;
@@ -341,7 +313,6 @@ void CncMachine::MoveZ()
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::MoveY()
 {
-	WritePulseInfoY(this->HighPulseWidthVal,this->LowPulseWidthVal);
 	WriteStepNumY(this->StepNumY);
 	//Toggle run bit
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 1;
@@ -356,7 +327,6 @@ void CncMachine::MoveY()
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::MoveX()
 {
-	WritePulseInfoX(this->HighPulseWidthVal,this->LowPulseWidthVal);
 	WriteStepNumX(this->StepNumX);
 	//Toggle run bit
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 1;
@@ -372,6 +342,7 @@ void CncMachine::MoveXY()
 {
 	//DisplayMovement(GetXYMovement());
 	//Toggle run bit
+	WriteStepNumXY(this->StepNumX,this->StepNumY);
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 1;
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 1;
 	WriteControlRegister();

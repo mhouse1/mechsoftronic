@@ -98,8 +98,6 @@ public:
 	void MotorYDir(Direction y);
 	void MotorZDir(Direction z);
 
-	void SetMaxSpeed(alt_u32 speed);
-	void SetSpeedVal(alt_u32 speed);
 	void SetHighPulseWidthMin(alt_u32 width);
 	void SetHighPulseWidthVal(alt_u32 width);
 	void SetHighPulseWidthMax(alt_u32 width);
@@ -123,9 +121,15 @@ public:
 	void ReadStatus(void);
 
 protected:
-	alt_32  StepNumX;
-	alt_32  StepNumY;
-	alt_32  StepNumZ;
+	alt_u32  StepNumX;
+	alt_u32  StepNumY;
+	alt_u32  StepNumZ;
+	alt_u32  PulseWidthZH;
+	alt_u32  PulseWidthZL;
+	alt_u32  PulseWidtHYH;
+	alt_u32  PulseWidthYL;
+	alt_u32  PulseWidthXH;
+	alt_u32  PulseWidthXL;
 	//protected functions
 	void WriteStepNumXY(alt_u32 XSteps, alt_u32 YSteps);
 	void WriteStepNumZ(alt_u32 ZSteps);
@@ -150,18 +154,11 @@ private:
 	alt_u32 NextX;
 	alt_u32 NextY;
 	alt_u32 NextZ;
-
-	alt_u32 MaxSpeed;
-	alt_u32 SpeedVal;
-	alt_u32 HighPulseWidthMin;
-	alt_u32 HighPulseWidthVal;
-	alt_u32 HighPulseWidthMax;
-	alt_u32 LowPulseWidthMin;
-	alt_u32 LowPulseWidthVal;
-	alt_u32 LowPulseWidthMax;
-
 	alt_u32 FullRangeStepCount;
 	alt_u32 FullRangeDistance;
+
+
+
 
 
 };
