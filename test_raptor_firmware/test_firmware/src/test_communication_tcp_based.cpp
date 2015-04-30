@@ -69,6 +69,39 @@ void testReceiver()
 	listener.input(3);
 	listener.input(2);
 	listener.input(1);
+
+	listener.input(4);     //command
+	listener.input(8);     //length
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(3);
+
+	listener.input(5);     //command
+	listener.input(8);     //length
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(3);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(7);
+
+	listener.input(6);     //command
+	listener.input(8);     //length
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(1);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(2);
 }
 
 cute::suite make_suite_test_comm_tcp_based(){
