@@ -176,7 +176,7 @@ class GuiSupport(object):
         '''
         command= 'set_pw_z'
         payload = self.get_bin(self.gs_pw_z_h,32) +\
-                  self.get_bin(self.gs_pw_x_l,32)
+                  self.get_bin(self.gs_pw_z_l,32)
         self._send(command,payload)
 
     def set_pw_y(self):
