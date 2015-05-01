@@ -69,22 +69,30 @@ class KshatriaGUI(GuiSupport):
         
 
     def _update_data(self):
-        self.gs_dir_z = self.DirZComboHandle.get_selection_index()
-        self.gs_dir_y = self.DirYComboHandle.get_selection_index()
-        self.gs_dir_x = self.DirXComboHandle.get_selection_index()
-        self.gs_step_z = int(self.StepNumZ.get_text())      
-        self.gs_step_y = int(self.StepNumY.get_text())      
-        self.gs_step_x = int(self.StepNumX.get_text())      
-        self.gs_pw_z_h = int(self.pulsewidth_z_h.get_text())
-        self.gs_pw_z_l = int(self.pulsewidth_z_l.get_text())
-        self.gs_pw_y_h = int(self.pulsewidth_y_h.get_text())
-        self.gs_pw_y_l = int(self.pulsewidth_y_l.get_text())
-        self.gs_pw_x_h = int(self.pulsewidth_x_h.get_text())
-        self.gs_pw_x_l = int(self.pulsewidth_x_l.get_text())
+        self.axis_z.dir = self.DirZComboHandle.get_selection_index()
+        self.axis_y.dir = self.DirYComboHandle.get_selection_index()
+        self.axis_x.dir = self.DirXComboHandle.get_selection_index()
+        self.axis_z.step = int(self.StepNumZ.get_text())      
+        self.axis_y.step = int(self.StepNumY.get_text())      
+        self.axis_x.step = int(self.StepNumX.get_text())      
+        self.axis_z.pulse_width_high = int(self.pulsewidth_z_h.get_text())
+        self.axis_z.pulse_width_low = int(self.pulsewidth_z_l.get_text())
+        self.axis_y.pulse_width_high = int(self.pulsewidth_y_h.get_text())
+        self.axis_y.pulse_width_low = int(self.pulsewidth_y_l.get_text())
+        self.axis_x.pulse_width_high = int(self.pulsewidth_x_h.get_text())
+        self.axis_x.pulse_width_low = int(self.pulsewidth_x_l.get_text())
 
 
     ###################### Actions for all signals#########################
-    
+    def on_reverse_x_toggled(self,widget, data = None):
+        self.axis_x.dir_reversed = widget.get_active()
+        
+    def on_reverse_y_toggled(self,widget, data = None):
+        self.axis_y.dir_reversed = widget.get_active()
+
+    def on_reverse_z_toggled(self,widget, data = None):
+        self.axis_z.dir_reversed = widget.get_active()
+        
     def on_servo_clicked(self, widget, data = None):
         
         self.SendSinleCFData.send(self.builder.get_object('servo_value'))
@@ -97,27 +105,27 @@ class KshatriaGUI(GuiSupport):
         
     def on_jog_x_clicked(self,widget):
         self._update_data()
-        self.jog_x()
+        self.axis_x.jog()
         
     def on_jog_y_clicked(self,widget):
         self._update_data()
-        self.jog_y()
+        self.axis_y.jog()
         
     def on_jog_z_clicked(self,widget):
         self._update_data()
-        self.jog_z()
+        self.axis_z.jog()
 
     def on_set_pw_z_clicked(self,widget):
         self._update_data()
-        self.set_pw_z()
+        self.axis_z.set_pw_info()
 
     def on_set_pw_y_clicked(self,widget):
         self._update_data()
-        self.set_pw_y()
+        self.axis_y.set_pw_info()
 
     def on_set_pw_x_clicked(self,widget):
         self._update_data()
-        self.set_pw_x()
+        self.axis_x.set_pw_info()
 
     def on_start_routing_clicked(self, widget):
         self.start_routing()

@@ -13,10 +13,40 @@ import os
 import ConfigParser
 import protocolwrapper
 import Communications
-import time
 import sys
 framer = protocolwrapper.ProtocolWrapper()
 
+class Axi:
+    '''
+    creates a single axi object with its own data
+    '''
+    def __init__(self,sender=None,name = ''):
+        '''
+        constructor
+        '''
+        self.command_jog = 'jog_'+name
+        self.command_set_pw = 'set_pw_'+name
+        self.dir = 0
+        self.dir_reversed = False
+        self.step = 0
+        self.pulse_width_high = 0
+        self.pulse_width_low = 0
+        self.send = sender
+        self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
+        
+    def jog_payload(self):
+        payload = self.get_bin(self.dir  +1 if self.dir_reversed else self.dir ,1)[-1] + \
+                  self.get_bin(self.step,31)
+        return payload
+    
+    def jog(self):
+        self.send(self.command_jog,self.jog_payload())
+    
+    def set_pw_info(self):
+        payload = self.get_bin(self.pulse_width_high,32) +\
+                  self.get_bin(self.pulse_width_low,32)
+        self.send(self.command_set_pw,payload)
+    
 class GuiSupport(object):
     '''
     classdocs
@@ -56,19 +86,11 @@ class GuiSupport(object):
     
         self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
 
-        self.gs_dir_z  = 0
-        self.gs_dir_y  = 0
-        self.gs_dir_x  = 0
-        
-        self.gs_step_z = 0
-        self.gs_step_y = 0
-        self.gs_step_x = 0
-        self.gs_pw_z_h = 0
-        self.gs_pw_z_l = 0
-        self.gs_pw_y_h = 0
-        self.gs_pw_y_l = 0        
-        self.gs_pw_x_h = 0
-        self.gs_pw_x_l = 0
+
+        self.axis_x = Axi(self._send,'x')
+        self.axis_y = Axi(self._send,'y')
+        self.axis_z = Axi(self._send,'z')
+
                 
         
         
@@ -122,36 +144,6 @@ class GuiSupport(object):
         '''
         command= 'cancel'
         self._send(command)
-
-    def jog_z(self):
-        ''' payload contains direction and number of steps
-        bit 31 = direction
-        bit [30 to 0] = number of steps
-        '''
-        command= 'jog_z'
-        payload = self.get_bin(self.gs_dir_z,1) + \
-                  self.get_bin(self.gs_step_z,31)
-        self._send(command,payload)
-        
-    def jog_y(self):
-        ''' payload contains direction and number of steps
-        bit 31 = direction
-        bit [30 to 0] = number of steps
-        '''
-        command= 'jog_y'
-        payload = self.get_bin(self.gs_dir_y,1) + \
-                  self.get_bin(self.gs_step_y,31)
-        self._send(command,payload)
-        
-    def jog_x(self):
-        ''' payload contains direction and number of steps
-        bit 31 = direction
-        bit [30 to 0] = number of steps
-        '''
-        command= 'jog_x'
-        payload = self.get_bin(self.gs_dir_x,1) + \
-                  self.get_bin(self.gs_step_x,31)
-        self._send(command,payload)
         
     def jog_xy(self):
         ''' payload contains direction and number of steps for x and y axis
@@ -163,42 +155,9 @@ class GuiSupport(object):
         bit [30 to 0] = number of steps y
         '''
         command= 'jog_xy'
-        payload = self.get_bin(self.gs_dir_x,1) + \
-                  self.get_bin(self.gs_step_x,31) +\
-                  self.get_bin(self.gs_dir_y,1) + \
-                  self.get_bin(self.gs_step_y,31)
-        self._send(command,payload)
+        
+        self._send(command,self.axis_x.jog_payload()+self.axis_y.jog_payload())
 
-    def set_pw_z(self):
-        ''' payload contains pulse width high and low count
-        first 4 bytes = pulse high width counts
-        next 4 bytes = pulse low width counts
-        '''
-        command= 'set_pw_z'
-        payload = self.get_bin(self.gs_pw_z_h,32) +\
-                  self.get_bin(self.gs_pw_z_l,32)
-        self._send(command,payload)
-
-    def set_pw_y(self):
-        ''' payload contains pulse width high and low count
-        first 4 bytes = pulse high width counts
-        next 4 bytes = pulse low width counts
-        '''
-        command= 'set_pw_y'
-        payload = self.get_bin(self.gs_pw_y_h,32) +\
-                  self.get_bin(self.gs_pw_y_l,32)
-        self._send(command,payload)
-
-    def set_pw_x(self):
-        ''' payload contains pulse width high and low count
-        first 4 bytes = pulse high width counts
-        next 4 bytes = pulse low width counts
-        '''
-        command= 'set_pw_x'
-        payload = self.get_bin(self.gs_pw_x_h,32) +\
-                  self.get_bin(self.gs_pw_x_l,32)
-        self._send(command,payload)
-            
 
         
 class Enum(set):
@@ -218,7 +177,10 @@ class CfgFile:
         self.builder = builder
         self.config_object = ConfigParser.ConfigParser()
         self.config_file_name = 'config.ini'
-        self.settings =['GCode_File_Location'] #a list of names of objects classfied as settings
+        self.settings =['GCode_File_Location'
+                        ,'reverse_x'
+                        ,'reverse_y'
+                        ,'reverse_z'] #a list of names of objects classfied as settings
         
     def create_config_file(self,config_object, config_file_name):
         f = open(config_file_name,'w')
@@ -232,12 +194,17 @@ class CfgFile:
         #self.config_object.set('settings', 'g-code file','none')
         for item in self.settings:
             obj = self.builder.get_object(item)
-            #print item
+            #print obj.__class__.__name__
             if obj.__class__.__name__ == 'Entry':
                 try:
                     self.config_object.set('settings', item,obj.get_text())
                 except Exception, err:
                     print err
+            elif obj.__class__.__name__ == 'CheckButton':
+                try:
+                    self.config_object.set('settings', item,obj.get_active())
+                except Exception, err:
+                    print err     
         self.config_object.write(open(self.config_file_name,'w'))
         print 'saved Kshatria config file'
         
@@ -257,10 +224,16 @@ class CfgFile:
             
             #print item
             #if obj.__class__ == ''
-            try:
-                obj.set_text(self.config_object.get('settings', item))
-            except Exception, err:
-                print 'load settings exception',err
+            if obj.__class__.__name__ == 'Entry':
+                try:
+                    obj.set_text(self.config_object.get('settings', item))
+                except Exception, err:
+                    print err
+            elif obj.__class__.__name__ == 'CheckButton':
+                try:
+                    obj.set_active( 1 if 'True' == self.config_object.get('settings',item ) else 0)
+                except Exception, err:
+                    print err     
         #self.GTKGCode_File.set_text(self.config_object.get('settings', 'g-code file'))
 
         print 'loaded Kshatria config file'
