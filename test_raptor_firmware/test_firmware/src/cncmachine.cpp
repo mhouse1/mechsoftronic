@@ -188,10 +188,7 @@ void CncMachine::SetNumberOfStepsZ(alt_u32 steps)
 {
 	this->StepNumZ = steps;
 }
-list<CncMachine::TRAVERSALXY> CncMachine::GetRoutes()
-{
-	return this->routes;
-}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ///@brief function is mainly used during development to see api data
@@ -398,7 +395,7 @@ void CncMachine::StartRouting()
 {
 	this->WriteRouterPWM(40000);
 	list<CncMachine::TRAVERSALXY> route_data;
-	route_data = GetRoutes();
+	route_data = this->routes;
 	//DisplayRoutes(route_data);
 	CncMachine::TRAVERSALXY movement;
 	list<CncMachine::TRAVERSALXY>::iterator it;
