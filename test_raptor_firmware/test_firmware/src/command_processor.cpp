@@ -32,15 +32,18 @@ alt_u32 CommandProcessor::get_long_from_string(string in_string, alt_u8 index)
 {
 	alt_u8 start = index * 4;
 	alt_u8 stop  = start + 4;
-	alt_u32 data;
-	alt_u32 temp;
+	alt_u32 data = 0;
+	alt_u32 temp = 0;
 	for(int i = start; i < stop; ++i)
 	{
 		temp = int((unsigned char)in_string[i]);
+
 		data =  data << 8;
 		data = data | temp;
-		//cout<<"data "<<data<<" temp "<<temp<<endl;
+
+		//cout<<"dataa "<<int(data)<<" temp "<<temp<<endl;
 	}
+	//cout<<"data "<<data<<endl;
 	return data;
 }
 
@@ -50,8 +53,7 @@ alt_u32 CommandProcessor::get_long_from_string(string in_string, alt_u8 index)
 cnc_stepdir CommandProcessor::get_step_and_dir(string payload)
 {
 	cnc_stepdir stepdir;
-	alt_u32 value;
-	value = get_long_from_string(payload,0);
+	alt_u32 value = get_long_from_string(payload,0);
 	//cout<<"value = "<<value<<endl;
 	stepdir.data.ULONG = value;
 	return stepdir;
@@ -87,8 +89,7 @@ void CommandProcessor::jog_z(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::jog_y(string payload)
 {
-	cnc_stepdir stepdiraxis;
-	stepdiraxis = get_step_and_dir(payload);
+	cnc_stepdir stepdiraxis = get_step_and_dir(payload);
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = stepdiraxis.data.bits.dir?up:down;
 	this->StepNumY = stepdiraxis.data.bits.step;
 	this->MoveY();
@@ -100,8 +101,7 @@ void CommandProcessor::jog_y(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::jog_x(string payload)
 {
-	cnc_stepdir stepdiraxis;
-	stepdiraxis = get_step_and_dir(payload);
+	cnc_stepdir stepdiraxis = get_step_and_dir(payload);
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = stepdiraxis.data.bits.dir?up:down;
 	this->StepNumX = stepdiraxis.data.bits.step;
 	this->MoveX();
@@ -132,8 +132,16 @@ void CommandProcessor::jog_xy(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_pw_z(string payload)
 {
+//	alt_u32 temp;
+//	for (int i = 0; i<payload.length();++i)
+//	{
+//		temp = int((unsigned char)payload[i]);
+//		cout<"char "<<temp<<endl;
+//	}
+//	cout<<"payload z"<<payload<<endl;
 	alt_u32 valueh = get_long_from_string(payload,0);
 	alt_u32 valuel = get_long_from_string(payload,1);
+	cout<<"set high z to "<<valueh<< " set low z to "<< valuel<<endl;
 	this->WritePulseInfoZ(valueh,valuel);
 }
 
