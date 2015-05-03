@@ -14,6 +14,7 @@
 
 #include "cute.h"
 #include "test_communication_tcp_based.h"
+
 #include "communication_tcp_based.hpp"
 
 
@@ -42,10 +43,10 @@ void testReceiver()
 	//JOGX DIR =1 STEP = 000 0000 0000 0000
 	listener.input(2);      //command
 	listener.input(4);      //length
-	listener.input(128);
 	listener.input(0);
 	listener.input(0);
 	listener.input(0);
+	listener.input(5);
 
 	//JOGXY DIR =1 STEP = 000 0000 0000 0000
 	listener.input(3); 		//command
@@ -75,7 +76,7 @@ void testReceiver()
 	listener.input(0);
 	listener.input(0);
 	listener.input(0);
-	listener.input(0);
+	listener.input(7);
 	listener.input(0);
 	listener.input(0);
 	listener.input(0);
