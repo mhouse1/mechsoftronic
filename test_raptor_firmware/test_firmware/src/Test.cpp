@@ -4,17 +4,8 @@
 #include "cute_runner.h"
 
 //import test suites
-#include "test_protocol.h"
 #include "test_cncmachine.h"
 #include "test_communication_tcp_based.h"
-
-
-void runSuite_protocol(int argc, char const *argv[]){
-	cute::xml_file_opener xmlfile(argc,argv);
-	cute::xml_listener<cute::ide_listener<>  > lis(xmlfile.out);
-	cute::suite s=make_suite_test_protocol();
-	cute::makeRunner(lis,argc,argv)(s, "test_protocol");
-}
 
 
 
