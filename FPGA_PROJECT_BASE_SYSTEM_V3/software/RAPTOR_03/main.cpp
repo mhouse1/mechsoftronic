@@ -4,11 +4,6 @@ Date: Sep 25, 2014 10:54:09 PM
 Author: Mike
 Description: firmware that sends pulses to stepper motor based on input data
 
-092514 RAPTOR_01 basic implementation
-100614 RAPTOR_02 includes GCode interpretation and routing process
-041215 tried to use a FIFOed version of UART in qsys, which did not work
-	   reverted project back to using sender delayed UART for now
-041415 adjusted cncmachine.cpp to allow manual setting of pulse configuration
 Copyright: 2014
 */
 
@@ -16,8 +11,6 @@ Copyright: 2014
 #include "types.hpp"
 #include "cncmachine.hpp"
 #include "communication_tcp_based.hpp"
-//#include "protocolwrapper.hpp"
-//#include "psychoframeheart.hpp"
 
 extern "C"
 {
