@@ -23,7 +23,8 @@ using namespace std;
 
 enum possible_commands {JOG_Z = 0, 		JOG_Y, 		JOG_X, 	 	JOG_XY,
 							     	 SET_PW_Z, 	 SET_PW_Y, 	  SET_PW_X,
-							     	 	START, 		PAUSE, 		CANCEL
+							      START_ROUTE, 		PAUSE, 		CANCEL,
+							     	 	G_XY,
 						};
 
 struct cnc_stepdir
@@ -60,6 +61,7 @@ private:
 	void set_pw_z(string payload);
 	void set_pw_y(string payload);
 	void set_pw_x(string payload);
+	void set_coordinate(string payload);
 };
 
 
