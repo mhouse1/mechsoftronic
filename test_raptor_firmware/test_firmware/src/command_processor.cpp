@@ -166,6 +166,15 @@ void CommandProcessor::set_pw_x(string payload)
 }
 
 /////////////////////////////////////////////////////////////////////////////
+///@brief 	set the counts for pulse high and low
+/////////////////////////////////////////////////////////////////////////////
+void CommandProcessor::set_coordinate(string payload)
+{
+	alt_u32 value1 = get_long_from_string(payload,0);
+	alt_u32 value2 = get_long_from_string(payload,1);
+	this->SetNextPosition(value1,value2);
+}
+/////////////////////////////////////////////////////////////////////////////
 ///@brief 	process command, given command number and payload string
 /////////////////////////////////////////////////////////////////////////////
 int CommandProcessor::input_command(alt_u8 command, string payload)
@@ -195,8 +204,14 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 	case(SET_PW_X):
 		this->set_pw_x(payload);
 		break;
+	case(G_XY):
+		this->set_coordinate(payload);
+		break;
+	case(START_ROUTE):
+		this->StartRouting();
+		break;
 	default:
-		cout<<"unrecognized command received"<<endl;
+		cout<<"unrecognized command received"<<int(command)<<endl;
 		return 1;
 	}
 	return 0;
