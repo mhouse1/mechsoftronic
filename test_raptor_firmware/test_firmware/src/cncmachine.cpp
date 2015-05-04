@@ -24,7 +24,7 @@ extern "C"
 #include "altera_avalon_pio_regs.h"
 #include "slave_template_macros.h"
 }
-
+#include <iostream>
 #include <cmath>
 using namespace std;
 
@@ -48,7 +48,7 @@ CncMachine::CncMachine()
 
 	this->PulseWidthZH      = 20000;
 	this->PulseWidthZL      = 3000;
-	this->PulseWidtHYH      = 20000;
+	this->PulseWidthYH      = 20000;
 	this->PulseWidthYL      = 3000;
 	this->PulseWidthXH      = 20000;
 	this->PulseWidthXL      = 3000;
@@ -71,90 +71,6 @@ void CncMachine::SetCurrentPosition(alt_u32 x, alt_u32 y)
 	this->PresentY = y;
 }
 
-/////////////////////////////////////////////////////////////////////////////
-///@brief given the next coordinate, calculate number of steps and direction
-///@details returns an non zero exit if error
-/// Exit code 0: NORMAL_EXIT
-///		there are no errors
-/// Exit code 1: INVALID_COORDINATE
-///		input coordinate is not in range, should be <= to FullRangeDistance
-/// Exit code 2: INVALID_STEPCOUNT
-///		for a given direction there is a certain amount of steps leftover to
-///		to move, if the Step number calculated is not in range of steps
-///		leftover for a given direction then return with error code
-///@todo	right now itll use pulse info for x axis as speed base
-///			will review this later
-/////////////////////////////////////////////////////////////////////////////
-alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
-{
-	TRAVERSALXY data;
-	//@todo NextX, NextY variables might not be necessary
-	//since we're going to set this->PresentX = this->NextX
-	if (!(x <= this->FullRangeDistance) || !(y <= this->FullRangeDistance))
-	{
-		//cout<<"coordinate not in range"<<endl;
-		return 1;
-	}
-
-
-//	this->NextX = x;
-//	this->NextY = y;
-	data.X.Position = x;
-	data.Y.Position = y;
-
-	//Convert distance to steps
-	//calculate distance then set the new position as present position
-	alt_32 distanceX = x - this->PresentX;
-	alt_32 distanceY = y - this->PresentY;
-	this->PresentX = x;
-	this->PresentY = y;
-
-	//steps_needed = full_range_step_count*(distanceX/full_range_distance)
-//	int absx = fabs(distanceX);
-//	int absy = fabs(distanceY);
-	data.X.StepNum = (this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
-	data.Y.StepNum = (this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
-
-	//calculate total time from point A to point B
-	//adjust time so fastest axis is slowed down to match slowest axis
-	//code to be added here
-	//pulse period
-	//calculation is based on half period to prevent overflow
-	alt_u32 HalfPulsePeriod = (this->PulseWidthXH + this->PulseWidthXL)/2;
-	alt_u32 HalfTimeX = data.X.StepNum * HalfPulsePeriod;
-	alt_u32 HalfTimeY = data.Y.StepNum * HalfPulsePeriod;
-	//slow down the axis with less steps
-	if (HalfTimeX > HalfTimeY) //X slower than Y
-	{
-		alt_u32 HalfPeriod = HalfTimeX/data.Y.StepNum; //calculate half period for Y based on X
-		data.Y.HighPulseWidth = HalfPeriod;
-		data.Y.LowPulseWidth = HalfPeriod;
-		data.X.HighPulseWidth = this->PulseWidthXH;
-		data.X.LowPulseWidth = this->PulseWidthXL;
-	}
-	else //Y slower than X
-	{
-		alt_u32 HalfPeriod = HalfTimeY/data.X.StepNum; //calculate half period for Y based on X
-		data.X.HighPulseWidth = HalfPeriod;
-		data.X.LowPulseWidth = HalfPeriod;
-		data.Y.HighPulseWidth = this->PulseWidthXH;
-		data.Y.LowPulseWidth = this->PulseWidthXL;
-	}//@todo need to add checks in here to make sure that Pulses widths are in valid range
-
-
-
-	//calculate and set direction
-	//if change in distance is positive move up, else move down
-//	MotorXDir(distanceX >= 0? up:down);//@todo removable if something else sets control bits
-//	MotorYDir(distanceY >= 0? up:down);
-	data.X.StepDir = distanceX >= 0? up:down;
-	data.Y.StepDir = distanceY >= 0? up:down;
-	data.router_state = this->router_state;
-
-
-	this->routes.push_back(data);
-	return 0;
-}
 
 
 void CncMachine::MotorXDir(Direction x)
@@ -391,8 +307,124 @@ void CncMachine::ClearRoute()
 {
 	this->routes.clear();
 }
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief given the next coordinate, calculate number of steps and direction
+///@details returns an non zero exit if error
+/// Exit code 0: NORMAL_EXIT
+///		there are no errors
+/// Exit code 1: INVALID_COORDINATE
+///		input coordinate is not in range, should be <= to FullRangeDistance
+/// Exit code 2: INVALID_STEPCOUNT
+///		for a given direction there is a certain amount of steps leftover to
+///		to move, if the Step number calculated is not in range of steps
+///		leftover for a given direction then return with error code
+///@todo	right now itll use pulse info for x axis as speed base
+///			will review this later
+/////////////////////////////////////////////////////////////////////////////
+alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
+{
+	TRAVERSALXY data;
+
+	data.X.Position = x;
+	data.Y.Position = y;
+
+	//Convert distance to steps
+	//calculate distance then set the new position as present position
+	alt_32 distanceX = x - this->PresentX;
+	alt_32 distanceY = y - this->PresentY;
+	this->PresentX = x;
+	this->PresentY = y;
+	//calculate and set direction
+	//if change in distance is positive move up, else move down
+	data.X.StepDir = distanceX >= 0? up:down;
+	data.Y.StepDir = distanceY >= 0? up:down;
+
+	//05/04/2015 for now just calculate number of steps to take based on distance divided by some number
+	//			 @todo will need to figure out the actual number of steps per distance increment later to plot accurately
+	data.X.StepNum = (alt_32)fabs(distanceX)/20;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+	data.Y.StepNum = (alt_32)fabs(distanceY)/20;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
+
+	//for now use x axis pulse width info for base speed (pulse width counts)
+	alt_u32 basePWH = this->PulseWidthXH;
+	alt_u32 basePWL = this->PulseWidthXL;
+
+	//calculate the base pulse period divided by 2
+	alt_u32 HalfBasePulsePeriod = (basePWH + basePWL)/2;
+
+
+	//slow down the axis with less steps else uses base Pulse width info for both axis
+	if (data.X.StepNum > data.Y.StepNum) //X has more steps to take than y, so slow down the Y axis
+	{
+		//check if Y axis is going to move at all
+		// if Y axis has steps to move then slow down the Y axis movement
+		// so it finishes at the same time as X axis
+		if (data.Y.StepNum != 0)
+		{
+			//use base pulse width for x axis
+			data.X.HighPulseWidth = basePWH;
+			data.X.LowPulseWidth = basePWL;
+
+			//calculate the base pulse widths for Y axis
+			//so Y axis completes at the same time as x axis
+			//use the same
+			alt_u32 totalTimeXhalf = data.X.StepNum * HalfBasePulsePeriod;
+			alt_u32 totalTimeYhalf = totalTimeXhalf/data.Y.StepNum;
+
+			data.Y.HighPulseWidth = totalTimeYhalf;
+			data.Y.LowPulseWidth = totalTimeYhalf;
+
+		}
+		else //Y.StepNum = 0 (Y axis does not move)
+		{
+			//set XY pulse width info to base value
+			data.X.HighPulseWidth = basePWH;
+			data.X.LowPulseWidth = basePWL;
+			data.Y.HighPulseWidth = basePWH;
+			data.Y.LowPulseWidth = basePWL;
+		}
+	}
+
+	else if  (data.Y.StepNum > data.X.StepNum) //Y has more steps to take than X
+	{
+		if (data.X.StepNum != 0)
+		{
+			data.Y.HighPulseWidth = basePWH;
+			data.Y.LowPulseWidth = basePWL;
+
+			alt_u32 totalTimeYhalf = data.Y.StepNum * HalfBasePulsePeriod;
+			alt_u32 totalTimeXhalf = totalTimeYhalf/data.X.StepNum;
+
+			data.X.HighPulseWidth = totalTimeXhalf;
+			data.X.LowPulseWidth = totalTimeXhalf;
+
+		}
+		else //X.StepNum = 0 (X axis does not move)
+		{
+			data.X.HighPulseWidth = basePWH;
+			data.X.LowPulseWidth = basePWL;
+			data.Y.HighPulseWidth = basePWH;
+			data.Y.LowPulseWidth = basePWL;
+		}
+	}
+	else //Y and X has equal number of steps to take
+	{
+		data.X.HighPulseWidth = basePWH;
+		data.X.LowPulseWidth = basePWL;
+		data.Y.HighPulseWidth = basePWH;
+		data.Y.LowPulseWidth = basePWL;
+	}
+
+	//take the current state of router and assign it to current position movement
+	data.router_state = this->router_state;
+
+	this->routes.push_back(data);
+	return 0;
+}
+
 void CncMachine::StartRouting()
 {
+	cout<<"started routing"<<endl;
 	this->WriteRouterPWM(40000);
 	list<CncMachine::TRAVERSALXY> route_data;
 	route_data = this->routes;
@@ -443,6 +475,7 @@ void CncMachine::StartRouting()
 			ReadStatus();
 		}
 	}
+	cout<<"completed routing"<<endl;
 }
 
 /////////////////////////////////////////////////////////////////////////////
