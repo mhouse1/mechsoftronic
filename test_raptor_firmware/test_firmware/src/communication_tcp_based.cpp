@@ -39,8 +39,18 @@ int CommSimple::input(UBYTE new_byte)
 		return this->decode_status = RECEIVED_COMMAND;
 	case(WAIT_LENGTH):
 		this->msg_length = static_cast<int>(new_byte);
-		this->decode_state = WAIT_MSG;
-		return this->decode_status = RECEIVED_LENGTH;
+		if (this->msg_length == 0)
+		{
+			//process the command with payload
+			this->input_command(this->msg_command,this->msg_payload);
+			this->decode_state = WAIT_COMMAND;
+			return this->decode_status = DONE;
+		}
+		else
+		{
+			this->decode_state = WAIT_MSG;
+			return this->decode_status = RECEIVED_LENGTH;
+		}
 	case(WAIT_MSG):
 		this->msg_received_index += 1;
 		this->msg_payload += new_byte;
