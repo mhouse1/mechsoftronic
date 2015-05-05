@@ -128,7 +128,7 @@ void task1(void* pdata)
 //processData
 void task2(void* pdata)
 {
-	printf("Data processor online April 28th 2015\n");
+	printf("Data processor online May 4th 2015\n");
 //	ProtocolWrapper pw;
 //	protocol_status ps;
 //	PsychoFrameHeart psycommu;

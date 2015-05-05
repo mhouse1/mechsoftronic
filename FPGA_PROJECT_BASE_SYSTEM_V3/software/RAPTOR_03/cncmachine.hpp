@@ -126,7 +126,7 @@ protected:
 	alt_u32  StepNumZ;
 	alt_u32  PulseWidthZH;
 	alt_u32  PulseWidthZL;
-	alt_u32  PulseWidtHYH;
+	alt_u32  PulseWidthYH;
 	alt_u32  PulseWidthYL;
 	alt_u32  PulseWidthXH;
 	alt_u32  PulseWidthXL;
