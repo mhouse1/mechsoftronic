@@ -18,18 +18,7 @@
 #include <iostream>
 
 using namespace std;
-void DisplayMovement(CncMachine::TRAVERSALXY movement)
-{
-	cout<<"########################################"<<endl;
-	cout<<"X_Position= "<<movement.X.Position<<endl;
-	cout<<"X_StepDir = "<<movement.X.StepDir <<endl;
-	cout<<"X_StepNum = "<<movement.X.StepNum <<endl;
-	cout<<endl;
-	cout<<"Y_Position= "<<movement.Y.Position<<endl;
-	cout<<"Y_StepDir = "<<movement.Y.StepDir <<endl;
-	cout<<"Y_StepNum = "<<movement.Y.StepNum <<endl;
-	cout<<"########################################"<<endl;
-}
+
 
 typedef struct
 {
@@ -104,28 +93,28 @@ void outOfRangeTest()
 
 }
 
-void thisIsATest() {
-	//ASSERTM("start writing tests", false);
+
+
+void routeTest()
+{
 	CncMachine machine;
 	//send triangle coordinates , triangle.nc
 	machine.SetNextPosition(294366,84801);
-	DisplayMovement(machine.GetXYMovement());
 	machine.SetNextPosition(175520,307195);
-	DisplayMovement(machine.GetXYMovement());
 	machine.SetNextPosition(64840,84800);
-	DisplayMovement(machine.GetXYMovement());
 
+	machine.StartRouting();
 }
-
 
 
 cute::suite make_suite_test_cncmachine(){
 	cute::suite s;
 
 	//push_back tests to s
-	s.push_back(CUTE(outOfRangeTest));
-	s.push_back(CUTE(InputCoordinateTest));
-	s.push_back(CUTE(thisIsATest));
+//	s.push_back(CUTE(outOfRangeTest));
+//	s.push_back(CUTE(InputCoordinateTest));
+//	s.push_back(CUTE(thisIsATest));
+	s.push_back(CUTE(routeTest));
 	return s;
 }
 

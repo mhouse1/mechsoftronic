@@ -16,6 +16,6 @@
 
 
 
-#define IORD_32DIRECT(x,y) x+y
+#define IORD_32DIRECT(x,y) 0xFFFFFFFF
 
 #endif /* LINKER_H_ */
