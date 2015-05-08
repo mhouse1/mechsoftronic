@@ -47,9 +47,13 @@ def draw_coord(coordinates):
             #print x_coord, y_coord
             x.append(x_coord)
             y.append(y_coord)
-            points.set_data(x, y)
+            
+            points.set_data(x[-5:], y[-5:])
+            
         #if str(t)[-1] == '0': 
-        plt.pause(0.1)
+        plt.pause(0.001)
+        points.set_data(x, y)
+        plt.pause(0.001)
     try:
         plt.pause(60)
     except:
