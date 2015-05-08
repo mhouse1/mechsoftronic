@@ -55,7 +55,10 @@ class SerialSendProcess(object):
                 #    print 'bug'
                 while not msg_queue.empty():#que_size>0:
                     msg = msg_queue.get()
-                    print 'dequeued msg:',msg    
+#                     print 'dequeued msg:',
+#                     for ch in msg:
+#                         print ord(ch),' ', 
+#                     print ''   
                     for ch in msg:    
                         #print 'ch',ch
                         self.talker.write(ch)
@@ -73,7 +76,7 @@ def transmit(message):
     #if not active_serial == None:
     if serial_activated:
         message_queue.put(message,block=False)
-        print 'queued msg:',message
+        #print 'queued msg:',message
         #04/20/15 empty() must be called by the parallel process
 #         while message_queue.empty():
 #             print 'empty'
