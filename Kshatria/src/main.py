@@ -44,7 +44,7 @@ class KshatriaGUI(GuiSupport):
         
         xdirection_combo_options = ['left','right']
         ydirection_combo_options = ['backward','forward']
-        zdirection_combo_options = ['counter-clock','clockwise']
+        zdirection_combo_options = ['counter-clockwise','clockwise']
         self.DirXComboHandle = gui_support.GsComboBox(self.builder,'DirX',xdirection_combo_options)
         self.DirYComboHandle = gui_support.GsComboBox(self.builder,'DirY',ydirection_combo_options)
         self.DirZComboHandle = gui_support.GsComboBox(self.builder,'DirZ',zdirection_combo_options)
@@ -62,6 +62,7 @@ class KshatriaGUI(GuiSupport):
                         
         self.cfg_file_handle.load_settings()
         
+        self.set_gcode_file()
         self.window = self.builder.get_object("window1")
         #print 'class of window ',self.window.__class__
         self.window.show()
@@ -138,8 +139,8 @@ class KshatriaGUI(GuiSupport):
             
     def on_Transfer_Coord_clicked(self, widget, data = None):
         print 'Transfer Coord button activated'
-        
-        gui_support.send_file(self.GTKGCode_File.get_text())
+        self.send_coordinates()
+        #gui_support.send_file(self.GTKGCode_File.get_text())
         
     def on_rescan_coms_clicked(self,widget, data = None):
         self.ComComboHandle.rescan()
@@ -168,6 +169,9 @@ class KshatriaGUI(GuiSupport):
         print 'quitting...'
         self.quit_program()
     
+    def set_gcode_file(self):
+        self.gcode_file = self.GTKGCode_File.get_text()
+        
     def on_Browse_For_GCode_pressed(self, widget, data = None):
         print 'Browsing for GCode file'
         self.fcd = gtk.FileChooserDialog("Open...",None,gtk.FILE_CHOOSER_ACTION_OPEN,
@@ -175,10 +179,10 @@ class KshatriaGUI(GuiSupport):
                   gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         self.response = self.fcd.run()
         if self.response == gtk.RESPONSE_OK:
-            self.GCodeFile = self.fcd.get_filename()
-            print "Selected filepath: %s" % self.GCodeFile
+            self.gcode_file = self.fcd.get_filename()
+            print "Selected filepath: %s" % self.gcode_file
             self.fcd.destroy()
-            self.GTKGCode_File.set_text(self.GCodeFile)
+            self.GTKGCode_File.set_text(self.gcode_file)
     
     ###################### End of actions for all signals#################
 if __name__ == "__main__":
