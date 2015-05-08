@@ -11,9 +11,11 @@ Created on Aug 24, 2014
 import gtk
 import os
 import ConfigParser
+import sys
+
 import protocolwrapper
 import Communications
-import sys
+import parse_gcode
 framer = protocolwrapper.ProtocolWrapper()
 
 class Axi:
@@ -73,7 +75,7 @@ class GuiSupport(object):
         'start'   :{'command_number' : 7 , 'command_length' : 0},
         'pause'   :{'command_number' : 8 , 'command_length' : 0},
         'cancel'  :{'command_number' : 9 , 'command_length' : 0},
-        #'G1_XY'   :{'command_number' : 8 , 'command_length' : 8},
+        'G_XY'    :{'command_number' : 10 , 'command_length' : 8},
         }
         print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
@@ -82,8 +84,7 @@ class GuiSupport(object):
         #addr = (host, port)
         #self._send_handle = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         #self._send_handle.connect(addr)
-        
-    
+        self.gcode_file = ''
         self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
 
 
@@ -110,7 +111,7 @@ class GuiSupport(object):
             print 'specified payload {} does not match recevied payload size {}'.format(payload_len,received_payload_len)
         full_command_bin = cmd_num + cmd_len + payload #build full binary string
         hex_fill = '{0:0>'+str(len(full_command_bin)/4)+'}'
-        print '%x'% int(full_command_bin,2)
+        #print '%x'% int(full_command_bin,2)
         full_command_hex = hex_fill.format('%x'% int(full_command_bin,2)) #build hex string zero fill
         #print 'full_command_decode',full_command_hex.decode('hex')
         #full_command_ascii = binascii.b2a_uu(full_command_bin)
@@ -159,7 +160,14 @@ class GuiSupport(object):
         self._send(command,self.axis_x.jog_payload()+self.axis_y.jog_payload())
 
 
-        
+    def send_coordinates(self,scale = 10000):
+        command = 'G_XY'
+        coordinates = parse_gcode.get_xy_coordinates(self.gcode_file, scale)
+        for xpos, ypos in coordinates:
+            #print xpos, ypos
+            payload = self.get_bin(xpos,32) +\
+                      self.get_bin(ypos,32)
+            self._send(command, payload)
 class Enum(set):
     def __getattr__(self, name):
         if name in self:
@@ -225,6 +233,9 @@ class CfgFile:
             #print item
             #if obj.__class__ == ''
             if obj.__class__.__name__ == 'Entry':
+                if item == 'GCode_File_Location':
+                    self.gcode_file = self.config_object.get('settings', item)
+                    print 'set gcode file to ',self.gcode_file
                 try:
                     obj.set_text(self.config_object.get('settings', item))
                 except Exception, err:
