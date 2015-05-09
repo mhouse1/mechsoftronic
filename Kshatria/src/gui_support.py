@@ -65,17 +65,19 @@ class GuiSupport(object):
         # and command_length is the number of bytes in payload
         self.command_list = {
         #
-        'jog_z'   :{'command_number' : 0 , 'command_length' : 4},
-        'jog_y'   :{'command_number' : 1 , 'command_length' : 4},
-        'jog_x'   :{'command_number' : 2 , 'command_length' : 4},
-        'jog_xy'  :{'command_number' : 3 , 'command_length' : 8},
-        'set_pw_z':{'command_number' : 4 , 'command_length' : 8},
-        'set_pw_y':{'command_number' : 5 , 'command_length' : 8},
-        'set_pw_x':{'command_number' : 6 , 'command_length' : 8},
-        'start'   :{'command_number' : 7 , 'command_length' : 0},
-        'pause'   :{'command_number' : 8 , 'command_length' : 0},
-        'cancel'  :{'command_number' : 9 , 'command_length' : 0},
-        'G_XY'    :{'command_number' : 10 , 'command_length' : 8},
+        'jog_z'        :{'command_number' : 0 , 'command_length' : 4},
+        'jog_y'        :{'command_number' : 1 , 'command_length' : 4},
+        'jog_x'        :{'command_number' : 2 , 'command_length' : 4},
+        'jog_xy'       :{'command_number' : 3 , 'command_length' : 8},
+        'set_pw_z'     :{'command_number' : 4 , 'command_length' : 8},
+        'set_pw_y'     :{'command_number' : 5 , 'command_length' : 8},
+        'set_pw_x'     :{'command_number' : 6 , 'command_length' : 8},
+        'start'        :{'command_number' : 7 , 'command_length' : 0},
+        'pause'        :{'command_number' : 8 , 'command_length' : 0},
+        'cancel'       :{'command_number' : 9 , 'command_length' : 0},
+        'G_XY'         :{'command_number' : 10 , 'command_length' : 8},
+        'feed_cut'     :{'command_number' : 11 , 'command_length' : 4},
+        'erase_coord'  :{'command_number' : 12 , 'command_length' : 0}     
         }
         print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
@@ -91,7 +93,8 @@ class GuiSupport(object):
         self.axis_x = Axi(self._send,'x')
         self.axis_y = Axi(self._send,'y')
         self.axis_z = Axi(self._send,'z')
-
+        
+        self.gs_feed_cut =  30000
                 
         
         
@@ -131,21 +134,29 @@ class GuiSupport(object):
     def start_routing(self):
         ''' send command to start routing, no payload
         '''
-        command= 'start'
-        self._send(command)
+        self._send('start')
 
     def pause_routing(self):
         ''' send command to pause routing, no payload
         '''
-        command= 'pause'
-        self._send(command)
+        self._send('pause')
 
     def cancel_routing(self):
         ''' send command to cancel routing, no payload
         '''
-        command= 'cancel'
-        self._send(command)
+        self._send('cancel')
+
+    def erase_coordinates(self):
+        '''tell firmware to erase the route
+        '''
+        self._send('erase_coord')
         
+        
+    def set_feed(self):
+        command = 'feed_cut'
+        payload = self.get_bin(self.gs_feed_cut,32) 
+        self._send(command,payload)
+            
     def jog_xy(self):
         ''' payload contains direction and number of steps for x and y axis
         first 4 bytes
@@ -188,7 +199,8 @@ class CfgFile:
         self.settings =['GCode_File_Location'
                         ,'reverse_x'
                         ,'reverse_y'
-                        ,'reverse_z'] #a list of names of objects classfied as settings
+                        ,'reverse_z'
+                        ,'feed_cut'] #a list of names of objects classfied as settings
         
     def create_config_file(self,config_object, config_file_name):
         f = open(config_file_name,'w')

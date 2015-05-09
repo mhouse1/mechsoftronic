@@ -9,6 +9,7 @@ Created on Aug 13, 2014
                  send in a basic gcode file to begin routing
 '''
 import gtk
+import time
 
 import Communications
 import gui_support
@@ -59,6 +60,7 @@ class KshatriaGUI(GuiSupport):
         self.pulsewidth_y_l = self.builder.get_object('pulsewidth_y_l')
         self.pulsewidth_x_h = self.builder.get_object('pulsewidth_x_h')
         self.pulsewidth_x_l = self.builder.get_object('pulsewidth_x_l')
+        self.feed_cut = self.builder.get_object('feed_cut')
                         
         self.cfg_file_handle.load_settings()
         
@@ -129,8 +131,14 @@ class KshatriaGUI(GuiSupport):
         self.axis_x.set_pw_info()
 
     def on_start_routing_clicked(self, widget):
+        for i in range(3):
+            print 'starting in ',3-i
+            time.sleep(1)
         self.start_routing()
-
+    
+    def on_erase_coord_clicked(self,widget):
+        self.erase_coordinates()
+        
     def on_cancel_routing_clicked(self, widget):
         self.cancel_routing()
 
@@ -139,6 +147,8 @@ class KshatriaGUI(GuiSupport):
             
     def on_Transfer_Coord_clicked(self, widget, data = None):
         print 'Transfer Coord button activated'
+        self.gs_feed_cut = int(self.feed_cut.get_text())
+        self.set_feed()
         self.send_coordinates()
         #gui_support.send_file(self.GTKGCode_File.get_text())
         
