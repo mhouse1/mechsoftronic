@@ -9,6 +9,7 @@
 ///
 /// @par Copyright (c) 2014 All rights reserved.
 /////////////////////////////////////////////////////////////////////////////
+#include <iostream>
 
 #include "command_processor.hpp"
 
@@ -111,6 +112,7 @@ void CommandProcessor::jog_x(string payload)
 ///			the payload.
 ///@details	the first four bytes of the string contains stepdir for x axis
 ///			the next four bytes of the string contains stepdir for y axis
+///@todo	change to type cast from valuex to stepdirx instead of using func
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::jog_xy(string payload)
 {
@@ -168,6 +170,15 @@ void CommandProcessor::set_pw_x(string payload)
 /////////////////////////////////////////////////////////////////////////////
 ///@brief 	set the counts for pulse high and low
 /////////////////////////////////////////////////////////////////////////////
+void CommandProcessor::set_pw_feed(string payload)
+{
+	alt_u32 value = get_long_from_string(payload,0);
+	this->WritePulseInfoFeed(value);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief 	set the counts for pulse high and low
+/////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_coordinate(string payload)
 {
 	alt_u32 value1 = get_long_from_string(payload,0);
@@ -180,7 +191,7 @@ void CommandProcessor::set_coordinate(string payload)
 int CommandProcessor::input_command(alt_u8 command, string payload)
 {
 
-	//cout<<"command "<<command<<" payload "<<payload<<" payload-int "<<int((unsigned char)payload[0])<<endl;
+	cout<<"command "<<command<<" payload "<<payload<<" payload-int "<<int((unsigned char)payload[0])<<endl;
 	switch (command)
 	{
 	case(JOG_Z):
@@ -209,6 +220,14 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		break;
 	case(START_ROUTE):
 		this->StartRouting();
+		break;
+	case(FEED):
+		this->set_pw_feed(payload);
+		break;
+	case(ERASE_COORD):
+		cout<<"clearing route"<<endl;
+		this->routes.clear();
+		cout<<"route cleared!"<<endl;
 		break;
 	default:
 		cout<<"unrecognized command received"<<int(command)<<endl;
