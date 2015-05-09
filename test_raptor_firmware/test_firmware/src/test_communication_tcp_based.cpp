@@ -169,6 +169,21 @@ void testReceiver()
 	listener.input(0);
 	listener.input(0);
 	listener.input(2);
+
+	listener.input(FEED);     //command
+	listener.input(4);     //length
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(5);
+
+	listener.input(ERASE_COORD);     //command
+	listener.input(0);     //length
+
+	listener.input(ERASE_COORD);     //command
+	cout<<"Erase coord command number "<<ERASE_COORD<<endl;
+	listener.input(0);     //length
+
 }
 
 cute::suite make_suite_test_comm_tcp_based(){

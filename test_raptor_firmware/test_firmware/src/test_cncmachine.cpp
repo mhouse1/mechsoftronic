@@ -61,7 +61,6 @@ void InputCoordinateTest() {
 		pos = *it;
 		raptor.SetNextPosition(pos.x,pos.y);
 		data = raptor.GetXYMovement();
-		DisplayMovement(data);
 		//compare with previous position to new direction is
 		//set correctly with respect to old position
 		//verify X direction
@@ -88,7 +87,6 @@ void outOfRangeTest()
 	//send triangle coordinates , triangle.nc
 	machine.SetNextPosition(380001,84801);
 	ASSERT_EQUAL(1,(int)machine.SetNextPosition(380001,84801));
-	DisplayMovement(machine.GetXYMovement());
 
 
 }
