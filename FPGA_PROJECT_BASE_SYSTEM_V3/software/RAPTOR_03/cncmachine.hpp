@@ -130,12 +130,14 @@ protected:
 	alt_u32  PulseWidthYL;
 	alt_u32  PulseWidthXH;
 	alt_u32  PulseWidthXL;
+	alt_u32  FeedRate;
 	//protected functions
 	void WriteStepNumXY(alt_u32 XSteps, alt_u32 YSteps);
 	void WriteStepNumZ(alt_u32 ZSteps);
 	void WriteStepNumY(alt_u32 YSteps);
 	void WriteStepNumX(alt_u32 XSteps);
 	void WriteRouterPWM(alt_u32 PWMVal);
+	void WritePulseInfoFeed(alt_u32 value);
 	void WritePulseInfoXY(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth, alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth);
 	void WritePulseInfoZ(alt_u32 ZHighPulseWidth,alt_u32 ZLowPulseWidth);
 	void WritePulseInfoY(alt_u32 YHighPulseWidth, alt_u32 YLowPulseWidth);

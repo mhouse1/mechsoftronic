@@ -52,6 +52,7 @@ CncMachine::CncMachine()
 	this->PulseWidthYL      = 3000;
 	this->PulseWidthXH      = 20000;
 	this->PulseWidthXL      = 3000;
+	this->FeedRate			= 200000;
 	this->router_state = off;
 	this->FullRangeStepCount= 2000;
 	this->FullRangeDistance = 380000; //38mm scaled by 10000
@@ -200,6 +201,20 @@ void CncMachine::WritePulseInfoX(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_0*4),XHighPulseWidth);
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_1*4),XLowPulseWidth);
 }
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief Write pulse info for base feed rate
+///		  routing speeds has a base speed based off of High and L values
+///		  cutting (routing) speed and traveling speed may have different speeds
+///	      typically cutting speed will be slower than traveling
+/////////////////////////////////////////////////////////////////////////////
+void CncMachine::WritePulseInfoFeed(alt_u32 value)
+{
+	printf("set feed High Pulse Width  = %lu\n",value);
+	this->FeedRate			= value;
+}
+
+
 void CncMachine::ReadStatus()
 {
 	//while(!BITCHECK(IORD_32DIRECT(SLAVE_TEMPLATE_0_BASE, DATA_IN_0 * 4),DONE_A));
@@ -209,6 +224,9 @@ void CncMachine::ReadStatus()
 
 /////////////////////////////////////////////////////////////////////////////
 ///@brief toggle run bit to cause axis to move
+///
+///@todo	modify function to accept parameter for direction, and stepnum
+///			since everytime we move the axis those things need to be set
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::MoveZ()
 {
@@ -303,10 +321,6 @@ void CncMachine::DisplayRoutes(list<CncMachine::TRAVERSALXY> route_data)
 	}
 }
 
-void CncMachine::ClearRoute()
-{
-	this->routes.clear();
-}
 
 /////////////////////////////////////////////////////////////////////////////
 ///@brief given the next coordinate, calculate number of steps and direction
@@ -342,12 +356,16 @@ alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 
 	//05/04/2015 for now just calculate number of steps to take based on distance divided by some number
 	//			 @todo will need to figure out the actual number of steps per distance increment later to plot accurately
-	data.X.StepNum = (alt_32)fabs(distanceX)/20;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
-	data.Y.StepNum = (alt_32)fabs(distanceY)/20;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
+	//05/09/2015 measured 1000 steps to move 22mm equivalent of 44.45 pulses per mm.
+	//			 the received distanceXY is scaled up by a number in the GUI,
+	//			 the actual StepNum should be StepNum = (distanceX*44.45)/GUI_Scaling
+	//			 in instruction terms this would be (distanceX/220)
+	data.X.StepNum = (alt_32)fabs(distanceX)/220;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+	data.Y.StepNum = (alt_32)fabs(distanceY)/220;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
 
 	//for now use x axis pulse width info for base speed (pulse width counts)
-	alt_u32 basePWH = this->PulseWidthXH;
-	alt_u32 basePWL = this->PulseWidthXL;
+	alt_u32 basePWH = this->FeedRate;
+	alt_u32 basePWL = this->FeedRate;
 
 	//calculate the base pulse period divided by 2
 	alt_u32 HalfBasePulsePeriod = (basePWH + basePWL)/2;
