@@ -6,25 +6,36 @@ Created on May 1, 2015 <my birthday!>
 import matplotlib.pyplot as plt 
 import math
 
-def get_xy_coordinates(input_file = 'bridesmaid_inner_01.nc',scale=10000):
-    gcode_file = file(input_file).readlines()
-    
+def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
+    with open(input_file) as f:
+        gcode_file = f.read().splitlines()
+    tool_on = 1
+    tool_off = 0
+    tool_status = tool_off #tool will be off by default
     coordinates = []
     for line in gcode_file:
         #remove line break and split on the spaces
-        tokens =  line[:-1].split(' ')
-        
-        #if GCODE found in list
-        if tokens[0] in ['G0','G1','G2','G3']:
-            #print tokens
-            #if next two parameter begins with X and Y
-            if tokens[1][0] =='X' and tokens[2][0] == 'Y':
-                #print tokens
-                #print tokens[1][1:],tokens[2][1:]
-                #convert (x,y) string to float then scale it then convert to int
-                coordinates.append((int(float(tokens[1][1:])*scale),int(float(tokens[2][1:])*scale)))
+        if len(line) == 0:
+            pass
         else:
-            print 'ignored:',tokens
+            tokens =  line.split(' ')#line[:-1].split(' ')
+            gcode_type = tokens[0]
+            #if GCODE found in list
+            if gcode_type in ['G0','G1','G2','G3']:
+                #print tokens
+                #if next two parameter begins with X and Y
+                if tokens[1][0] =='X' and tokens[2][0] == 'Y':
+                    #print tokens
+                    #print tokens[1][1:],tokens[2][1:]
+                    #convert (x,y) string to float then scale it then convert to int
+                    coordinates.append((int(float(tokens[1][1:])*scale),int(float(tokens[2][1:])*scale),tool_status))
+            elif gcode_type == 'M3' or gcode_type == 'M03':
+                tool_status = tool_on
+            elif gcode_type == 'M5' or gcode_type == 'M05':
+                tool_status = tool_off
+                
+            else:
+                print 'ignored:',tokens
     return coordinates
 
 def draw_coord(coordinates):
@@ -39,12 +50,12 @@ def draw_coord(coordinates):
             ymax = math.ceil(max(coordinates,key=lambda item:float(item[1]))[1])
             print 'max found x', xmax
             print 'max found y', ymax
-            print max(coordinates,key=lambda item:item[1])[0]
+            #print max(coordinates,key=lambda item:item[1])[0]
             #return 0
             ax.set_xlim(0, xmax) 
             ax.set_ylim(0, ymax) 
         else:
-            x_coord, y_coord = coordinates.pop()
+            x_coord, y_coord, tool_stat = coordinates.pop()
             #print x_coord, y_coord
             x.append(x_coord)
             y.append(y_coord)
@@ -57,8 +68,8 @@ def draw_coord(coordinates):
         print 'did you press the red x?'
         
 if __name__ == '__main__':
-    xycoord = get_xy_coordinates('RR.nc')#('bridesmaid_05.nc')#
-    for xpos, ypos in xycoord:
-        print xpos, ypos
+    xycoord = get_gcode_data('RR.nc')#('rd_bm1.nc')#
+    for data in xycoord:
+        print data
     print len(xycoord)
     draw_coord(xycoord)

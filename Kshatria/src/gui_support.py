@@ -75,9 +75,10 @@ class GuiSupport(object):
         'start'        :{'command_number' : 7 , 'command_length' : 0},
         'pause'        :{'command_number' : 8 , 'command_length' : 0},
         'cancel'       :{'command_number' : 9 , 'command_length' : 0},
-        'G_XY'         :{'command_number' : 10 , 'command_length' : 8},
+        'G_Code_Data'  :{'command_number' : 10 , 'command_length' : 9},
         'feed_cut'     :{'command_number' : 11 , 'command_length' : 4},
-        'erase_coord'  :{'command_number' : 12 , 'command_length' : 0}     
+        'erase_coord'  :{'command_number' : 12 , 'command_length' : 0},  
+        'layer_setting':{'command_number' : 13 , 'command_length' : 4}     
         }
         print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
@@ -95,7 +96,8 @@ class GuiSupport(object):
         self.axis_z = Axi(self._send,'z')
         
         self.gs_feed_cut =  30000
-                
+        self.gs_layer_thickness = 0
+        self.gs_layer_numbers = 0
         
         
     def _send(self,command = 'ADEAD',payload = ''):
@@ -150,8 +152,15 @@ class GuiSupport(object):
         '''tell firmware to erase the route
         '''
         self._send('erase_coord')
+
+    def set_layer(self):
+        '''tell firmware how many layers to cut and how thick each layer is
+        '''
+        payload = self.get_bin(self.gs_layer_numbers,16) +\
+                  self.get_bin(self.gs_layer_thickness,16)
         
-        
+        self._send('layer_setting',payload)        
+      
     def set_feed(self):
         command = 'feed_cut'
         payload = self.get_bin(self.gs_feed_cut,32) 
@@ -172,12 +181,13 @@ class GuiSupport(object):
 
 
     def send_coordinates(self,scale = 10000):
-        command = 'G_XY'
-        coordinates = parse_gcode.get_xy_coordinates(self.gcode_file, scale)
-        for xpos, ypos in coordinates:
+        command = 'G_Code_Data'
+        coordinates = parse_gcode.get_gcode_data(self.gcode_file, scale)
+        for xpos, ypos , tool_stat in coordinates:
             #print xpos, ypos
             payload = self.get_bin(xpos,32) +\
-                      self.get_bin(ypos,32)
+                      self.get_bin(ypos,32) +\
+                      self.get_bin(tool_stat,8)
             self._send(command, payload)
 class Enum(set):
     def __getattr__(self, name):
@@ -196,11 +206,15 @@ class CfgFile:
         self.builder = builder
         self.config_object = ConfigParser.ConfigParser()
         self.config_file_name = 'config.ini'
+        
+        #a list of names of objects classfied as settings
         self.settings =['GCode_File_Location'
                         ,'reverse_x'
                         ,'reverse_y'
                         ,'reverse_z'
-                        ,'feed_cut'] #a list of names of objects classfied as settings
+                        ,'feed_cut'
+                        ,'layer_thickness'
+                        ,'layer_numbers'] 
         
     def create_config_file(self,config_object, config_file_name):
         f = open(config_file_name,'w')

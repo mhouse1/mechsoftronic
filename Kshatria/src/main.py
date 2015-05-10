@@ -61,6 +61,9 @@ class KshatriaGUI(GuiSupport):
         self.pulsewidth_x_h = self.builder.get_object('pulsewidth_x_h')
         self.pulsewidth_x_l = self.builder.get_object('pulsewidth_x_l')
         self.feed_cut = self.builder.get_object('feed_cut')
+        self.layer_thickness    = self.builder.get_object('layer_thickness')
+        self.layer_numbers      = self.builder.get_object('layer_numbers')
+                                                
                         
         self.cfg_file_handle.load_settings()
         
@@ -131,6 +134,9 @@ class KshatriaGUI(GuiSupport):
         self.axis_x.set_pw_info()
 
     def on_start_routing_clicked(self, widget):
+        self.gs_layer_thickness = int(self.layer_thickness.get_text()) 
+        self.gs_layer_numbers = int(self.layer_numbers.get_text()  ) 
+        self.set_layer()
         for i in range(3):
             print 'starting in ',3-i
             time.sleep(1)
