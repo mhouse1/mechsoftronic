@@ -25,7 +25,7 @@ def get_xy_coordinates(input_file = 'bridesmaid_05.nc'):
             if tokens[1][0] =='X' and tokens[2][0] == 'Y':
                 #print tokens
                 #print tokens[1][1:],tokens[2][1:]
-                coordinates.append((tokens[1][1:],tokens[2][1:]))
+                coordinates.append((tokens[1][1:],tokens[2][1:],1))
         else:
             print 'ignored:',tokens
     return coordinates
