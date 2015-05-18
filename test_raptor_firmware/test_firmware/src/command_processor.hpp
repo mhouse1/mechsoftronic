@@ -50,6 +50,7 @@ public:
 
 private:
 	alt_u32 get_long_from_string(string in_string, alt_u8 index);
+	alt_u8 get_byte_from_string(string in_string, alt_u8 index);
 	list<string> get_fields(string in_string);
 	cnc_stepdir get_step_and_dir(string payload);
 	cnc_stepdir get_step_and_dir(alt_u32 value);
