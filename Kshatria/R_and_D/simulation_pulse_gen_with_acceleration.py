@@ -5,6 +5,7 @@ Created on May 12, 2015
 
 @details: pseudo code for FPGA pulse generator acceleration and deceleration profile
             note: x and y axis must use same starting speed and speed change rate to ensure accurate plotting
+                  VHDL will need to implement a version of this using state machine
 '''
 def generate_pulse_with_acceleration(steps = 200,pulse_high = 400000,pulse_low = 3000,starting_speed = 1000000,speed_change_rate = 2000):
     pulse_period = []
