@@ -1,7 +1,6 @@
 # mechsoftronic
 This project contains the GUI, firmware, firmware unit test and FPGA parts for a FPGA based CNC machine.<br>
-Four branches for this project: <br>
-
+<br>Four branches for this project: <br>
 [**GUI_and_FW_Test**](https://github.com/mhouse1/mechsoftronic/tree/GUI_and_FW_Test) - contains the GUI developed in python to interface the Nios core firmware running on the FPGA. Also contains unit tests for firmware modules.
 
 [**FPGA_Components**](https://github.com/mhouse1/mechsoftronic/tree/CNC_FPGA_Components) - custom FPGA components developed for the CNC machine which may be useful for other projects.
