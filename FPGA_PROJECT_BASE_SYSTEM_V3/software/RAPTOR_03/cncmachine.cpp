@@ -66,6 +66,21 @@ CncMachine::CncMachine()
 /////////////////////////////////////////////////////////////////////////////
 ///@brief This Section is dedicated to Set functions
 /////////////////////////////////////////////////////////////////////////////
+void CncMachine::SetAcceleration(alt_u32 speed_start, alt_u32 speed_change)
+{
+	printf("acceleration set\n");
+	printf("speed_start = %lu\n",speed_start);
+	printf("speed_change = %lu\n",speed_change);
+
+	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_11*4),speed_start);
+	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_12*4),speed_change);
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief This Section is dedicated to Set functions
+/////////////////////////////////////////////////////////////////////////////
 void CncMachine::SetCurrentPosition(alt_u32 x, alt_u32 y)
 {
 	this->PresentX = x;

@@ -24,7 +24,8 @@ using namespace std;
 enum possible_commands {JOG_Z = 0, 		JOG_Y, 		JOG_X, 	 	JOG_XY,
 							     	 SET_PW_Z, 	 SET_PW_Y, 	  SET_PW_X,
 							      START_ROUTE, 		PAUSE, 		CANCEL,
-							     	 	G_XY,	 	 FEED, ERASE_COORD,
+							     	 	 G_XY,	 	 FEED, ERASE_COORD,
+							        SET_LAYER,  SET_ACCEL,
 						};
 
 struct cnc_stepdir
@@ -50,6 +51,7 @@ public:
 
 private:
 	alt_u32 get_long_from_string(string in_string, alt_u8 index);
+	alt_u8 get_byte_from_string(string in_string, alt_u8 index);
 	list<string> get_fields(string in_string);
 	cnc_stepdir get_step_and_dir(string payload);
 	cnc_stepdir get_step_and_dir(alt_u32 value);
@@ -63,6 +65,7 @@ private:
 	void set_pw_x(string payload);
 	void set_pw_feed(string payload);
 	void set_coordinate(string payload);
+	void set_acceleration(string payload);
 };
 
 

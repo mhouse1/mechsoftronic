@@ -9,7 +9,6 @@
 ///
 /// @par Copyright (c) 2014 All rights reserved.
 /////////////////////////////////////////////////////////////////////////////
-#include <iostream>
 
 #include "command_processor.hpp"
 
@@ -49,12 +48,27 @@ alt_u32 CommandProcessor::get_long_from_string(string in_string, alt_u8 index)
 }
 
 /////////////////////////////////////////////////////////////////////////////
+///@brief	converts a string of ascii characters into 32 bits
+///
+///@details	For example: an ascii string with character sequence
+///			ascii(128),ascii(52),ascii(21),ascii(7)
+///			will return a u32 10000000001101000001010100000111
+///			index selects which 4 bytes is converted to u32, for example
+///			setting index = 0 will return the first four bytes in a string
+///			setting index = 1 will return the second four bytes in a string
+/////////////////////////////////////////////////////////////////////////////
+alt_u8 CommandProcessor::get_byte_from_string(string in_string, alt_u8 index)
+{
+	return int((unsigned char)in_string[index]);
+}
+
+/////////////////////////////////////////////////////////////////////////////
 ///@brief takes string payload and converts to struct of dir and step count
 /////////////////////////////////////////////////////////////////////////////
 cnc_stepdir CommandProcessor::get_step_and_dir(string payload)
 {
 	cnc_stepdir stepdir;
-	alt_u32 value = get_long_from_string(payload,0);
+	alt_u32 value = this->get_long_from_string(payload,0);
 	//cout<<"value = "<<value<<endl;
 	stepdir.data.ULONG = value;
 	return stepdir;
@@ -78,7 +92,7 @@ cnc_stepdir CommandProcessor::get_step_and_dir(alt_u32 value)
 void CommandProcessor::jog_z(string payload)
 {
 	cnc_stepdir stepdiraxis;
-	stepdiraxis = get_step_and_dir(payload);
+	stepdiraxis = this->get_step_and_dir(payload);
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = stepdiraxis.data.bits.dir?up:down;
 	this->StepNumZ = stepdiraxis.data.bits.step;
 	this->MoveZ();
@@ -90,7 +104,7 @@ void CommandProcessor::jog_z(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::jog_y(string payload)
 {
-	cnc_stepdir stepdiraxis = get_step_and_dir(payload);
+	cnc_stepdir stepdiraxis = this->get_step_and_dir(payload);
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = stepdiraxis.data.bits.dir?up:down;
 	this->StepNumY = stepdiraxis.data.bits.step;
 	this->MoveY();
@@ -102,7 +116,7 @@ void CommandProcessor::jog_y(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::jog_x(string payload)
 {
-	cnc_stepdir stepdiraxis = get_step_and_dir(payload);
+	cnc_stepdir stepdiraxis = this->get_step_and_dir(payload);
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = stepdiraxis.data.bits.dir?up:down;
 	this->StepNumX = stepdiraxis.data.bits.step;
 	this->MoveX();
@@ -116,12 +130,12 @@ void CommandProcessor::jog_x(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::jog_xy(string payload)
 {
-	alt_u32 valuex = get_long_from_string(payload,0);
-	alt_u32 valuey = get_long_from_string(payload,1);
+	alt_u32 valuex = this->get_long_from_string(payload,0);
+	alt_u32 valuey = this->get_long_from_string(payload,1);
 	cnc_stepdir stepdirx;
 	cnc_stepdir stepdiry;
-	stepdirx = get_step_and_dir(valuex);
-	stepdiry = get_step_and_dir(valuey);
+	stepdirx = this->get_step_and_dir(valuex);
+	stepdiry = this->get_step_and_dir(valuey);
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = stepdirx.data.bits.dir?up:down;
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = stepdiry.data.bits.dir?up:down;
 	this->StepNumX = stepdirx.data.bits.step;
@@ -141,8 +155,8 @@ void CommandProcessor::set_pw_z(string payload)
 //		cout<"char "<<temp<<endl;
 //	}
 //	cout<<"payload z"<<payload<<endl;
-	alt_u32 valueh = get_long_from_string(payload,0);
-	alt_u32 valuel = get_long_from_string(payload,1);
+	alt_u32 valueh = this->get_long_from_string(payload,0);
+	alt_u32 valuel = this->get_long_from_string(payload,1);
 	cout<<"set high z to "<<valueh<< " set low z to "<< valuel<<endl;
 	this->WritePulseInfoZ(valueh,valuel);
 }
@@ -152,8 +166,8 @@ void CommandProcessor::set_pw_z(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_pw_y(string payload)
 {
-	alt_u32 valueh = get_long_from_string(payload,0);
-	alt_u32 valuel = get_long_from_string(payload,1);
+	alt_u32 valueh = this->get_long_from_string(payload,0);
+	alt_u32 valuel = this->get_long_from_string(payload,1);
 	this->WritePulseInfoY(valueh,valuel);
 }
 
@@ -162,8 +176,8 @@ void CommandProcessor::set_pw_y(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_pw_x(string payload)
 {
-	alt_u32 valueh = get_long_from_string(payload,0);
-	alt_u32 valuel = get_long_from_string(payload,1);
+	alt_u32 valueh = this->get_long_from_string(payload,0);
+	alt_u32 valuel = this->get_long_from_string(payload,1);
 	this->WritePulseInfoX(valueh,valuel);
 }
 
@@ -172,7 +186,7 @@ void CommandProcessor::set_pw_x(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_pw_feed(string payload)
 {
-	alt_u32 value = get_long_from_string(payload,0);
+	alt_u32 value = this->get_long_from_string(payload,0);
 	this->WritePulseInfoFeed(value);
 }
 
@@ -181,17 +195,29 @@ void CommandProcessor::set_pw_feed(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_coordinate(string payload)
 {
-	alt_u32 value1 = get_long_from_string(payload,0);
-	alt_u32 value2 = get_long_from_string(payload,1);
+	alt_u32 value1 = this->get_long_from_string(payload,0);
+	alt_u32 value2 = this->get_long_from_string(payload,1);
 	this->SetNextPosition(value1,value2);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief 	set the acceleration data
+/////////////////////////////////////////////////////////////////////////////
+void CommandProcessor::set_acceleration(string payload)
+{
+	alt_u32 value1 = this->get_long_from_string(payload,0);
+	alt_u32 value2 = this->get_long_from_string(payload,1);
+	this->SetAcceleration(value1,value2);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 ///@brief 	process command, given command number and payload string
 /////////////////////////////////////////////////////////////////////////////
 int CommandProcessor::input_command(alt_u8 command, string payload)
 {
 
-	cout<<"command "<<command<<" payload "<<payload<<" payload-int "<<int((unsigned char)payload[0])<<endl;
+	//cout<<"command "<<command<<" payload "<<payload<<" payload-int "<<int((unsigned char)payload[0])<<endl;
 	switch (command)
 	{
 	case(JOG_Z):
@@ -225,12 +251,16 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		this->set_pw_feed(payload);
 		break;
 	case(ERASE_COORD):
-		cout<<"clearing route"<<endl;
+
 		this->routes.clear();
 		cout<<"route cleared!"<<endl;
 		break;
+	case(SET_ACCEL):
+
+		this->set_acceleration(payload);
+		break;
 	default:
-		cout<<"unrecognized command received"<<int(command)<<endl;
+		printf("unrecognized command received %d\n",command);
 		return 1;
 	}
 	return 0;

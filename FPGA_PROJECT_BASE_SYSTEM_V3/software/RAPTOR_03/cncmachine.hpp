@@ -92,11 +92,13 @@ public:
 
 	CncMachine();
 
+	void SetAcceleration(alt_u32 speed_start, alt_u32 speed_change);
 	void SetCurrentPosition(alt_u32 x, alt_u32 y); //@todo may not need this func
 	alt_u8 SetNextPosition(alt_u32 x, alt_u32 y);
 	void MotorXDir(Direction x);
 	void MotorYDir(Direction y);
 	void MotorZDir(Direction z);
+
 
 	void SetHighPulseWidthMin(alt_u32 width);
 	void SetHighPulseWidthVal(alt_u32 width);
