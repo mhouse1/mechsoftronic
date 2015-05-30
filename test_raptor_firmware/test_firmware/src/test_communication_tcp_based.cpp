@@ -185,7 +185,21 @@ void testReceiver()
 	listener.input(0);     //length
 
 }
+void testSendCommand()
+{
+	CommSimple listener;
 
+	listener.input(SET_ACCEL);     //command
+	listener.input(8);     //length
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(7);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(5);
+}
 cute::suite make_suite_test_comm_tcp_based(){
 	cute::suite s;
 
@@ -193,6 +207,7 @@ cute::suite make_suite_test_comm_tcp_based(){
 
 	s.push_back(CUTE(testSendCoordinates));
 	s.push_back(CUTE(testReceiver));
+	s.push_back(CUTE(testSendCommand));
 	return s;
 }
 

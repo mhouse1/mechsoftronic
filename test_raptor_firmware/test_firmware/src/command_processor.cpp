@@ -199,6 +199,18 @@ void CommandProcessor::set_coordinate(string payload)
 	alt_u32 value2 = this->get_long_from_string(payload,1);
 	this->SetNextPosition(value1,value2);
 }
+
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief 	set the acceleration data
+/////////////////////////////////////////////////////////////////////////////
+void CommandProcessor::set_acceleration(string payload)
+{
+	alt_u32 value1 = this->get_long_from_string(payload,0);
+	alt_u32 value2 = this->get_long_from_string(payload,1);
+	this->SetAcceleration(value1,value2);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 ///@brief 	process command, given command number and payload string
 /////////////////////////////////////////////////////////////////////////////
@@ -242,6 +254,10 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 
 		this->routes.clear();
 		cout<<"route cleared!"<<endl;
+		break;
+	case(SET_ACCEL):
+
+		this->set_acceleration(payload);
 		break;
 	default:
 		cout<<"unrecognized command received"<<int(command)<<endl;
