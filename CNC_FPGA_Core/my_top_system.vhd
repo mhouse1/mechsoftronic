@@ -104,6 +104,7 @@ architecture syn of my_top_system is
             clk_50mhz : in std_logic;
             start_generation : in std_logic;
             pulse_signal, generator_done : out std_logic;
+				speed_start, speed_change : in std_logic_vector(31 downto 0);
             pulse_width_high, pulse_width_low, number_of_steps : in std_logic_vector(31 downto 0)
             );
     end component pulse_generator;
@@ -237,8 +238,8 @@ architecture syn of my_top_system is
             multi_reg_1_dataout_8  : out std_logic_vector(31 downto 0);                    -- dataout_8
             multi_reg_1_dataout_9  : out std_logic_vector(31 downto 0);                    -- dataout_9
             multi_reg_1_dataout_10 : out std_logic_vector(31 downto 0);                    -- dataout_10
---            multi_reg_1_dataout_11 : out std_logic_vector(31 downto 0);                    -- dataout_11
---            multi_reg_1_dataout_12 : out std_logic_vector(31 downto 0);                    -- dataout_12
+            multi_reg_1_dataout_11 : out std_logic_vector(31 downto 0);                    -- dataout_11
+            multi_reg_1_dataout_12 : out std_logic_vector(31 downto 0);                    -- dataout_12
 --            multi_reg_1_dataout_13 : out std_logic_vector(31 downto 0);                    -- dataout_13
 --            multi_reg_1_dataout_14 : out std_logic_vector(31 downto 0);                    -- dataout_14
 --            multi_reg_1_dataout_15 : out std_logic_vector(31 downto 0);                    -- dataout_15
@@ -367,6 +368,8 @@ architecture syn of my_top_system is
     signal sig_pulse_width_high_A, sig_pulse_width_low_A, sig_number_of_steps_A : std_logic_vector(31 downto 0);
     signal sig_pulse_width_high_B, sig_pulse_width_low_B, sig_number_of_steps_B : std_logic_vector(31 downto 0);
 	 signal sig_pulse_width_high_C, sig_pulse_width_low_C, sig_number_of_steps_C : std_logic_vector(31 downto 0);
+	 
+	 signal sig_speed_start, sig_speed_change : std_logic_vector(31 downto 0);
      
 begin
                 
@@ -378,6 +381,8 @@ begin
                         generator_done => sig_cnc_done_A,--DONE_A,
                         pulse_width_high => sig_pulse_width_high_A,
                         pulse_width_low => sig_pulse_width_low_A,
+								speed_start => sig_speed_start,
+								speed_change => sig_speed_change,
                         number_of_steps => sig_number_of_steps_A
                         );
                 inst_pulse_generatorB : component pulse_generator
@@ -388,6 +393,8 @@ begin
                         generator_done => sig_cnc_done_B,--DONE_B,
                         pulse_width_high => sig_pulse_width_high_B,
                         pulse_width_low => sig_pulse_width_low_B,
+								speed_start => sig_speed_start,
+								speed_change => sig_speed_change,
                         number_of_steps => sig_number_of_steps_B
                         ); 
                 inst_pulse_generatorC : component pulse_generator
@@ -398,6 +405,8 @@ begin
                         generator_done => sig_cnc_done_C,--DONE_C,
                         pulse_width_high => sig_pulse_width_high_C,
                         pulse_width_low => sig_pulse_width_low_C,
+								speed_start => sig_speed_start,
+								speed_change => sig_speed_change,
                         number_of_steps => sig_number_of_steps_C
                         ); 								
                 inst_HE_sensor : component HE_counter
@@ -412,7 +421,7 @@ begin
 								-- 4 3 2  1
 								-- [x x x x]
 								-- L  2 N O
-                        a => sig_cnc_done_A &sig_cnc_done_A & sig_cnc_done_A & sig_cnc_done_A & sig_cnc_step_A & sig_cnc_step_A & sig_cnc_step_A & sig_cnc_step_A,                          --0
+                        a => sig_cnc_done_A &sig_cnc_done_B & sig_cnc_done_C & sig_Heartbeat & sig_Heartbeat & sig_cnc_step_A & sig_cnc_step_B & sig_cnc_step_C,                          --0
                         b => sig_cnc_control(7 downto 0),     --1 [0001]
                         c => sig_cnc_control(15 downto 8),   --2  [0010]
                         d => sig_cnc_done_A& sig_cnc_control(0) & sig_Heartbeat& "1" &sig_cnc_done_B &sig_cnc_control(1) &sig_Heartbeat & "1",  --[0011]                         --3
@@ -613,8 +622,8 @@ begin
             multi_reg_1_dataout_8  => sig_pulse_width_high_C,  --            .dataout_8
             multi_reg_1_dataout_9  => sig_pulse_width_low_C,  --            .dataout_9
             multi_reg_1_dataout_10 => sig_number_of_steps_C, --            .dataout_10
---            multi_reg_1_dataout_11 => CONNECTED_TO_multi_reg_1_dataout_11, --            .dataout_11
---            multi_reg_1_dataout_12 => CONNECTED_TO_multi_reg_1_dataout_12, --            .dataout_12
+            multi_reg_1_dataout_11 => sig_speed_start, --            .dataout_11
+            multi_reg_1_dataout_12 => sig_speed_change, --            .dataout_12
 --            multi_reg_1_dataout_13 => CONNECTED_TO_multi_reg_1_dataout_13, --            .dataout_13
 --            multi_reg_1_dataout_14 => CONNECTED_TO_multi_reg_1_dataout_14, --            .dataout_14
 --            multi_reg_1_dataout_15 => CONNECTED_TO_multi_reg_1_dataout_15, --            .dataout_15
