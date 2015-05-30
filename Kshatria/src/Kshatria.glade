@@ -231,8 +231,7 @@
                               <object class="GtkLabel" id="label8">
                                 <property name="visible">True</property>
                                 <property name="xalign">1</property>
-                                <property name="label" translatable="yes">Speed
-</property>
+                                <property name="label" translatable="yes">Acceleration</property>
                               </object>
                               <packing>
                                 <property name="top_attach">5</property>
@@ -292,7 +291,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="SPer">
+                              <object class="GtkEntry" id="speed_start">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">&#x25CF;</property>
@@ -343,7 +342,7 @@
                             <child>
                               <object class="GtkLabel" id="label11">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Percent</property>
+                                <property name="label" translatable="yes">Starting speed</property>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -355,7 +354,7 @@
                             <child>
                               <object class="GtkLabel" id="label12">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">Increment</property>
+                                <property name="label" translatable="yes">Speed change</property>
                               </object>
                               <packing>
                                 <property name="left_attach">2</property>
@@ -365,7 +364,7 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkEntry" id="SInc">
+                              <object class="GtkEntry" id="speed_change">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="invisible_char">&#x25CF;</property>
@@ -402,15 +401,6 @@
                               <packing>
                                 <property name="top_attach">3</property>
                                 <property name="bottom_attach">4</property>
-                              </packing>
-                            </child>
-                            <child>
-                              <object class="GtkHSeparator" id="hseparator4"/>
-                              <packing>
-                                <property name="left_attach">3</property>
-                                <property name="right_attach">4</property>
-                                <property name="top_attach">5</property>
-                                <property name="bottom_attach">6</property>
                               </packing>
                             </child>
                             <child>
@@ -456,6 +446,21 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">3</property>
                                 <property name="bottom_attach">4</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkButton" id="set_acceleration">
+                                <property name="label" translatable="yes">set acceleration profile</property>
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <signal name="clicked" handler="on_set_acceleration_clicked"/>
+                              </object>
+                              <packing>
+                                <property name="left_attach">3</property>
+                                <property name="right_attach">4</property>
+                                <property name="top_attach">5</property>
+                                <property name="bottom_attach">6</property>
                               </packing>
                             </child>
                           </object>
@@ -895,7 +900,7 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
-                                <property name="x_options"/>
+                                <property name="x_options"></property>
                               </packing>
                             </child>
                             <child>
@@ -913,7 +918,7 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">2</property>
                                 <property name="bottom_attach">3</property>
-                                <property name="x_options"/>
+                                <property name="x_options"></property>
                               </packing>
                             </child>
                             <child>
@@ -931,7 +936,7 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">3</property>
                                 <property name="bottom_attach">4</property>
-                                <property name="x_options"/>
+                                <property name="x_options"></property>
                               </packing>
                             </child>
                             <child>
@@ -1130,15 +1135,6 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
-                                  <placeholder/>
-                                </child>
-                                <child>
                                   <object class="GtkButton" id="erase_coord">
                                     <property name="label" translatable="yes">Erase Coordinates</property>
                                     <property name="visible">True</property>
@@ -1152,6 +1148,15 @@
                                     <property name="top_attach">3</property>
                                     <property name="bottom_attach">4</property>
                                   </packing>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                                <child>
+                                  <placeholder/>
                                 </child>
                               </object>
                               <packing>

@@ -63,7 +63,8 @@ class KshatriaGUI(GuiSupport):
         self.feed_cut = self.builder.get_object('feed_cut')
         self.layer_thickness    = self.builder.get_object('layer_thickness')
         self.layer_numbers      = self.builder.get_object('layer_numbers')
-                                                
+        self.speed_start    = self.builder.get_object('speed_start')
+        self.speed_change      = self.builder.get_object('speed_change')                                                
                         
         self.cfg_file_handle.load_settings()
         
@@ -104,7 +105,10 @@ class KshatriaGUI(GuiSupport):
         self.SendSinleCFData.send(self.builder.get_object('servo_value'))
     def on_tst_gr1_button1_clicked(self,widget,data=None):
         pass
-
+    def on_set_acceleration_clicked(self,widget):
+        self.gs_speed_start = int(self.speed_start.get_text()) 
+        self.gs_speed_change = int(self.speed_change.get_text()) 
+        self.set_acceleration()        
     def on_jog_xy_clicked(self,widget):
         self._update_data()
         self.jog_xy()

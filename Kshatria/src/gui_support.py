@@ -78,7 +78,8 @@ class GuiSupport(object):
         'G_Code_Data'  :{'command_number' : 10 , 'command_length' : 9},
         'feed_cut'     :{'command_number' : 11 , 'command_length' : 4},
         'erase_coord'  :{'command_number' : 12 , 'command_length' : 0},  
-        'layer_setting':{'command_number' : 13 , 'command_length' : 4}     
+        'layer_setting':{'command_number' : 13 , 'command_length' : 4},
+        'accel_profile':{'command_number' : 14 , 'command_length' : 8}, 
         }
         print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
@@ -98,7 +99,8 @@ class GuiSupport(object):
         self.gs_feed_cut =  30000
         self.gs_layer_thickness = 0
         self.gs_layer_numbers = 0
-        
+        self.gs_speed_start = 0
+        self.gs_speed_change = 0
         
     def _send(self,command = 'ADEAD',payload = ''):
         '''
@@ -160,7 +162,15 @@ class GuiSupport(object):
                   self.get_bin(self.gs_layer_thickness,16)
         
         self._send('layer_setting',payload)        
-      
+
+    def set_acceleration(self):
+        '''tell firmware starting speed to accelerate from and speed change rate
+        '''
+        payload = self.get_bin(self.gs_speed_start,32) +\
+                  self.get_bin(self.gs_speed_change,32)
+        
+        self._send('accel_profile',payload)        
+            
     def set_feed(self):
         command = 'feed_cut'
         payload = self.get_bin(self.gs_feed_cut,32) 
@@ -213,6 +223,8 @@ class CfgFile:
                         ,'reverse_y'
                         ,'reverse_z'
                         ,'feed_cut'
+                        ,'speed_start'
+                        ,'speed_change'
                         ,'layer_thickness'
                         ,'layer_numbers'] 
         
