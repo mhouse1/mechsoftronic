@@ -25,7 +25,7 @@ enum possible_commands {JOG_Z = 0, 		JOG_Y, 		JOG_X, 	 	JOG_XY,
 							     	 SET_PW_Z, 	 SET_PW_Y, 	  SET_PW_X,
 							      START_ROUTE, 		PAUSE, 		CANCEL,
 							     	 	 G_XY,	 	 FEED, ERASE_COORD,
-							        SET_ACCEL,
+							        SET_LAYER,  SET_ACCEL,
 						};
 
 struct cnc_stepdir

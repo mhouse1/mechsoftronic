@@ -260,7 +260,7 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		this->set_acceleration(payload);
 		break;
 	default:
-		cout<<"unrecognized command received"<<int(command)<<endl;
+		printf("unrecognized command received %d\n",command);
 		return 1;
 	}
 	return 0;
