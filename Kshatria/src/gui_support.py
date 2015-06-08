@@ -26,8 +26,8 @@ class Axi:
         '''
         constructor
         '''
-        self.command_jog = 'jog_'+name
-        self.command_set_pw = 'set_pw_'+name
+        self.command_jog = 'JOG_'+name
+        self.command_set_pw = 'SET_PW_'+name
         self.dir = 0
         self.dir_reversed = False
         self.step = 0
@@ -65,21 +65,21 @@ class GuiSupport(object):
         # and command_length is the number of bytes in payload
         self.command_list = {
         #
-        'jog_z'        :{'command_number' : 0 , 'command_length' : 4},
-        'jog_y'        :{'command_number' : 1 , 'command_length' : 4},
-        'jog_x'        :{'command_number' : 2 , 'command_length' : 4},
-        'jog_xy'       :{'command_number' : 3 , 'command_length' : 8},
-        'set_pw_z'     :{'command_number' : 4 , 'command_length' : 8},
-        'set_pw_y'     :{'command_number' : 5 , 'command_length' : 8},
-        'set_pw_x'     :{'command_number' : 6 , 'command_length' : 8},
-        'start'        :{'command_number' : 7 , 'command_length' : 0},
-        'pause'        :{'command_number' : 8 , 'command_length' : 0},
-        'cancel'       :{'command_number' : 9 , 'command_length' : 0},
-        'G_Code_Data'  :{'command_number' : 10 , 'command_length' : 9},
-        'feed_cut'     :{'command_number' : 11 , 'command_length' : 4},
-        'erase_coord'  :{'command_number' : 12 , 'command_length' : 0},  
-        'layer_setting':{'command_number' : 13 , 'command_length' : 4},
-        'accel_profile':{'command_number' : 14 , 'command_length' : 8}, 
+        'JOG_Z'        :{'command_number' : 0 , 'command_length' : 4},
+        'JOG_Y'        :{'command_number' : 1 , 'command_length' : 4},
+        'JOG_X'        :{'command_number' : 2 , 'command_length' : 4},
+        'JOG_XY'       :{'command_number' : 3 , 'command_length' : 8},
+        'SET_PW_Z'     :{'command_number' : 4 , 'command_length' : 8},
+        'SET_PW_Y'     :{'command_number' : 5 , 'command_length' : 8},
+        'SET_PW_X'     :{'command_number' : 6 , 'command_length' : 8},
+        'START_ROUTE'  :{'command_number' : 7 , 'command_length' : 0},
+        'PAUSE'        :{'command_number' : 8 , 'command_length' : 0},
+        'CANCEL'       :{'command_number' : 9 , 'command_length' : 0},
+        'G_XY'         :{'command_number' : 10 , 'command_length' : 9},
+        'FEED'         :{'command_number' : 11 , 'command_length' : 4},
+        'ERASE_COORD'  :{'command_number' : 12 , 'command_length' : 0},  
+        'SET_LAYER'    :{'command_number' : 13 , 'command_length' : 4},
+        'SET_ACCEL'    :{'command_number' : 14 , 'command_length' : 8}, 
         }
         print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
@@ -92,9 +92,9 @@ class GuiSupport(object):
         self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
 
 
-        self.axis_x = Axi(self._send,'x')
-        self.axis_y = Axi(self._send,'y')
-        self.axis_z = Axi(self._send,'z')
+        self.axis_x = Axi(self._send,'X')
+        self.axis_y = Axi(self._send,'Y')
+        self.axis_z = Axi(self._send,'Z')
         
         self.gs_feed_cut =  30000
         self.gs_layer_thickness = 0
@@ -138,22 +138,22 @@ class GuiSupport(object):
     def start_routing(self):
         ''' send command to start routing, no payload
         '''
-        self._send('start')
+        self._send('START_ROUTE')
 
     def pause_routing(self):
         ''' send command to pause routing, no payload
         '''
-        self._send('pause')
+        self._send('PAUSE')
 
     def cancel_routing(self):
         ''' send command to cancel routing, no payload
         '''
-        self._send('cancel')
+        self._send('CANCEL')
 
     def erase_coordinates(self):
         '''tell firmware to erase the route
         '''
-        self._send('erase_coord')
+        self._send('ERASE_COORD')
 
     def set_layer(self):
         '''tell firmware how many layers to cut and how thick each layer is
@@ -161,7 +161,7 @@ class GuiSupport(object):
         payload = self.get_bin(self.gs_layer_numbers,16) +\
                   self.get_bin(self.gs_layer_thickness,16)
         
-        self._send('layer_setting',payload)        
+        self._send('SET_LAYER',payload)        
 
     def set_acceleration(self):
         '''tell firmware starting speed to accelerate from and speed change rate
@@ -169,10 +169,10 @@ class GuiSupport(object):
         payload = self.get_bin(self.gs_speed_start,32) +\
                   self.get_bin(self.gs_speed_change,32)
         
-        self._send('accel_profile',payload)        
+        self._send('SET_ACCEL',payload)        
             
     def set_feed(self):
-        command = 'feed_cut'
+        command = 'FEED'
         payload = self.get_bin(self.gs_feed_cut,32) 
         self._send(command,payload)
             
@@ -185,13 +185,13 @@ class GuiSupport(object):
         bit 31 = direction y
         bit [30 to 0] = number of steps y
         '''
-        command= 'jog_xy'
+        command= 'JOG_XY'
         
         self._send(command,self.axis_x.jog_payload()+self.axis_y.jog_payload())
 
 
     def send_coordinates(self,scale = 10000):
-        command = 'G_Code_Data'
+        command = 'G_XY'
         coordinates = parse_gcode.get_gcode_data(self.gcode_file, scale)
         for xpos, ypos , tool_stat in coordinates:
             #print xpos, ypos
@@ -199,12 +199,8 @@ class GuiSupport(object):
                       self.get_bin(ypos,32) +\
                       self.get_bin(tool_stat,8)
             self._send(command, payload)
-class Enum(set):
-    def __getattr__(self, name):
-        if name in self:
-            return name
-        raise AttributeError
-    
+
+
 
 class CfgFile:
     ''' manages a GUI configuration file 
