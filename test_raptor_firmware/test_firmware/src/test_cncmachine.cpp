@@ -96,6 +96,7 @@ void outOfRangeTest()
 void routeTest()
 {
 	CncMachine machine;
+
 	//send triangle coordinates , triangle.nc
 	machine.SetNextPosition(294366,84801);
 	machine.SetNextPosition(175520,307195);
@@ -103,7 +104,6 @@ void routeTest()
 
 	machine.StartRouting();
 }
-
 
 cute::suite make_suite_test_cncmachine(){
 	cute::suite s;

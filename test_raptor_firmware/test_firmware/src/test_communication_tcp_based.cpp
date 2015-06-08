@@ -21,6 +21,71 @@
 
 using namespace std;
 
+void testRouteLayers()
+{
+	CommSimple listener;
+	listener.input(SET_LAYER); //command
+	listener.input(4);     //length
+	listener.input(0);
+	listener.input(3);
+	listener.input(0);
+	listener.input(200);
+
+	//command G_XY
+	listener.input(G_XY);     //command
+	listener.input(8);     //length
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+	listener.input(0);
+
+	//command G_XY
+	listener.input(G_XY);     //command
+	listener.input(8);     //length
+	listener.input(0);
+	listener.input(0);
+	listener.input(106);
+	listener.input(6);
+
+	listener.input(0);
+	listener.input(1);
+	listener.input(62);
+	listener.input(20);
+	//command G_XY
+	listener.input(G_XY);     //command
+	listener.input(8);     //length
+	listener.input(0);
+	listener.input(2);
+	listener.input(18);
+	listener.input(34);
+
+	listener.input(0);
+	listener.input(2);
+	listener.input(230);
+	listener.input(48);
+	//command G_XY
+	listener.input(G_XY);     //command
+	listener.input(8);     //length
+	listener.input(0);
+	listener.input(1);
+	listener.input(62);
+	listener.input(20);
+
+	listener.input(0);
+	listener.input(2);
+	listener.input(230);
+	listener.input(48);
+
+	listener.input(START_ROUTE);
+	listener.input(0);
+
+}
+
 void testSendCoordinates()
 {
 	CommSimple listener;
@@ -205,9 +270,11 @@ cute::suite make_suite_test_comm_tcp_based(){
 
 	//push_back tests to s
 
-	s.push_back(CUTE(testSendCoordinates));
-	s.push_back(CUTE(testReceiver));
-	s.push_back(CUTE(testSendCommand));
+
+	s.push_back(CUTE(testRouteLayers));
+	//s.push_back(CUTE(testSendCoordinates));
+	//s.push_back(CUTE(testReceiver));
+	//s.push_back(CUTE(testSendCommand));
 	return s;
 }
 
