@@ -1,5 +1,5 @@
 '''
-Created on May 1, 2015 <my birthday!>
+Created on May 1, 2015
 
 @author: MHouse1
 '''
@@ -9,9 +9,15 @@ import math
 def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     with open(input_file) as f:
         gcode_file = f.read().splitlines()
-    tool_on = 1
-    tool_off = 0
-    tool_status = tool_off #tool will be off by default
+    
+    #{router_off = 0, router_on, router_up, router_down,router_xy};
+    router_off  = 0
+    router_on   = 1
+    router_up   = 2
+    router_down = 3
+    router_xy   = 4
+
+    
     coordinates = []
     for line in gcode_file:
         #remove line break and split on the spaces
@@ -28,14 +34,26 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
                     #print tokens
                     #print tokens[1][1:],tokens[2][1:]
                     #convert (x,y) string to float then scale it then convert to int
-                    coordinates.append((int(float(tokens[1][1:])*scale),int(float(tokens[2][1:])*scale),tool_status))
+
+                    coordinates.append((int(float(tokens[1][1:])*scale),int(float(tokens[2][1:])*scale),int(router_xy)))
+                elif tokens[1][0] =='Z':
+                    
+                    if gcode_type =='G1':
+                        coordinates.append((int(0),int(0),int(router_down)))
+                    elif gcode_type =='G0':
+                        coordinates.append((int(7),int(7),int(router_up)))
+                    else:
+                        raise ValueError('unexpected gcode type with command z')
+                    
+                else:
+                    print 'ignored:*',tokens
             elif gcode_type == 'M3' or gcode_type == 'M03':
-                tool_status = tool_on
+                coordinates.append((int(0),int(0),int(router_on)))
             elif gcode_type == 'M5' or gcode_type == 'M05':
-                tool_status = tool_off
+                coordinates.append((int(3),int(3),int(router_off)))
                 
             else:
-                print 'ignored:',tokens
+                print 'ignored: ',tokens
     return coordinates
 
 def draw_coord(coordinates):
@@ -68,7 +86,7 @@ def draw_coord(coordinates):
         print 'did you press the red x?'
         
 if __name__ == '__main__':
-    xycoord = get_gcode_data('RR.nc')#('rd_bm1.nc')#
+    xycoord = get_gcode_data('rd_bm1.nc')#('RR.nc')#
     for data in xycoord:
         print data
     print len(xycoord)
