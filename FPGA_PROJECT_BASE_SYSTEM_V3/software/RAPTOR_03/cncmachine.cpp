@@ -45,6 +45,8 @@ CncMachine::CncMachine()
 	this->StepNumX          = 50;
 	this->StepNumY          = 50;
 	this->StepNumZ          = 50;
+	this->LayerNumber		= 1;
+	this->LayerThickness	= 0;
 
 	this->PulseWidthZH      = 20000;
 	this->PulseWidthZL      = 3000;
@@ -53,7 +55,7 @@ CncMachine::CncMachine()
 	this->PulseWidthXH      = 20000;
 	this->PulseWidthXL      = 3000;
 	this->FeedRate			= 200000;
-	this->router_state = off;
+	this->router_state = router_off;
 	this->FullRangeStepCount= 2000;
 	this->FullRangeDistance = 380000; //38mm scaled by 10000
 	this->CNC_CONTROL.CTRL.ULONG  = 0;
@@ -251,7 +253,7 @@ void CncMachine::MoveZ()
 	WriteControlRegister();
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunZ = 0;
 	WriteControlRegister();
-	printf("Jog z axis in cnc machine\n");
+	printf("Jog z axis in cnc machine %lu\n",this->StepNumZ);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -265,7 +267,7 @@ void CncMachine::MoveY()
 	WriteControlRegister();
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 0;
 	WriteControlRegister();
-	printf("Jog y axis in cnc machine\n");
+	printf("Jog y axis in cnc machine %lu\n",this->StepNumY);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -279,7 +281,7 @@ void CncMachine::MoveX()
 	WriteControlRegister();
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 0;
 	WriteControlRegister();
-	printf("Jog x axis in cnc machine\n");
+	printf("Jog x axis in cnc machine %lu\n",this->StepNumX);
 }
 /////////////////////////////////////////////////////////////////////////////
 ///@brief toggle run bit to cause axis to move
@@ -355,6 +357,8 @@ alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 {
 	TRAVERSALXY data;
 
+	//assign state router_xy to indicate data is xy movement
+	data.router_state = router_xy;
 	data.X.Position = x;
 	data.Y.Position = y;
 
@@ -375,8 +379,9 @@ alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 	//			 the received distanceXY is scaled up by a number in the GUI,
 	//			 the actual StepNum should be StepNum = (distanceX*44.45)/GUI_Scaling
 	//			 in instruction terms this would be (distanceX/220)
-	data.X.StepNum = (alt_32)fabs(distanceX)/220;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
-	data.Y.StepNum = (alt_32)fabs(distanceY)/220;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
+	//@todo add gui scaling parameter
+	data.X.StepNum = (alt_32)fabs(distanceX)/221;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+	data.Y.StepNum = (alt_32)fabs(distanceY)/221;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
 
 	//for now use x axis pulse width info for base speed (pulse width counts)
 	alt_u32 basePWH = this->FeedRate;
@@ -448,67 +453,103 @@ alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 		data.Y.LowPulseWidth = basePWL;
 	}
 
-	//take the current state of router and assign it to current position movement
-	data.router_state = this->router_state;
+
 
 	this->routes.push_back(data);
 	return 0;
 }
 
+void CncMachine::AppendStateToRoutes(Peripheral state)
+{
+	TRAVERSALXY data;
+	data.router_state = state;
+	this->routes.push_back(data);
+}
+void CncMachine::RouteXY(TRAVERSALXY movement)
+{
+	DisplayMovement(movement);
+
+	WriteStepNumXY(movement.X.StepNum, movement.Y.StepNum);
+	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = movement.X.StepDir;
+	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = movement.Y.StepDir;
+	WritePulseInfoXY(movement.X.HighPulseWidth,movement.X.LowPulseWidth,movement.Y.HighPulseWidth,movement.Y.LowPulseWidth);
+
+//	if (movement.router_state == router_on)
+//	{
+//		printf("router on\n");
+//		//this->WriteRouterPWM(3000);
+////				this->CNC_CONTROL.CTRL.CTRL_BITS.Laser1 = on;
+////				this->CNC_CONTROL.CTRL.CTRL_BITS.Laser2 = on;
+////				this->CNC_CONTROL.CTRL.CTRL_BITS.Laser3 = on;
+////				this->CNC_CONTROL.CTRL.CTRL_BITS.Laser4 = on;
+//	}
+//	else if (movement.router_state == router_off)
+//	{
+////				this->CNC_CONTROL.CTRL.CTRL_BITS.Laser1 = off;
+////				this->CNC_CONTROL.CTRL.CTRL_BITS.Laser2 = off;
+////				this->CNC_CONTROL.CTRL.CTRL_BITS.Laser3 = off;
+////				this->CNC_CONTROL.CTRL.CTRL_BITS.Laser4 = off;
+//		printf("router off\n");
+//		//this->WriteRouterPWM(1700);
+//	}
+
+	//run x and y axis
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 1;
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 1;
+	WriteControlRegister();
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 0;
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 0;
+	WriteControlRegister();
+
+	//wait until stepping is done
+	ReadStatus();
+	while(!this->CNC_STATUS.STUS.STUS_BITS.XDONE || !this->CNC_STATUS.STUS.STUS_BITS.YDONE)
+	{
+		ReadStatus();
+	}
+}
+
 void CncMachine::StartRouting()
 {
-	cout<<"started routing"<<endl;
+	printf("started routing\n");
 	this->WriteRouterPWM(40000);
 	list<CncMachine::TRAVERSALXY> route_data;
 	route_data = this->routes;
 	//DisplayRoutes(route_data);
 	CncMachine::TRAVERSALXY movement;
 	list<CncMachine::TRAVERSALXY>::iterator it;
-	for(it = route_data.begin(); it != route_data.end(); it++)
+
+	alt_u16 layer_count;
+
+	for(layer_count = 0; layer_count< this->LayerNumber; layer_count++)
 	{
-		movement = *it;
-		DisplayMovement(movement);
+		this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = down;
+		this->StepNumZ = this->LayerThickness;
+		this->MoveZ();
 
-		WriteStepNumXY(movement.X.StepNum, movement.Y.StepNum);
-		this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = movement.X.StepDir;
-		this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = movement.Y.StepDir;
-		WritePulseInfoXY(movement.X.HighPulseWidth,movement.X.LowPulseWidth,movement.Y.HighPulseWidth,movement.Y.LowPulseWidth);
-
-		if (movement.router_state == on)
+		for(it = route_data.begin(); it != route_data.end(); it++)
 		{
-			printf("router on\n");
-			//this->WriteRouterPWM(3000);
-			this->CNC_CONTROL.CTRL.CTRL_BITS.Laser1 = on;
-			this->CNC_CONTROL.CTRL.CTRL_BITS.Laser2 = on;
-			this->CNC_CONTROL.CTRL.CTRL_BITS.Laser3 = on;
-			this->CNC_CONTROL.CTRL.CTRL_BITS.Laser4 = on;
-		}
-		else if (movement.router_state == off)
-		{
-			this->CNC_CONTROL.CTRL.CTRL_BITS.Laser1 = off;
-			this->CNC_CONTROL.CTRL.CTRL_BITS.Laser2 = off;
-			this->CNC_CONTROL.CTRL.CTRL_BITS.Laser3 = off;
-			this->CNC_CONTROL.CTRL.CTRL_BITS.Laser4 = off;
-			printf("router off\n");
-			//this->WriteRouterPWM(1700);
-		}
+			movement = *it;
+			switch(movement.router_state)
+			{
+			case(router_on):
+				//turn router on
+				break;
+			case(router_off):
+				//turn router off
+				break;
+			case(router_xy):
+				//move xy
+				RouteXY(movement);
+				break;
+			default:
+				printf("undefined router state");
+				break;
+			}
 
-		//run x and y axis
-		this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 1;
-		this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 1;
-		WriteControlRegister();
-		this->CNC_CONTROL.CTRL.CTRL_BITS.RunX = 0;
-		this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 0;
-		WriteControlRegister();
-
-		//wait until stepping is done
-		ReadStatus();
-		while(!this->CNC_STATUS.STUS.STUS_BITS.XDONE || !this->CNC_STATUS.STUS.STUS_BITS.YDONE)
-		{
-			ReadStatus();
 		}
 	}
-	cout<<"completed routing"<<endl;
+	printf("completed routing\n");
 }
 
 /////////////////////////////////////////////////////////////////////////////

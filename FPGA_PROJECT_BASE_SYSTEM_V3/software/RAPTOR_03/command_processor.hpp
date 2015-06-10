@@ -51,6 +51,7 @@ public:
 
 private:
 	alt_u32 get_long_from_string(string in_string, alt_u8 index);
+	alt_u16 get_word_from_string(string in_string, alt_u8 index);
 	alt_u8 get_byte_from_string(string in_string, alt_u8 index);
 	list<string> get_fields(string in_string);
 	cnc_stepdir get_step_and_dir(string payload);
@@ -66,6 +67,7 @@ private:
 	void set_pw_feed(string payload);
 	void set_coordinate(string payload);
 	void set_acceleration(string payload);
+	void set_layer(string payload);
 };
 
 

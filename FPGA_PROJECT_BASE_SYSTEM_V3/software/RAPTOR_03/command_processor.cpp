@@ -17,6 +17,34 @@ CommandProcessor::CommandProcessor()
 	this->selected_command = JOG_Z;
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///@brief	converts a string of ascii characters into 32 bits
+///
+///@details	For example: an ascii string with character sequence
+///			ascii(21),ascii(7)
+///			will return a u16 00010101 00000111
+///			index selects which 2 bytes is converted to 16, for example
+///			setting index = 0 will return the first 2 bytes in a string
+///			setting index = 1 will return the next 2 bytes in a string
+/////////////////////////////////////////////////////////////////////////////
+alt_u16 CommandProcessor::get_word_from_string(string in_string, alt_u8 index)
+{
+	alt_u8 start = index * 2;
+	alt_u8 stop  = start + 2;
+	alt_u32 data = 0;
+	alt_u32 temp = 0;
+	for(int i = start; i < stop; ++i)
+	{
+		temp = int((unsigned char)in_string[i]);
+
+		data =  data << 8;
+		data = data | temp;
+
+		//cout<<"dataa "<<int(data)<<" temp "<<temp<<endl;
+	}
+	//cout<<"data "<<data<<endl;
+	return data;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 ///@brief	converts a string of ascii characters into 32 bits
@@ -26,7 +54,7 @@ CommandProcessor::CommandProcessor()
 ///			will return a u32 10000000001101000001010100000111
 ///			index selects which 4 bytes is converted to u32, for example
 ///			setting index = 0 will return the first four bytes in a string
-///			setting index = 1 will return the second four bytes in a string
+///			setting index = 1 will return the next four bytes in a string
 /////////////////////////////////////////////////////////////////////////////
 alt_u32 CommandProcessor::get_long_from_string(string in_string, alt_u8 index)
 {
@@ -54,8 +82,8 @@ alt_u32 CommandProcessor::get_long_from_string(string in_string, alt_u8 index)
 ///			ascii(128),ascii(52),ascii(21),ascii(7)
 ///			will return a u32 10000000001101000001010100000111
 ///			index selects which 4 bytes is converted to u32, for example
-///			setting index = 0 will return the first four bytes in a string
-///			setting index = 1 will return the second four bytes in a string
+///			setting index = 0 will return the first byte in a string
+///			setting index = 1 will return the second byte in a string
 /////////////////////////////////////////////////////////////////////////////
 alt_u8 CommandProcessor::get_byte_from_string(string in_string, alt_u8 index)
 {
@@ -197,6 +225,7 @@ void CommandProcessor::set_coordinate(string payload)
 {
 	alt_u32 value1 = this->get_long_from_string(payload,0);
 	alt_u32 value2 = this->get_long_from_string(payload,1);
+	//alt_u8	value3 = this->get_byte_from_string(payload,8);
 	this->SetNextPosition(value1,value2);
 }
 
@@ -209,6 +238,15 @@ void CommandProcessor::set_acceleration(string payload)
 	alt_u32 value1 = this->get_long_from_string(payload,0);
 	alt_u32 value2 = this->get_long_from_string(payload,1);
 	this->SetAcceleration(value1,value2);
+}
+
+/////////////////////////////////////////////////////////////////////////////
+///@brief 	set the layer data
+/////////////////////////////////////////////////////////////////////////////
+void CommandProcessor::set_layer(string payload)
+{
+	this->LayerNumber  = this->get_word_from_string(payload,0);
+	this->LayerThickness = this->get_word_from_string(payload,1);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -245,6 +283,7 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		this->set_coordinate(payload);
 		break;
 	case(START_ROUTE):
+		printf("start route command received\n");
 		this->StartRouting();
 		break;
 	case(FEED):
@@ -258,6 +297,9 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 	case(SET_ACCEL):
 
 		this->set_acceleration(payload);
+		break;
+	case(SET_LAYER):
+		this->set_layer(payload);
 		break;
 	default:
 		printf("unrecognized command received %d\n",command);

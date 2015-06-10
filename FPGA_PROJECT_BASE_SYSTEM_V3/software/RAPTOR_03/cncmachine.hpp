@@ -24,7 +24,7 @@ class CncMachine
 public:
 
 	enum Direction {down = 0,up};
-	enum Peripheral {off = 0, on};
+	enum Peripheral {router_off = 0, router_on, router_up, router_down,router_xy};
 
 	//This struct has the exact mapping as defined in the VHDL file
 	//the control_register only contains the bits to signal start
@@ -79,8 +79,17 @@ public:
 
 	struct TRAVERSALXY
 	{
-		TRAVERSAL X;
-		TRAVERSAL Y;
+		union
+		{
+			struct
+			{
+				TRAVERSAL X;
+				TRAVERSAL Y;
+			};
+			alt_u32 ULONG1;
+			alt_u32	ULONG2;
+		};
+
 		Peripheral router_state;
 	};
 	//Public data
@@ -133,6 +142,9 @@ protected:
 	alt_u32  PulseWidthXH;
 	alt_u32  PulseWidthXL;
 	alt_u32  FeedRate;
+	alt_u16  LayerNumber;
+	alt_u16  LayerThickness;
+
 	//protected functions
 	void WriteStepNumXY(alt_u32 XSteps, alt_u32 YSteps);
 	void WriteStepNumZ(alt_u32 ZSteps);
@@ -146,6 +158,8 @@ protected:
 	void WritePulseInfoX(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth);
 	void ClearControlRegister(void);
 	void WriteControlRegister(void);
+	void RouteXY(TRAVERSALXY movement);
+	void AppendStateToRoutes(Peripheral state);
 private:
 
 	//Stepper Motor private data
