@@ -354,8 +354,8 @@ architecture syn of my_top_system is
     Signal sig_ADC_LED  : std_logic_vector(7 downto 0);
      Signal sig_PWM_Steering_Gen : std_logic_vector(0 downto 0);
      Signal sig_PWM_Steering32 : std_logic_vector(31 downto 0);
-     Signal sig_CNC_PWM_out_pin : std_logic_vector(0 downto 0);
-     Signal sig_CNC_PWM_value : std_logic_vector(31 downto 0);
+     Signal sig_Router_servo_PWM_out_pin : std_logic_vector(0 downto 0);
+     Signal sig_Router_servo_PWM_value : std_logic_vector(31 downto 0);
       Signal sig_HE_counter : std_logic_vector(31 downto 0);
       
     signal Counter_value : std_logic_vector(15 downto 0);
@@ -466,8 +466,9 @@ begin
 --                        sel => DIP_SWITCH
 --                        );
 --                        
+                        --PWM_ROUTER <= sig_Router_servo_PWM_out_pin(0);               
     -- PWM_STEERING <= sig_PWM_Steering_Gen(0);
-      
+     -- PWM_ROUTER <= sig_Router_servo_PWM_out_pin(0);
 
       
             inst_pwmGen_steering : component pwm
@@ -484,8 +485,8 @@ begin
                     clk       => CLK_50,                             --system clock
                     reset_n   => KEY(0),                                  --asynchronous reset
                     ena       => '1',                                  --latches in new duty cycle
-                    duty      => sig_CNC_PWM_value(14 downto 0), --duty cycle
-                    pwm_out   => sig_CNC_PWM_out_pin
+                    duty      => sig_Router_servo_PWM_value(14 downto 0), --duty cycle
+                    pwm_out   => sig_Router_servo_PWM_out_pin
                     --pwm_n_out : OUT STD_LOGIC_VECTOR(phases-1 DOWNTO 0)
                     );         --pwm inverse outputs
 
@@ -617,7 +618,7 @@ begin
             multi_reg_1_dataout_4  => sig_pulse_width_high_B,  --            .dataout_4
             multi_reg_1_dataout_5  => sig_pulse_width_low_B,   --            .dataout_5
             multi_reg_1_dataout_6  => sig_number_of_steps_B,   --            .dataout_6
-            multi_reg_1_dataout_7  => sig_CNC_PWM_value,  --            .dataout_7
+            multi_reg_1_dataout_7  => sig_Router_servo_PWM_value,  --            .dataout_7
             multi_reg_1_dataout_8  => sig_pulse_width_high_C,  --            .dataout_8
             multi_reg_1_dataout_9  => sig_pulse_width_low_C,  --            .dataout_9
             multi_reg_1_dataout_10 => sig_number_of_steps_C, --            .dataout_10
@@ -727,7 +728,5 @@ begin
 	LASER_2 <= sig_cnc_control(7);
 	LASER_3 <= sig_cnc_control(8);
 	LASER_4 <= sig_cnc_control(9);
-	
-	PWM_ROUTER <= sig_CNC_PWM_out_pin(0);
 end architecture syn;
 -- *** EOF ***
