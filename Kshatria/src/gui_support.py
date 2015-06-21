@@ -16,6 +16,7 @@ import sys
 import protocolwrapper
 import Communications
 import parse_gcode
+from parse_gcode import router_state
 framer = protocolwrapper.ProtocolWrapper()
 
 class Axi:
@@ -65,21 +66,22 @@ class GuiSupport(object):
         # and command_length is the number of bytes in payload
         self.command_list = {
         #
-        'JOG_Z'        :{'command_number' : 0 , 'command_length' : 4},
-        'JOG_Y'        :{'command_number' : 1 , 'command_length' : 4},
-        'JOG_X'        :{'command_number' : 2 , 'command_length' : 4},
-        'JOG_XY'       :{'command_number' : 3 , 'command_length' : 8},
-        'SET_PW_Z'     :{'command_number' : 4 , 'command_length' : 8},
-        'SET_PW_Y'     :{'command_number' : 5 , 'command_length' : 8},
-        'SET_PW_X'     :{'command_number' : 6 , 'command_length' : 8},
-        'START_ROUTE'  :{'command_number' : 7 , 'command_length' : 0},
-        'PAUSE'        :{'command_number' : 8 , 'command_length' : 0},
-        'CANCEL'       :{'command_number' : 9 , 'command_length' : 0},
-        'G_XY'         :{'command_number' : 10 , 'command_length' : 9},
-        'FEED'         :{'command_number' : 11 , 'command_length' : 4},
-        'ERASE_COORD'  :{'command_number' : 12 , 'command_length' : 0},  
-        'SET_LAYER'    :{'command_number' : 13 , 'command_length' : 4},
-        'SET_ACCEL'    :{'command_number' : 14 , 'command_length' : 8}, 
+        'JOG_Z'           :{'command_number' : 0 , 'command_length' : 4},
+        'JOG_Y'           :{'command_number' : 1 , 'command_length' : 4},
+        'JOG_X'           :{'command_number' : 2 , 'command_length' : 4},
+        'JOG_XY'          :{'command_number' : 3 , 'command_length' : 8},
+        'SET_PW_Z'        :{'command_number' : 4 , 'command_length' : 8},
+        'SET_PW_Y'        :{'command_number' : 5 , 'command_length' : 8},
+        'SET_PW_X'        :{'command_number' : 6 , 'command_length' : 8},
+        'START_ROUTE'     :{'command_number' : 7 , 'command_length' : 0},
+        'PAUSE'           :{'command_number' : 8 , 'command_length' : 0},
+        'CANCEL'          :{'command_number' : 9 , 'command_length' : 0},
+        'G_XY'            :{'command_number' : 10 , 'command_length' : 8},
+        'FEED'            :{'command_number' : 11 , 'command_length' : 4},
+        'ERASE_COORD'     :{'command_number' : 12 , 'command_length' : 0},  
+        'SET_LAYER'       :{'command_number' : 13 , 'command_length' : 4},
+        'SET_ACCEL'       :{'command_number' : 14 , 'command_length' : 8}, 
+        'SET_ROUTE_STATE' :{'command_number' : 15 , 'command_length' : 1},         
         }
         print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
@@ -195,10 +197,15 @@ class GuiSupport(object):
         coordinates = parse_gcode.get_gcode_data(self.gcode_file, scale)
         for xpos, ypos , tool_stat in coordinates:
             #print xpos, ypos
-            payload = self.get_bin(xpos,32) +\
-                      self.get_bin(ypos,32) +\
-                      self.get_bin(tool_stat,8)
-            self._send(command, payload)
+            if tool_stat == router_state.router_xy:
+                payload = self.get_bin(xpos,32) +\
+                          self.get_bin(ypos,32)
+                          
+                self._send(command, payload)
+            else:
+                payload = self.get_bin(tool_stat,8)
+                self._send('SET_ROUTE_STATE',payload)
+                print 'tool status ', router_state.reverse_mapping[tool_stat]
 
 
 

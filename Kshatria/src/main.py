@@ -141,9 +141,9 @@ class KshatriaGUI(GuiSupport):
         self.gs_layer_thickness = int(self.layer_thickness.get_text()) 
         self.gs_layer_numbers = int(self.layer_numbers.get_text()  ) 
         self.set_layer()
-        for i in range(3):
-            print 'starting in ',3-i
-            time.sleep(1)
+#         for i in range(3):
+#             print 'starting in ',3-i
+#             time.sleep(1)
         self.start_routing()
     
     def on_erase_coord_clicked(self,widget):

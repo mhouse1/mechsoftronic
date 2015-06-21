@@ -6,6 +6,28 @@ Created on May 1, 2015
 import matplotlib.pyplot as plt 
 import math
 
+def enum(*sequential, **named):
+    '''
+    this function is taken from stackoverflow
+    see: http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python
+    usage:
+            >>> Numbers = enum('router_off', 'router_on', 'router_up','router_down','router_xy')
+            >>> Numbers.router_up
+            2
+            >>> Numbers.router_down
+            3
+            
+            #support for converting the values back to names
+            >>> Numbers.reverse_mapping[1]
+            'router_on'            
+    '''
+    enums = dict(zip(sequential, range(len(sequential))), **named)
+    reverse = dict((value, key) for key, value in enums.iteritems())
+    enums['reverse_mapping'] = reverse
+    return type('Enum', (), enums)
+
+router_state = enum('router_off', 'router_on', 'router_up','router_down','router_xy')
+
 def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     with open(input_file) as f:
         gcode_file = f.read().splitlines()
@@ -86,8 +108,11 @@ def draw_coord(coordinates):
         print 'did you press the red x?'
         
 if __name__ == '__main__':
-    xycoord = get_gcode_data('rd_bm1.nc')#('RR.nc')#
-    for data in xycoord:
-        print data
-    print len(xycoord)
-    draw_coord(xycoord)
+#     xycoord = get_gcode_data('rd_bm1.nc')#('RR.nc')#
+#     for data in xycoord:
+#         print data
+#     print len(xycoord)
+#     draw_coord(xycoord)
+    print router_state.router_up
+    print router_state.reverse_mapping[1]
+    
