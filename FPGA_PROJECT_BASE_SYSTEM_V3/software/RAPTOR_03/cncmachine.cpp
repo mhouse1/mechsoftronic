@@ -459,6 +459,7 @@ void CncMachine::AppendStateToRoutes(Peripheral state)
 {
 	TRAVERSALXY data;
 	data.router_state = state;
+	printf("set router state to %d\n", state);
 	this->routes.push_back(data);
 }
 void CncMachine::RouteXY(TRAVERSALXY movement)
@@ -519,11 +520,7 @@ void CncMachine::StartRouting()
     printf("router will route %d layers\n",this->LayerNumber);
     for(layer_count = 0; layer_count< this->LayerNumber; layer_count++)
     {
-        printf("sr1\n");
-        this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = 0;
-        this->StepNumZ = this->LayerThickness;
-        this->MoveZ();
-        printf("sr2\n");
+
         for(it = route_data.begin(); it != route_data.end(); it++)
         {
             movement = *it;
@@ -535,6 +532,16 @@ void CncMachine::StartRouting()
                 break;
             case(router_off):
                 //turn router off
+                break;
+            case(router_up):
+                this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = 1;
+                this->StepNumZ = this->LayerThickness;
+                this->MoveZ();
+                break;
+            case(router_down):
+                this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = 0;
+                this->StepNumZ = this->LayerThickness;
+                this->MoveZ();
                 break;
             case(router_xy):
                 //move xy

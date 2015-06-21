@@ -14,7 +14,6 @@
 
 CommandProcessor::CommandProcessor()
 {
-	this->selected_command = JOG_Z;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -87,7 +86,7 @@ alt_u32 CommandProcessor::get_long_from_string(string in_string, alt_u8 index)
 /////////////////////////////////////////////////////////////////////////////
 alt_u8 CommandProcessor::get_byte_from_string(string in_string, alt_u8 index)
 {
-	return int((unsigned char)in_string[index]);
+	return alt_u8((unsigned char)in_string[index]);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -243,6 +242,15 @@ void CommandProcessor::set_layer(string payload)
 }
 
 /////////////////////////////////////////////////////////////////////////////
+///@brief   set the layer data
+/////////////////////////////////////////////////////////////////////////////
+void CommandProcessor::set_router_state(string payload)
+{
+    this->AppendStateToRoutes((Peripheral)this->get_byte_from_string(payload,0));
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
 ///@brief 	process command, given command number and payload string
 /////////////////////////////////////////////////////////////////////////////
 int CommandProcessor::input_command(alt_u8 command, string payload)
@@ -287,12 +295,16 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		this->routes.clear();
 		cout<<"route cleared!"<<endl;
 		break;
-	case(SET_ACCEL):
-		this->set_acceleration(payload);
-		break;
+
 	case(SET_LAYER):
 		this->set_layer(payload);
 		break;
+    case(SET_ACCEL):
+        this->set_acceleration(payload);
+        break;
+    case(SET_ROUTE_STATE):
+        this->set_router_state(payload);
+        break;
 	default:
 		printf("unrecognized command received %d\n",command);
 		return 1;
