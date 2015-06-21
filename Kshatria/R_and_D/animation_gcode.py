@@ -2,6 +2,8 @@
 Created on May 5, 2015
 
 @author: MHouse1
+
+@brief    plots gcode in realtime
 '''
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-

@@ -2,6 +2,9 @@
 Created on May 5, 2015
 
 @author: MHouse1
+
+@brief      draws a 2d imange showing high and low elevation
+            this may be useful for PCB isolation routing
 '''
 #!/usr/bin/env python
 """

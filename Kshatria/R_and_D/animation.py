@@ -2,6 +2,8 @@
 Created on May 5, 2015
 
 @author: MHouse1
+
+@brief    a demo showcasing realtime sine wave draw
 '''
 import numpy as np
 from matplotlib import pyplot as plt
