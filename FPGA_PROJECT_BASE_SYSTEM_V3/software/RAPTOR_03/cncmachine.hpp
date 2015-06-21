@@ -23,7 +23,6 @@ class CncMachine
 {
 public:
 
-	enum Direction {down = 0,up};
 	enum Peripheral {router_off = 0, router_on, router_up, router_down,router_xy};
 
 	//This struct has the exact mapping as defined in the VHDL file
@@ -40,9 +39,9 @@ public:
 				alt_u32 RunX           : 1;//0
 				alt_u32 RunY           : 1;//1
 				alt_u32 RunZ           : 1;//2
-				Direction DirectionX   : 1;//3
-				Direction DirectionY   : 1;//4
-				Direction DirectionZ   : 1;//5
+				alt_u32 DirectionX     : 1;//3
+				alt_u32 DirectionY     : 1;//4
+				alt_u32 DirectionZ     : 1;//5
 				alt_u32 Laser1		   : 1;//6
 				alt_u32 Laser2		   : 1;//7
 				alt_u32 Laser3		   : 1;//8
@@ -71,7 +70,7 @@ public:
 		alt_u32 StepNum; //number of steps to move
 		alt_u32 HighPulseWidth;
 		alt_u32 LowPulseWidth;
-		Direction StepDir; //direction of movement
+		alt_u32 StepDir; //direction of movement
 		alt_u32 Position;//current position on table
 	};
 
@@ -79,17 +78,8 @@ public:
 
 	struct TRAVERSALXY
 	{
-		union
-		{
-			struct
-			{
-				TRAVERSAL X;
-				TRAVERSAL Y;
-			};
-			alt_u32 ULONG1;
-			alt_u32	ULONG2;
-		};
-
+		TRAVERSAL X;
+		TRAVERSAL Y;
 		Peripheral router_state;
 	};
 	//Public data
@@ -104,9 +94,9 @@ public:
 	void SetAcceleration(alt_u32 speed_start, alt_u32 speed_change);
 	void SetCurrentPosition(alt_u32 x, alt_u32 y); //@todo may not need this func
 	alt_u8 SetNextPosition(alt_u32 x, alt_u32 y);
-	void MotorXDir(Direction x);
-	void MotorYDir(Direction y);
-	void MotorZDir(Direction z);
+	void MotorXDir(alt_u32 x);
+	void MotorYDir(alt_u32 y);
+	void MotorZDir(alt_u32 z);
 
 
 	void SetHighPulseWidthMin(alt_u32 width);

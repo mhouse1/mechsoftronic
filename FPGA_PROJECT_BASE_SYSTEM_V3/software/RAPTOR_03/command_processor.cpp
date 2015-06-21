@@ -54,7 +54,7 @@ alt_u16 CommandProcessor::get_word_from_string(string in_string, alt_u8 index)
 ///			will return a u32 10000000001101000001010100000111
 ///			index selects which 4 bytes is converted to u32, for example
 ///			setting index = 0 will return the first four bytes in a string
-///			setting index = 1 will return the next four bytes in a string
+///			setting index = 1 will return the second four bytes in a string
 /////////////////////////////////////////////////////////////////////////////
 alt_u32 CommandProcessor::get_long_from_string(string in_string, alt_u8 index)
 {
@@ -121,7 +121,7 @@ void CommandProcessor::jog_z(string payload)
 {
 	cnc_stepdir stepdiraxis;
 	stepdiraxis = this->get_step_and_dir(payload);
-	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = stepdiraxis.data.bits.dir?up:down;
+	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = stepdiraxis.data.bits.dir?1:0;
 	this->StepNumZ = stepdiraxis.data.bits.step;
 	this->MoveZ();
 }
@@ -133,7 +133,7 @@ void CommandProcessor::jog_z(string payload)
 void CommandProcessor::jog_y(string payload)
 {
 	cnc_stepdir stepdiraxis = this->get_step_and_dir(payload);
-	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = stepdiraxis.data.bits.dir?up:down;
+	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = stepdiraxis.data.bits.dir?1:0;
 	this->StepNumY = stepdiraxis.data.bits.step;
 	this->MoveY();
 }
@@ -145,7 +145,7 @@ void CommandProcessor::jog_y(string payload)
 void CommandProcessor::jog_x(string payload)
 {
 	cnc_stepdir stepdiraxis = this->get_step_and_dir(payload);
-	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = stepdiraxis.data.bits.dir?up:down;
+	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = stepdiraxis.data.bits.dir?1:0;
 	this->StepNumX = stepdiraxis.data.bits.step;
 	this->MoveX();
 }
@@ -164,8 +164,8 @@ void CommandProcessor::jog_xy(string payload)
 	cnc_stepdir stepdiry;
 	stepdirx = this->get_step_and_dir(valuex);
 	stepdiry = this->get_step_and_dir(valuey);
-	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = stepdirx.data.bits.dir?up:down;
-	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = stepdiry.data.bits.dir?up:down;
+	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = stepdirx.data.bits.dir?1:0;
+	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY = stepdiry.data.bits.dir?1:0;
 	this->StepNumX = stepdirx.data.bits.step;
 	this->StepNumY = stepdiry.data.bits.step;
 	this->MoveXY();
@@ -176,16 +176,8 @@ void CommandProcessor::jog_xy(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_pw_z(string payload)
 {
-//	alt_u32 temp;
-//	for (int i = 0; i<payload.length();++i)
-//	{
-//		temp = int((unsigned char)payload[i]);
-//		cout<"char "<<temp<<endl;
-//	}
-//	cout<<"payload z"<<payload<<endl;
 	alt_u32 valueh = this->get_long_from_string(payload,0);
 	alt_u32 valuel = this->get_long_from_string(payload,1);
-	cout<<"set high z to "<<valueh<< " set low z to "<< valuel<<endl;
 	this->WritePulseInfoZ(valueh,valuel);
 }
 
@@ -215,6 +207,7 @@ void CommandProcessor::set_pw_x(string payload)
 void CommandProcessor::set_pw_feed(string payload)
 {
 	alt_u32 value = this->get_long_from_string(payload,0);
+	printf("set feed rate to %lu\n",value);
 	this->WritePulseInfoFeed(value);
 }
 
@@ -225,7 +218,6 @@ void CommandProcessor::set_coordinate(string payload)
 {
 	alt_u32 value1 = this->get_long_from_string(payload,0);
 	alt_u32 value2 = this->get_long_from_string(payload,1);
-	//alt_u8	value3 = this->get_byte_from_string(payload,8);
 	this->SetNextPosition(value1,value2);
 }
 
@@ -245,6 +237,7 @@ void CommandProcessor::set_acceleration(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_layer(string payload)
 {
+    printf("set layer!\n");
 	this->LayerNumber  = this->get_word_from_string(payload,0);
 	this->LayerThickness = this->get_word_from_string(payload,1);
 }
@@ -283,19 +276,18 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		this->set_coordinate(payload);
 		break;
 	case(START_ROUTE):
-		printf("start route command received\n");
 		this->StartRouting();
 		break;
 	case(FEED):
+
 		this->set_pw_feed(payload);
 		break;
 	case(ERASE_COORD):
-
+        printf("coordinates erased\n");
 		this->routes.clear();
 		cout<<"route cleared!"<<endl;
 		break;
 	case(SET_ACCEL):
-
 		this->set_acceleration(payload);
 		break;
 	case(SET_LAYER):
