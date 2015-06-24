@@ -358,15 +358,16 @@ alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 
 	//assign state router_xy to indicate data is xy movement
 	data.router_state = router_xy;
+
+	//@todo dont need to put position in data, this is only taking up extra space
 	data.X.Position = x;
 	data.Y.Position = y;
 
 	//Convert distance to steps
-	//calculate distance then set the new position as present position
+	//calculate distance change
 	alt_32 distanceX = x - this->PresentX;
 	alt_32 distanceY = y - this->PresentY;
-	this->PresentX = x;
-	this->PresentY = y;
+
 	//calculate and set direction
 	//if change in distance is positive move up, else move down
 	data.X.StepDir = distanceX >= 0? 1:0;
@@ -378,8 +379,20 @@ alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
 	//			 the received distanceXY is scaled up by a number in the GUI,
 	//			 the actual StepNum should be StepNum = (distanceX*44.45)/GUI_Scaling
 	//			 in instruction terms this would be (distanceX/220)
-	data.X.StepNum = (alt_32)fabs(distanceX)/220;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
-	data.Y.StepNum = (alt_32)fabs(distanceY)/220;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
+	data.X.StepNum = (alt_32)fabs(distanceX)/221;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+	data.Y.StepNum = (alt_32)fabs(distanceY)/221;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
+
+	//set calculate the present X Y after stepping data.X.StepNum and data.Y.StepNum
+	//the present XY would ideally be equal to function arguments x y:
+	//		this->PresentX = x;
+	//		this->PresentY = y;
+	//but because the machine cant step fractional steps there will be some error
+	//so the actual present X Y values would have to be reverse calculated like below
+	alt_u32 actualDistanceX = data.X.StepNum*221;
+	alt_u32 actualDistanceY = data.Y.StepNum*221;
+	this->PresentX = distanceX >= 0? this->PresentX + actualDistanceX : this->PresentX - actualDistanceX;
+	this->PresentY = distanceY >= 0? this->PresentY + actualDistanceY : this->PresentY - actualDistanceY;
+
 
 	//for now use x axis pulse width info for base speed (pulse width counts)
 	alt_u32 basePWH = this->FeedRate;
