@@ -21,32 +21,31 @@
 
 using namespace std;
 
-enum possible_commands {JOG_Z = 0, 		JOG_Y, 		JOG_X, 	 	JOG_XY,
-							     	 SET_PW_Z, 	 SET_PW_Y, 	  SET_PW_X,
-							      START_ROUTE, 		PAUSE, 		CANCEL,
-							     	 	 G_XY,	 	 FEED, ERASE_COORD,
-							        SET_LAYER,  SET_ACCEL,
-						};
 
 struct cnc_stepdir
 {
-	union
-	{
-		alt_u32 ULONG;
-		struct
-		{
-			alt_u32 step : 31;
-			alt_u32 dir : 1;
-		}bits;
-	}data;
+    union
+    {
+        alt_u32 ULONG;
+        struct
+        {
+            alt_u32 step : 31;
+            alt_u32 dir : 1;
+        }bits;
+    }data;
 };
 
+enum possible_commands {JOG_Z = 0,      JOG_Y,      JOG_X,          JOG_XY,
+                                     SET_PW_Z,   SET_PW_Y,        SET_PW_X,
+                                  START_ROUTE,      PAUSE,          CANCEL,
+                                         G_XY,       FEED,     ERASE_COORD,
+                                    SET_LAYER,  SET_ACCEL, SET_ROUTE_STATE,
+                        };
 class CommandProcessor : private CncMachine
 {
 public:
 	CommandProcessor();
 
-	possible_commands selected_command;
 	int input_command(alt_u8 command, string payload);
 
 private:
@@ -68,6 +67,7 @@ private:
 	void set_coordinate(string payload);
 	void set_acceleration(string payload);
 	void set_layer(string payload);
+	void set_router_state(string payload);
 };
 
 

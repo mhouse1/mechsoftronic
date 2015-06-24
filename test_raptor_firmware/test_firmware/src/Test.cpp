@@ -6,7 +6,11 @@
 //import test suites
 #include "test_cncmachine.h"
 #include "test_communication_tcp_based.h"
+extern "C"
+{
+#include "stdio.h"
 
+}
 
 
 void runSuite_cncmachine(int argc, char const *argv[]){
@@ -25,8 +29,9 @@ void runSuite_comm_tcp_based(int argc, char const *argv[]){
 
 
 int main(int argc, char const *argv[]){
+	//runSuite_protocol(argc,argv);
     runSuite_cncmachine(argc,argv);
-    runSuite_comm_tcp_based(argc,argv);
+    //runSuite_comm_tcp_based(argc,argv);
 }
 
 

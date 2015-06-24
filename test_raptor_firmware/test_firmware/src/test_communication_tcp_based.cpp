@@ -277,4 +277,3 @@ cute::suite make_suite_test_comm_tcp_based(){
 	//s.push_back(CUTE(testSendCommand));
 	return s;
 }
-
