@@ -61,6 +61,7 @@ class KshatriaGUI(GuiSupport):
         self.pulsewidth_x_h = self.builder.get_object('pulsewidth_x_h')
         self.pulsewidth_x_l = self.builder.get_object('pulsewidth_x_l')
         self.feed_cut = self.builder.get_object('feed_cut')
+        self.gcode_scale = self.builder.get_object('gcode_scale')
         self.layer_thickness    = self.builder.get_object('layer_thickness')
         self.layer_numbers      = self.builder.get_object('layer_numbers')
         self.speed_start    = self.builder.get_object('speed_start')
@@ -141,9 +142,9 @@ class KshatriaGUI(GuiSupport):
         self.gs_layer_thickness = int(self.layer_thickness.get_text()) 
         self.gs_layer_numbers = int(self.layer_numbers.get_text()  ) 
         self.set_layer()
-#         for i in range(3):
-#             print 'starting in ',3-i
-#             time.sleep(1)
+        for i in range(3):
+            print 'starting in ',3-i
+            time.sleep(1)
         self.start_routing()
     
     def on_erase_coord_clicked(self,widget):
@@ -159,7 +160,8 @@ class KshatriaGUI(GuiSupport):
         print 'Transfer Coord button activated'
         self.gs_feed_cut = int(self.feed_cut.get_text())
         self.set_feed()
-        self.send_coordinates()
+        print 'scale is ',int(self.gcode_scale.get_text())
+        self.send_coordinates(int(self.gcode_scale.get_text()))
         #gui_support.send_file(self.GTKGCode_File.get_text())
         
     def on_rescan_coms_clicked(self,widget, data = None):

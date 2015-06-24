@@ -228,6 +228,7 @@ class CfgFile:
                         ,'feed_cut'
                         ,'speed_start'
                         ,'speed_change'
+                        ,'gcode_scale'
                         ,'layer_thickness'
                         ,'layer_numbers'] 
         

@@ -900,7 +900,7 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">1</property>
                                 <property name="bottom_attach">2</property>
-                                <property name="x_options"></property>
+                                <property name="x_options"/>
                               </packing>
                             </child>
                             <child>
@@ -918,7 +918,7 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">2</property>
                                 <property name="bottom_attach">3</property>
-                                <property name="x_options"></property>
+                                <property name="x_options"/>
                               </packing>
                             </child>
                             <child>
@@ -936,7 +936,7 @@
                                 <property name="right_attach">4</property>
                                 <property name="top_attach">3</property>
                                 <property name="bottom_attach">4</property>
-                                <property name="x_options"></property>
+                                <property name="x_options"/>
                               </packing>
                             </child>
                             <child>
@@ -1018,7 +1018,7 @@
                                   </packing>
                                 </child>
                                 <child>
-                                  <object class="GtkEntry" id="feed_travel">
+                                  <object class="GtkEntry" id="gcode_scale">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="invisible_char">&#x25CF;</property>
@@ -1069,7 +1069,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label26">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">Traveling Feedrate</property>
+                                    <property name="label" translatable="yes">scale</property>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
