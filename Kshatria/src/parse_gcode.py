@@ -61,18 +61,18 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
                 elif tokens[1][0] =='Z':
                     
                     if gcode_type =='G1':
-                        coordinates.append((int(0),int(0),int(router_down)))
+                        coordinates.append((int(1),int(1),int(router_down)))
                     elif gcode_type =='G0':
-                        coordinates.append((int(7),int(7),int(router_up)))
+                        coordinates.append((int(0),int(0),int(router_up)))
                     else:
                         raise ValueError('unexpected gcode type with command z')
                     
                 else:
                     print 'ignored:*',tokens
             elif gcode_type == 'M3' or gcode_type == 'M03':
-                coordinates.append((int(0),int(0),int(router_on)))
+                coordinates.append((int(3),int(3),int(router_on)))
             elif gcode_type == 'M5' or gcode_type == 'M05':
-                coordinates.append((int(3),int(3),int(router_off)))
+                coordinates.append((int(5),int(5),int(router_off)))
                 
             else:
                 print 'ignored: ',tokens
@@ -82,9 +82,10 @@ def draw_coord(coordinates):
     fig, ax = plt.subplots()
     x = []
     y = []
-    
-    for t in range(len(coordinates)):
-        if t == 0:
+    set_limits = True
+    for x_coord, y_coord, tool_stat in xycoord:
+        if set_limits:
+            set_limits = False
             points, = ax.plot(x, y, marker='o', linestyle='--')
             xmax = math.ceil(max(coordinates,key=lambda item:float(item[0]))[0])
             ymax = math.ceil(max(coordinates,key=lambda item:float(item[1]))[1])
@@ -94,25 +95,28 @@ def draw_coord(coordinates):
             #return 0
             ax.set_xlim(0, xmax) 
             ax.set_ylim(0, ymax) 
-        else:
-            x_coord, y_coord, tool_stat = coordinates.pop()
-            #print x_coord, y_coord
+        
+        if tool_stat == router_state.router_xy:
+            #print this and copy to test cnc firmware in CUTE
+            #print 'machine.SetNextPosition(',x_coord,',', y_coord,');'
+            
             x.append(x_coord)
             y.append(y_coord)
             points.set_data(x, y)
-        #if str(t)[-1] == '0': 
-        #plt.pause(0.1)
+            #raw_input("press enter\n")#uncomment this line for single step animation
+            plt.pause(0.001)
     try:
+        #raw_input("press enter")
         plt.pause(60)
     except:
         print 'did you press the red x?'
         
 if __name__ == '__main__':
-#     xycoord = get_gcode_data('rd_bm1.nc')#('RR.nc')#
+    xycoord = get_gcode_data('step_motion.nc', scale = 1)#('rd_bm1.nc')#('RR.nc')#
 #     for data in xycoord:
 #         print data
 #     print len(xycoord)
-#     draw_coord(xycoord)
+    draw_coord(xycoord)
     print router_state.router_up
     print router_state.reverse_mapping[1]
     
