@@ -534,14 +534,16 @@ void CncMachine::StartRouting()
                 //turn router off
                 break;
             case(router_up):
-                this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = 1;
-                this->StepNumZ = this->LayerThickness;
-                this->MoveZ();
-                break;
             case(router_down):
-                this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = 0;
+            	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = movement.router_state == router_up ? 1 : 0;
                 this->StepNumZ = this->LayerThickness;
                 this->MoveZ();
+            	//wait until stepping is done
+            	ReadStatus();
+            	while(!this->CNC_STATUS.STUS.STUS_BITS.ZDONE)
+            	{
+            		ReadStatus();
+            	}
                 break;
             case(router_xy):
                 //move xy
