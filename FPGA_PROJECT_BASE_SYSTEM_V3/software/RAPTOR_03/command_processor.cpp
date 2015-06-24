@@ -11,7 +11,11 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "command_processor.hpp"
+extern "C"
+{
+#include "stdio.h"
 
+}
 CommandProcessor::CommandProcessor()
 {
 }

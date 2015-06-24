@@ -35,17 +35,17 @@ struct cnc_stepdir
     }data;
 };
 
-
+enum possible_commands {JOG_Z = 0,      JOG_Y,      JOG_X,          JOG_XY,
+                                     SET_PW_Z,   SET_PW_Y,        SET_PW_X,
+                                  START_ROUTE,      PAUSE,          CANCEL,
+                                         G_XY,       FEED,     ERASE_COORD,
+                                    SET_LAYER,  SET_ACCEL, SET_ROUTE_STATE,
+                        };
 class CommandProcessor : private CncMachine
 {
 public:
 	CommandProcessor();
-    enum possible_commands {JOG_Z = 0,      JOG_Y,      JOG_X,          JOG_XY,
-                                         SET_PW_Z,   SET_PW_Y,        SET_PW_X,
-                                      START_ROUTE,      PAUSE,          CANCEL,
-                                             G_XY,       FEED,     ERASE_COORD,
-                                        SET_LAYER,  SET_ACCEL, SET_ROUTE_STATE,
-                            };
+
 	int input_command(alt_u8 command, string payload);
 
 private:
