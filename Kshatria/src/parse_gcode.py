@@ -5,6 +5,7 @@ Created on May 1, 2015
 '''
 import matplotlib.pyplot as plt 
 import math
+from numpy import double
 
 def enum(*sequential, **named):
     '''
@@ -29,9 +30,31 @@ def enum(*sequential, **named):
 router_state = enum('router_off', 'router_on', 'router_up','router_down','router_xy')
 
 def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
+    '''
+    Reads and parses gcode returns a coordinate list for gui_support
+    to send to firmware
+    '''
+    #read all lines in gcode file
     with open(input_file) as f:
         gcode_file = f.read().splitlines()
     
+    #do post processing on lines read from gcode file
+    #this is done to get the gocde file into a 
+    #recognizable format for the rest of the parsing code
+    #what is done:
+    #    replace three spaces with no space ex: '   ' = ''
+    #    replace two spaces with no space ex: '  ' = ''
+    #gcode generation programs supported
+    #    inkscape - laser plugin
+    #    makercam
+    #    DXF2GCODE
+    post_processed = []
+    for sentence in gcode_file:
+        sentence = sentence.replace('   ','')
+        sentence = sentence.replace('  ','')
+        post_processed.append(sentence)
+    gcode_file = post_processed
+        
     #{router_off = 0, router_on, router_up, router_down,router_xy};
     router_off  = 0
     router_on   = 1
@@ -47,6 +70,7 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
             pass
         else:
             tokens =  line.split(' ')#line[:-1].split(' ')
+                        
             gcode_type = tokens[0]
             #if GCODE found in list
             if gcode_type in ['G0','G1','G2','G3']:
@@ -59,7 +83,7 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
 
                     coordinates.append((int(float(tokens[1][1:])*scale),int(float(tokens[2][1:])*scale),int(router_xy)))
                 elif tokens[1][0] =='Z':
-                    
+                    print 'gcode z motion', double(tokens[1][1:])
                     if gcode_type =='G1':
                         coordinates.append((int(1),int(1),int(router_down)))
                     elif gcode_type =='G0':
@@ -112,10 +136,10 @@ def draw_coord(coordinates):
         print 'did you press the red x?'
         
 if __name__ == '__main__':
-    xycoord = get_gcode_data('step_motion.nc', scale = 1)#('rd_bm1.nc')#('RR.nc')#
-#     for data in xycoord:
-#         print data
-#     print len(xycoord)
+    xycoord = get_gcode_data('PenHolderBottomPolyCircleSimplemultilayer.ngc')#('step_motion.nc', scale = 1)#('rd_bm1.nc')#('RR.nc')#
+    for data in xycoord:
+        print data
+    print len(xycoord)
     draw_coord(xycoord)
     print router_state.router_up
     print router_state.reverse_mapping[1]
