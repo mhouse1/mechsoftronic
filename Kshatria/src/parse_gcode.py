@@ -46,7 +46,7 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     #    replace two spaces with no space ex: '  ' = ''
     #gcode generation programs supported
     #    inkscape - laser plugin
-    #    makercam
+    #    makercam - aka partcam.swf
     #    DXF2GCODE
     post_processed = []
     for sentence in gcode_file:
