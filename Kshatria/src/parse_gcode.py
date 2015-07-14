@@ -85,9 +85,9 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
                 elif tokens[1][0] =='Z':
                     print 'gcode z motion', double(tokens[1][1:])
                     if gcode_type =='G1':
-                        coordinates.append((int(1),int(1),int(router_down)))
+                        coordinates.append((int(1),double(tokens[1][1:])*scale,int(router_down)))
                     elif gcode_type =='G0':
-                        coordinates.append((int(0),int(0),int(router_up)))
+                        coordinates.append((int(0),double(tokens[1][1:])*scale,int(router_up)))
                     else:
                         raise ValueError('unexpected gcode type with command z')
                     
