@@ -6,6 +6,8 @@ Created on May 1, 2015
 import matplotlib.pyplot as plt 
 import math
 from numpy import double
+from decimal import Decimal #import will fail if theres a number.py in src directory
+from matplotlib.cbook import Null
 
 def enum(*sequential, **named):
     '''
@@ -27,7 +29,7 @@ def enum(*sequential, **named):
     enums['reverse_mapping'] = reverse
     return type('Enum', (), enums)
 
-router_state = enum('router_off', 'router_on', 'router_up','router_down','router_xy')
+router_state = enum('router_off', 'router_on', 'router_up','router_down','router_xy','router_z')
 
 def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     '''
@@ -61,6 +63,7 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     router_up   = 2
     router_down = 3
     router_xy   = 4
+    router_z    = 5
 
     
     coordinates = []
@@ -80,14 +83,12 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
                     #print tokens
                     #print tokens[1][1:],tokens[2][1:]
                     #convert (x,y) string to float then scale it then convert to int
-
-                    coordinates.append((int(float(tokens[1][1:])*scale),int(float(tokens[2][1:])*scale),int(router_xy)))
+                    coordinates.append((int(Decimal(tokens[1][1:])*Decimal(scale)),int(Decimal(tokens[2][1:])*Decimal(scale)),int(router_state.router_xy)))
+                    print coordinates[-1] #print last item in list
                 elif tokens[1][0] =='Z':
                     print 'gcode z motion', double(tokens[1][1:])
-                    if gcode_type =='G1':
-                        coordinates.append((int(1),double(tokens[1][1:])*scale,int(router_down)))
-                    elif gcode_type =='G0':
-                        coordinates.append((int(0),double(tokens[1][1:])*scale,int(router_up)))
+                    if gcode_type =='G0' or gcode_type =='G1':
+                        coordinates.append((int(Decimal(tokens[1][1:])*Decimal(scale)),1,int(router_state.router_z)))
                     else:
                         raise ValueError('unexpected gcode type with command z')
                     
@@ -112,16 +113,20 @@ def draw_coord(coordinates):
             set_limits = False
             points, = ax.plot(x, y, marker='o', linestyle='--')
             xmax = math.ceil(max(coordinates,key=lambda item:float(item[0]))[0])
+            xmin = math.ceil(min(coordinates,key=lambda item:float(item[0]))[0])
             ymax = math.ceil(max(coordinates,key=lambda item:float(item[1]))[1])
+            ymin = math.ceil(min(coordinates,key=lambda item:float(item[1]))[1])
             print 'max found x', xmax
             print 'max found y', ymax
             #print max(coordinates,key=lambda item:item[1])[0]
             #return 0
-            ax.set_xlim(0, xmax) 
-            ax.set_ylim(0, ymax) 
+            border = 0.1
+            
+            ax.set_xlim(xmin-xmin*border, xmax+xmax*border) 
+            ax.set_ylim(ymin-ymin*border, ymax+ymax*border) 
         
         if tool_stat == router_state.router_xy:
-            #print this and copy to test cnc firmware in CUTE
+            #print this and copy to c++ test code to test cnc firmware in CUTE
             #print 'machine.SetNextPosition(',x_coord,',', y_coord,');'
             
             x.append(x_coord)
@@ -136,11 +141,13 @@ def draw_coord(coordinates):
         print 'did you press the red x?'
         
 if __name__ == '__main__':
-    xycoord = get_gcode_data('PenHolderBottomPolyCircleSimplemultilayer.ngc')#('step_motion.nc', scale = 1)#('rd_bm1.nc')#('RR.nc')#
-    for data in xycoord:
-        print data
+    xycoord = get_gcode_data('PenHolderBottomPolyCircleSimplemultilayer.ngc')#('step_motion.nc', scale = 1)#('step_motion1.nc', scale = 1)#('rd_bm1.nc')#('RR.nc')#
+    #xycoord = get_gcode_data('step_motion2.nc', scale = 1)#
+
+#     for data in xycoord:
+#         print data
     print len(xycoord)
     draw_coord(xycoord)
-    print router_state.router_up
-    print router_state.reverse_mapping[1]
+    #print router_state.router_up
+    #print router_state.reverse_mapping[1]
     
