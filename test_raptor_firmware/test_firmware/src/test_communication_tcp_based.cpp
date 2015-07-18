@@ -10,14 +10,18 @@
 /// @par Copyright (c) 2014 All rights reserved.
 /////////////////////////////////////////////////////////////////////////////
 
-//#include <iostream>
+#include <iostream>
+#include <fstream>
 
 #include "cute.h"
 #include "test_communication_tcp_based.h"
+#include "test_helper.h"
 
+#define private public
 #include "communication_tcp_based.hpp"
 
 #include "command_processor.hpp"
+
 
 using namespace std;
 
@@ -265,13 +269,33 @@ void testSendCommand()
 	listener.input(0);
 	listener.input(5);
 }
+
+void testReadByteStream()
+{
+	//note: after compiling test_cnc_firmware.exe is generated
+	//run the exe and redirect output to capture full output
+	//C:\workspace_luna\test_cnc_firmware\Debug>test_cnc_firmware.exe > output.txt
+	CommSimple listener;
+
+    std::fstream myfile("c:/bytestream0.txt", std::ios_base::in);
+
+    int a;
+    while (myfile >> a)
+    {
+        //printf("%d ", a);
+        listener.input(a);
+    }
+
+    DisplayStepCoordinate(listener.routes);
+
+}
 cute::suite make_suite_test_comm_tcp_based(){
 	cute::suite s;
 
 	//push_back tests to s
 
-
-	s.push_back(CUTE(testRouteLayers));
+	s.push_back(CUTE(testReadByteStream));
+	//s.push_back(CUTE(testRouteLayers));
 	//s.push_back(CUTE(testSendCoordinates));
 	//s.push_back(CUTE(testReceiver));
 	//s.push_back(CUTE(testSendCommand));

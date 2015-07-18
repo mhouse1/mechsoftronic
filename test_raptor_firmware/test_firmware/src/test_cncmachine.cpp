@@ -15,7 +15,7 @@
 #include <list>
 #include "types.hpp"
 #include "cncmachine.hpp"
-
+#include "test_helper.h"
 using namespace std;
 
 extern "C"
@@ -37,40 +37,40 @@ COORDINATE xy(alt_u32 x, alt_u32 y)
 	return pos;
 }
 
-void DisplayStepCoordinate(list<CncMachine::TRAVERSALXY> route_data)
-{
-    printf("started routing\n");
-    //DisplayRoutes(route_data);
-    CncMachine::TRAVERSALXY movement;
-    list<CncMachine::TRAVERSALXY>::iterator it;
-
-   alt_32 xpos = 0;
-   alt_32 ypos= 0;
-   for(it = route_data.begin(); it != route_data.end(); it++)
-   {
-       movement = *it;
-       if (movement.X.StepDir)
-       {
-    	   xpos = xpos + movement.X.StepNum;
-       }
-       else
-       {
-    	   xpos = xpos - movement.X.StepNum;
-       }
-       if (movement.Y.StepDir)
-       {
-    	   ypos = ypos + movement.Y.StepNum;
-       }
-       else
-       {
-    	   ypos = ypos - movement.Y.StepNum;
-       }
-       printf("G3 X%ld Y%ld\n",xpos, ypos);
-
-   }
-
-    printf("completed routing\n");
-}
+//void DisplayStepCoordinate(list<CncMachine::TRAVERSALXY> route_data)
+//{
+//    printf("started routing\n");
+//    //DisplayRoutes(route_data);
+//    CncMachine::TRAVERSALXY movement;
+//    list<CncMachine::TRAVERSALXY>::iterator it;
+//
+//   alt_32 xpos = 0;
+//   alt_32 ypos= 0;
+//   for(it = route_data.begin(); it != route_data.end(); it++)
+//   {
+//       movement = *it;
+//       if (movement.X.StepDir)
+//       {
+//    	   xpos = xpos + movement.X.StepNum;
+//       }
+//       else
+//       {
+//    	   xpos = xpos - movement.X.StepNum;
+//       }
+//       if (movement.Y.StepDir)
+//       {
+//    	   ypos = ypos + movement.Y.StepNum;
+//       }
+//       else
+//       {
+//    	   ypos = ypos - movement.Y.StepNum;
+//       }
+//       printf("G3 X%ld Y%ld\n",xpos, ypos);
+//
+//   }
+//
+//    printf("completed routing\n");
+//}
 
 /////////////////////////////////////////////////////////////////////////////
 ///@brief verify cncmachine sets the correct direction
@@ -926,6 +926,506 @@ void routeTestReturnStepCoordinates()
 	DisplayStepCoordinate(route_data);
 }
 
+void routeTestReturnStepCoordinates1()
+{
+	CncMachine machine;
+	list<CncMachine::TRAVERSALXY> route_data;
+	//send coordinates from PenHolderBottomPolyCircleSimple.ngc
+	//note: these coordinates are generated from running parse_gcode.py
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 194000 , 131690 );
+machine.SetNextPosition( 194000 , 148310 );
+machine.SetNextPosition( 202310 , 162689 );
+machine.SetNextPosition( 216690 , 171000 );
+machine.SetNextPosition( 233310 , 171000 );
+machine.SetNextPosition( 247689 , 162689 );
+machine.SetNextPosition( 256000 , 148310 );
+machine.SetNextPosition( 256000 , 131690 );
+machine.SetNextPosition( 247689 , 117310 );
+machine.SetNextPosition( 233310 , 109000 );
+machine.SetNextPosition( 216690 , 109000 );
+machine.SetNextPosition( 202310 , 117310 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 84000 , 411000 );
+machine.SetNextPosition( 117000 , 411000 );
+machine.SetNextPosition( 117000 , 149000 );
+machine.SetNextPosition( 84000 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 334240 , 411000 );
+machine.SetNextPosition( 367239 , 411000 );
+machine.SetNextPosition( 367239 , 149000 );
+machine.SetNextPosition( 334240 , 149000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 114789 , 692580 );
+machine.SetNextPosition( 112380 , 700000 );
+machine.SetNextPosition( 114789 , 707420 );
+machine.SetNextPosition( 121100 , 712000 );
+machine.SetNextPosition( 128900 , 712000 );
+machine.SetNextPosition( 135210 , 707420 );
+machine.SetNextPosition( 137620 , 700000 );
+machine.SetNextPosition( 135210 , 692580 );
+machine.SetNextPosition( 128900 , 688000 );
+machine.SetNextPosition( 121100 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( 314790 , 692580 );
+machine.SetNextPosition( 312380 , 700000 );
+machine.SetNextPosition( 314790 , 707420 );
+machine.SetNextPosition( 321100 , 712000 );
+machine.SetNextPosition( 328900 , 712000 );
+machine.SetNextPosition( 335210 , 707420 );
+machine.SetNextPosition( 337620 , 700000 );
+machine.SetNextPosition( 335210 , 692580 );
+machine.SetNextPosition( 328900 , 688000 );
+machine.SetNextPosition( 321100 , 688000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( -9000 , 809000 );
+machine.SetNextPosition( 459000 , 809000 );
+machine.SetNextPosition( 459000 , -9000 );
+machine.SetNextPosition( -9000 , -9000 );
+machine.SetNextPosition( 0 , 0 );
+route_data = machine.routes;
+DisplayStepCoordinate(route_data);
+}
 cute::suite make_suite_test_cncmachine(){
 	cute::suite s;
 
@@ -935,7 +1435,8 @@ cute::suite make_suite_test_cncmachine(){
 //	s.push_back(CUTE(thisIsATest));
 	//s.push_back(CUTE(routeTest));
 	//s.push_back(CUTE(routeTestSmallNumbers));
-	s.push_back(CUTE(routeTestReturnStepCoordinates));
+	//s.push_back(CUTE(routeTestReturnStepCoordinates));
+	s.push_back(CUTE(routeTestReturnStepCoordinates1));
 	return s;
 }
 

@@ -30,8 +30,8 @@ void runSuite_comm_tcp_based(int argc, char const *argv[]){
 
 int main(int argc, char const *argv[]){
 	//runSuite_protocol(argc,argv);
-    runSuite_cncmachine(argc,argv);
-    //runSuite_comm_tcp_based(argc,argv);
+    //runSuite_cncmachine(argc,argv);
+    runSuite_comm_tcp_based(argc,argv);
 }
 
 
