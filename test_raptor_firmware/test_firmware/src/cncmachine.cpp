@@ -129,10 +129,8 @@ void CncMachine::SetNumberOfStepsZ(alt_u32 steps)
 CncMachine::TRAVERSALXY CncMachine::GetXYMovement()
 {
 	TRAVERSALXY data;
-	data.X.Position = this->PresentX;
 	data.X.StepDir  = this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX;
 	data.X.StepNum	= this->StepNumX;
-	data.Y.Position = this->PresentY;
 	data.Y.StepDir  = this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionY;
 	data.Y.StepNum	= this->StepNumY;
 	data.router_state = this->router_state;
@@ -312,12 +310,10 @@ void CncMachine::DisplayMovement(CncMachine::TRAVERSALXY movement)
 //	cout<<"########################################"<<endl;
 
 	printf("########################################\n");
-	printf("X_Position= %lu\n",movement.X.Position);
 	printf("X_StepDir = %lu \n",movement.X.StepDir );
 	printf("X_StepNum = %lu\n",movement.X.StepNum );
 	printf("X_HighPulseW = %lu\n",movement.X.HighPulseWidth );
 	printf("X_LowPulseWidth = %lu\n",movement.X.LowPulseWidth );
-	printf("Y_Position= %lu\n",movement.Y.Position);
 	printf("Y_StepDir = %lu \n",movement.Y.StepDir );
 	printf("Y_StepNum = %lu\n",movement.Y.StepNum );
 	printf("Y_HighPulseW = %lu\n",movement.Y.HighPulseWidth );
@@ -337,6 +333,52 @@ void CncMachine::DisplayRoutes(list<CncMachine::TRAVERSALXY> route_data)
 	}
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///@brief given the next coordinate, calculate number of steps and direction
+///@details returns an non zero exit if error
+/// Exit code 0: NORMAL_EXIT
+///		there are no errors
+/// Exit code 1: INVALID_COORDINATE
+///		input coordinate is not in range, should be <= to FullRangeDistance
+/// Exit code 2: INVALID_STEPCOUNT
+///		for a given direction there is a certain amount of steps leftover to
+///		to move, if the Step number calculated is not in range of steps
+///		leftover for a given direction then return with error code
+///@todo	the z movement information is stored in the x axis for now
+///			,rather than expanding the TRAVERSALXY data structure to
+///			include z also this will save memory. in the future when there
+///			is simulatenous xyz movement this will be updated
+/////////////////////////////////////////////////////////////////////////////
+alt_u8 CncMachine::SetNextZPosition(alt_32 nextz)
+{
+	TRAVERSALXY data;
+
+	//assign state router_z to indicate data is z movement
+	data.router_state = router_z;
+
+	//Convert distance to steps
+	//calculate distance change
+	alt_32 distanceZ = nextz - this->PresentZ;
+	//calculate and set direction
+	//if change in distance is positive move up, else move down
+	data.X.StepDir = distanceZ >= 0? 1:0;
+
+	//05/04/2015 for now just calculate number of steps to take based on distance divided by some number
+	//			 @todo will need to figure out the actual number of steps per distance increment later to plot accurately
+	//05/09/2015 measured 1000 steps to move 22mm equivalent of 44.45 pulses per mm.
+	//			 the received distanceXY is scaled up by a number in the GUI,
+	//			 the actual StepNum should be StepNum = (distanceX*44.45)/GUI_Scaling
+	//			 in instruction terms this would be (distanceX/220)
+	//07/16/2015 the above was done for x axis, will need to figureout the correct number for z axis
+	data.X.StepNum = (alt_32)fabs(distanceZ)/221;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+
+	//for now just use the feedrate as speed for Z axis movement
+	data.X.HighPulseWidth = this->FeedRate;
+	data.X.LowPulseWidth = this->FeedRate;
+	this->routes.push_back(data);
+	return 0;
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 ///@brief given the next coordinate, calculate number of steps and direction
@@ -352,16 +394,12 @@ void CncMachine::DisplayRoutes(list<CncMachine::TRAVERSALXY> route_data)
 ///@todo	right now itll use pulse info for x axis as speed base
 ///			will review this later
 /////////////////////////////////////////////////////////////////////////////
-alt_u8 CncMachine::SetNextPosition(alt_u32 x, alt_u32 y)
+alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 {
 	TRAVERSALXY data;
 
 	//assign state router_xy to indicate data is xy movement
 	data.router_state = router_xy;
-
-	//@todo dont need to put position in data, this is only taking up extra space
-	data.X.Position = x;
-	data.Y.Position = y;
 
 	//Convert distance to steps
 	//calculate distance change
@@ -475,9 +513,43 @@ void CncMachine::AppendStateToRoutes(Peripheral state)
 	printf("set router state to %d\n", state);
 	this->routes.push_back(data);
 }
+
+void CncMachine::RouteZ(TRAVERSALXY movement)
+{
+	WriteStepNumZ(movement.X.StepNum);
+	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = movement.X.StepDir;
+	WritePulseInfoZ(movement.X.HighPulseWidth,movement.X.LowPulseWidth);
+
+	//run Z axis
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunZ = 1;
+	WriteControlRegister();
+	this->CNC_CONTROL.CTRL.CTRL_BITS.RunZ = 0;
+	WriteControlRegister();
+	printf("RoutZ steps %lu",movement.X.StepNum);
+	//wait until stepping is done
+	ReadStatus();
+	while(!this->CNC_STATUS.STUS.STUS_BITS.ZDONE)
+	{
+		ReadStatus();
+	}
+}
+
 void CncMachine::RouteXY(TRAVERSALXY movement)
 {
-	DisplayMovement(movement);
+	//display the TRAVERSALXY data using printf
+	//the printed output would look something like
+	//
+	//########################################
+	//X_StepDir = 0
+	//X_StepNum = 376
+	//X_HighPulseW = 69148
+	//X_LowPulseWidth = 69148
+	//Y_StepDir = 1
+	//Y_StepNum = 650
+	//Y_HighPulseW = 40000
+	//Y_LowPulseWidth = 40000
+	//########################################
+	//DisplayMovement(movement);
 
 	WriteStepNumXY(movement.X.StepNum, movement.Y.StepNum);
 	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionX = movement.X.StepDir;
@@ -562,6 +634,9 @@ void CncMachine::StartRouting()
                 //move xy
                 RouteXY(movement);
                 break;
+            case(router_z):
+            	RouteZ(movement);
+				break;
             default:
                 printf("undefined router state");
                 break;

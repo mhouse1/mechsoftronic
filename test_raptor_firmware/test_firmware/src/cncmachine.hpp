@@ -23,7 +23,7 @@ class CncMachine
 {
 public:
 
-	enum Peripheral {router_off = 0, router_on, router_up, router_down,router_xy};
+	enum Peripheral {router_off = 0, router_on, router_up, router_down,router_xy,router_z};
 
 	//This struct has the exact mapping as defined in the VHDL file
 	//the control_register only contains the bits to signal start
@@ -71,7 +71,6 @@ public:
 		alt_u32 HighPulseWidth;
 		alt_u32 LowPulseWidth;
 		alt_u32 StepDir; //direction of movement
-		alt_u32 Position;//current position on table
 	};
 
 	Peripheral router_state;
@@ -93,7 +92,8 @@ public:
 
 	void SetAcceleration(alt_u32 speed_start, alt_u32 speed_change);
 	void SetCurrentPosition(alt_u32 x, alt_u32 y); //@todo may not need this func
-	alt_u8 SetNextPosition(alt_u32 x, alt_u32 y);
+	alt_u8 SetNextPosition(alt_32 x, alt_32 y);
+	alt_u8 SetNextZPosition(alt_32 nextz);
 	void MotorXDir(alt_u32 x);
 	void MotorYDir(alt_u32 y);
 	void MotorZDir(alt_u32 z);
@@ -149,6 +149,7 @@ protected:
 	void ClearControlRegister(void);
 	void WriteControlRegister(void);
 	void RouteXY(TRAVERSALXY movement);
+	void RouteZ(TRAVERSALXY movement);
 	void AppendStateToRoutes(Peripheral state);
 private:
 
