@@ -19,6 +19,19 @@ import parse_gcode
 from parse_gcode import router_state
 framer = protocolwrapper.ProtocolWrapper()
 
+def add(x,y):
+    return x+y
+
+def get_bin_with_padding(number,padding):
+    '''
+    where number is a positive or negative integer
+    and padding is number of fill bits
+    '''
+    if number < 0 :
+        value = bin(int(number)& pow(2,padding)-1)[2:]
+    else:
+        value = ('0b'+("{:0%db}"%padding).format(number))[2:]
+    return value
 class Axi:
     '''
     creates a single axi object with its own data
@@ -35,8 +48,8 @@ class Axi:
         self.pulse_width_high = 0
         self.pulse_width_low = 0
         self.send = sender
-        self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
-        
+        #self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
+        self.get_bin = lambda number, padding: get_bin_with_padding(number,padding)
     def jog_payload(self):
         payload = self.get_bin(self.dir  +1 if self.dir_reversed else self.dir ,1)[-1] + \
                   self.get_bin(self.step,31)
@@ -81,7 +94,8 @@ class GuiSupport(object):
         'ERASE_COORD'     :{'command_number' : 12 , 'command_length' : 0},  
         'SET_LAYER'       :{'command_number' : 13 , 'command_length' : 4},
         'SET_ACCEL'       :{'command_number' : 14 , 'command_length' : 8}, 
-        'SET_ROUTE_STATE' :{'command_number' : 15 , 'command_length' : 1},         
+        'SET_ROUTE_STATE' :{'command_number' : 15 , 'command_length' : 1}, 
+        'G_Z'             :{'command_number' : 16 , 'command_length' : 4}, 
         }
         print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
@@ -91,8 +105,8 @@ class GuiSupport(object):
         #self._send_handle = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         #self._send_handle.connect(addr)
         self.gcode_file = ''
-        self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
-
+        #self.get_bin = lambda number, padding: number >= 0 and str(bin(number))[2:].zfill(padding) or "-" + str(bin(number))[3:].zfill(padding)
+        self.get_bin = lambda number, padding: get_bin_with_padding(number,padding)
 
         self.axis_x = Axi(self._send,'X')
         self.axis_y = Axi(self._send,'Y')
@@ -122,12 +136,13 @@ class GuiSupport(object):
         hex_fill = '{0:0>'+str(len(full_command_bin)/4)+'}'
         #print '%x'% int(full_command_bin,2)
         full_command_hex = hex_fill.format('%x'% int(full_command_bin,2)) #build hex string zero fill
-        #print 'full_command_decode',full_command_hex.decode('hex')
+        
         #full_command_ascii = binascii.b2a_uu(full_command_bin)
         #self._send_handle.send(full_command_hex.decode('hex'))
         #print 'command ',command, cmd_num, cmd_len
         
-        print 'full_command binary:',command, cmd_num, cmd_len,payload
+        #print 'full_command binary:',command, cmd_num, cmd_len,payload
+        #print 'full_command_decode',full_command_hex.decode('hex')
         #print 'full_command hex: ',full_command_hex
         #print 'full_command ascii:',full_command_ascii
         Communications.transmit(full_command_hex.decode('hex'))
@@ -193,21 +208,32 @@ class GuiSupport(object):
 
 
     def send_coordinates(self,scale = 10000):
-        command = 'G_XY'
         coordinates = parse_gcode.get_gcode_data(self.gcode_file, scale)
-        for xpos, ypos , tool_stat in coordinates:
+        total_num_coordinates = len(coordinates)
+        for idx, coordinate_data in enumerate(coordinates):
+            data1, data2 , cnc_state  = coordinate_data
             #print xpos, ypos
-            if tool_stat == router_state.router_xy:
-                payload = self.get_bin(xpos,32) +\
-                          self.get_bin(ypos,32)
+            if cnc_state == router_state.router_xy:
+                command = 'G_XY'
+                print 'x ',int(data1), 'y', int(data2)
+                payload = self.get_bin(int(data1),32) +\
+                          self.get_bin(int(data2),32)
                           
                 self._send(command, payload)
+            elif cnc_state == router_state.router_z:
+                command = 'G_Z'
+                payload = self.get_bin(data1,32)
+                self._send(command, payload)
             else:
-                payload = self.get_bin(tool_stat,8)
+                payload = self.get_bin(cnc_state,8)
                 self._send('SET_ROUTE_STATE',payload)
-                print 'tool status ', router_state.reverse_mapping[tool_stat]
-
-
+                #print 'tool status ', router_state.reverse_mapping[cnc_state]
+            #print 'index ',idx
+            
+            #print progress of transmission
+            if str(idx)[-1] == '0':
+                print "\r{0}".format((float(idx)/total_num_coordinates)*100),
+        print 'finished sending coordinates'
 
 class CfgFile:
     ''' manages a GUI configuration file 
