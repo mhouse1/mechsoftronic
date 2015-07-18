@@ -74,6 +74,23 @@ def transmit(message):
     #where messages is a list of framed data
     #print 'transmitting...'
     #if not active_serial == None:
+    
+    #log transmitted message into a text file
+    #the file can then be read by CUTE unit test to simulate
+    #actual data sent over serial channel
+    default_file_name = 'bytestream'
+    default_file_ext = '.txt'
+    default_file_index = 0
+    file_name = default_file_name+str(default_file_index)+default_file_ext
+
+#     while os.path.isfile(file_name):
+#         default_file_index += 1
+#         file_name = default_file_name+str(default_file_index)+default_file_ext
+    with open(file_name, "a") as myfile:
+        for char in message:
+            myfile.write(str(ord(char))+' ')
+            #myfile.write(char)
+        #myfile.write(message[:-1])
     if serial_activated:
         message_queue.put(message,block=False)
         #print 'queued msg:',message
@@ -162,4 +179,5 @@ def Set_Active_Serial_Channel(port_name, baud_rate = 19200, bytesize = 8, timeou
 #     active_serial.write('a')
     
 if __name__ == "__main__":
-    print list_serial_ports()
+    #print list_serial_ports()
+    transmit('hello world')
