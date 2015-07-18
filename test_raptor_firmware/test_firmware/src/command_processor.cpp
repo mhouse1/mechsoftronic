@@ -219,8 +219,9 @@ void CommandProcessor::set_pw_feed(string payload)
 /////////////////////////////////////////////////////////////////////////////
 void CommandProcessor::set_coordinate(string payload)
 {
-	alt_u32 value1 = this->get_long_from_string(payload,0);
-	alt_u32 value2 = this->get_long_from_string(payload,1);
+	alt_32 value1 = (alt_32)this->get_long_from_string(payload,0);
+	alt_32 value2 = (alt_32)this->get_long_from_string(payload,1);
+	printf("x = %lu, y = %lu",value1,value2);
 	this->SetNextPosition(value1,value2);
 }
 
@@ -285,6 +286,7 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		this->set_pw_x(payload);
 		break;
 	case(G_XY):
+		printf("GCode XY\n");
 		this->set_coordinate(payload);
 		break;
 	case(START_ROUTE):
@@ -308,6 +310,10 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
         break;
     case(SET_ROUTE_STATE):
         this->set_router_state(payload);
+        break;
+    case(G_Z):
+		printf("G code Z\n");
+    	this->SetNextZPosition((alt_32)this->get_long_from_string(payload,0));
         break;
 	default:
 		printf("unrecognized command received %d\n",command);
