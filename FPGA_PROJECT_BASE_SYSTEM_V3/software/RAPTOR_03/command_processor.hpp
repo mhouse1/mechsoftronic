@@ -19,7 +19,6 @@
 #include "types.hpp"
 #include "cncmachine.hpp"
 
-using namespace std;
 
 
 struct cnc_stepdir
@@ -40,6 +39,7 @@ enum possible_commands {JOG_Z = 0,      JOG_Y,      JOG_X,          JOG_XY,
                                   START_ROUTE,      PAUSE,          CANCEL,
                                          G_XY,       FEED,     ERASE_COORD,
                                     SET_LAYER,  SET_ACCEL, SET_ROUTE_STATE,
+                                          G_Z,
                         };
 class CommandProcessor : private CncMachine
 {
