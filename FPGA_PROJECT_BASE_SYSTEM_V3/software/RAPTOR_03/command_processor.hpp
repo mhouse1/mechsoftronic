@@ -20,7 +20,6 @@
 #include "cncmachine.hpp"
 
 
-
 struct cnc_stepdir
 {
     union
@@ -41,7 +40,7 @@ enum possible_commands {JOG_Z = 0,      JOG_Y,      JOG_X,          JOG_XY,
                                     SET_LAYER,  SET_ACCEL, SET_ROUTE_STATE,
                                           G_Z,
                         };
-class CommandProcessor : private CncMachine
+class CommandProcessor : public CncMachine
 {
 public:
 	CommandProcessor();

@@ -265,6 +265,10 @@ void CncMachine::MoveY()
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 0;
 	WriteControlRegister();
 	printf("Jog y axis in cnc machine\n");
+
+	TRAVERSALXY data;
+	data.router_state = router_unknown;
+	this->routes.push_back(data);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -333,6 +337,7 @@ void CncMachine::DisplayRoutes(list<CncMachine::TRAVERSALXY> route_data)
 	}
 }
 
+
 /////////////////////////////////////////////////////////////////////////////
 ///@brief given the next coordinate, calculate number of steps and direction
 ///@details returns an non zero exit if error
@@ -351,6 +356,7 @@ void CncMachine::DisplayRoutes(list<CncMachine::TRAVERSALXY> route_data)
 /////////////////////////////////////////////////////////////////////////////
 alt_u8 CncMachine::SetNextZPosition(alt_32 nextz)
 {
+
 	TRAVERSALXY data;
 
 	//assign state router_z to indicate data is z movement
@@ -379,6 +385,7 @@ alt_u8 CncMachine::SetNextZPosition(alt_32 nextz)
 	data.X.HighPulseWidth = this->FeedRate;
 	data.X.LowPulseWidth = this->FeedRate;
 	this->routes.push_back(data);
+//	OSMutexPend(mem_mutex, 0, OS_OPT_PEND_BLOCKING);
 	return 0;
 }
 
@@ -513,6 +520,145 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 	return 0;
 }
 
+
+///////////////////////////////////////////////////////////////////////////////
+/////@brief given the next coordinate, calculate number of steps and direction
+/////@details adds circular data to cnc route,
+/////         circular movement is starting from point A rotated about
+/////         point B until point C is reached.
+/////         where gcode is of format:
+/////             G2 X  91.820 Y  91.820 I  31.820 J  31.820
+/////         x and y value indicate final point of motion
+/////         I and J value indicate parameteres for rotation about (midX,midY)
+/////         Where: PresentX + ivar = midX, and PresentY + jvar = midY
+/////         pointA = (presentX,presentY), pointB = (presentX+31.82,presentY+31.82)
+/////         pointC = (91.82,91.82)
+/////
+/////
+/////                    *     *
+/////              *               * C
+/////            *               /
+/////          *               /
+/////                       /
+/////      A  *----------O B
+///////////////////////////////////////////////////////////////////////////////
+//alt_u8 CncMachine::RouteCircular(alt_32 endx, alt_32 endy, alt_32 ivar, alt_32 jvar)
+//{
+//    TRAVERSALXY data;
+//
+//    //@todo move scaling constant elsewhere
+//    //for now just keep it within the function stack
+//    alt_16 scaling_constant = 229;//bigger means smaller, smaller means bigger
+//
+//    //assign state router_xy to indicate data is xy movement
+//    data.router_state = router_cricle;
+//
+//    //Convert distance to steps
+//    //calculate distance change
+//    alt_32 distanceX = x - this->PresentX;
+//    alt_32 distanceY = y - this->PresentY;
+//
+//    //calculate and set direction
+//    //if change in distance is positive move up, else move down
+//    data.X.StepDir = distanceX >= 0? 1:0;
+//    data.Y.StepDir = distanceY >= 0? 1:0;
+//
+//    //05/04/2015 for now just calculate number of steps to take based on distance divided by some number
+//    //           @todo will need to figure out the actual number of steps per distance increment later to plot accurately
+//    //05/09/2015 measured 1000 steps to move 22mm equivalent of 44.45 pulses per mm.
+//    //           the received distanceXY is scaled up by a number in the GUI,
+//    //           the actual StepNum should be StepNum = (distanceX*44.45)/GUI_Scaling
+//    //           in instruction terms this would be (distanceX/220)
+//    data.X.StepNum = (alt_32)fabs(distanceX)/scaling_constant;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+//    data.Y.StepNum = (alt_32)fabs(distanceY)/scaling_constant;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
+//
+//    //set calculate the present X Y after stepping data.X.StepNum and data.Y.StepNum
+//    //the present XY would ideally be equal to function arguments x y:
+//    //      this->PresentX = x;
+//    //      this->PresentY = y;
+//    //but because the machine cant step fractional steps there will be some error
+//    //so the actual present X Y values would have to be reverse calculated like below
+//    alt_u32 actualDistanceX = data.X.StepNum*scaling_constant;
+//    alt_u32 actualDistanceY = data.Y.StepNum*scaling_constant;
+//    this->PresentX = endx;//distanceX >= 0? this->PresentX + actualDistanceX : this->PresentX - actualDistanceX;
+//    this->PresentY = endy;//distanceY >= 0? this->PresentY + actualDistanceY : this->PresentY - actualDistanceY;
+//
+//
+//    //for now use x axis pulse width info for base speed (pulse width counts)
+//    alt_u32 basePWH = this->FeedRate;
+//    alt_u32 basePWL = this->FeedRate;
+//
+//    //calculate the base pulse period divided by 2
+//    alt_u32 HalfBasePulsePeriod = (basePWH + basePWL)/2;
+//
+//
+//    //slow down the axis with less steps else uses base Pulse width info for both axis
+//    if (data.X.StepNum > data.Y.StepNum) //X has more steps to take than y, so slow down the Y axis
+//    {
+//        //check if Y axis is going to move at all
+//        // if Y axis has steps to move then slow down the Y axis movement
+//        // so it finishes at the same time as X axis
+//        if (data.Y.StepNum != 0)
+//        {
+//            //use base pulse width for x axis
+//            data.X.HighPulseWidth = basePWH;
+//            data.X.LowPulseWidth = basePWL;
+//
+//            //calculate the base pulse widths for Y axis
+//            //so Y axis completes at the same time as x axis
+//            //use the same
+//            alt_u32 totalTimeXhalf = data.X.StepNum * HalfBasePulsePeriod;
+//            alt_u32 totalTimeYhalf = totalTimeXhalf/data.Y.StepNum;
+//
+//            data.Y.HighPulseWidth = totalTimeYhalf;
+//            data.Y.LowPulseWidth = totalTimeYhalf;
+//
+//        }
+//        else //Y.StepNum = 0 (Y axis does not move)
+//        {
+//            //set XY pulse width info to base value
+//            data.X.HighPulseWidth = basePWH;
+//            data.X.LowPulseWidth = basePWL;
+//            data.Y.HighPulseWidth = basePWH;
+//            data.Y.LowPulseWidth = basePWL;
+//        }
+//    }
+//
+//    else if  (data.Y.StepNum > data.X.StepNum) //Y has more steps to take than X
+//    {
+//        if (data.X.StepNum != 0)
+//        {
+//            data.Y.HighPulseWidth = basePWH;
+//            data.Y.LowPulseWidth = basePWL;
+//
+//            alt_u32 totalTimeYhalf = data.Y.StepNum * HalfBasePulsePeriod;
+//            alt_u32 totalTimeXhalf = totalTimeYhalf/data.X.StepNum;
+//
+//            data.X.HighPulseWidth = totalTimeXhalf;
+//            data.X.LowPulseWidth = totalTimeXhalf;
+//
+//        }
+//        else //X.StepNum = 0 (X axis does not move)
+//        {
+//            data.X.HighPulseWidth = basePWH;
+//            data.X.LowPulseWidth = basePWL;
+//            data.Y.HighPulseWidth = basePWH;
+//            data.Y.LowPulseWidth = basePWL;
+//        }
+//    }
+//    else //Y and X has equal number of steps to take
+//    {
+//        data.X.HighPulseWidth = basePWH;
+//        data.X.LowPulseWidth = basePWL;
+//        data.Y.HighPulseWidth = basePWH;
+//        data.Y.LowPulseWidth = basePWL;
+//    }
+//
+//    this->routes.push_back(data);
+//    return 0;
+//}
+
+
 void CncMachine::AppendStateToRoutes(Peripheral state)
 {
 	TRAVERSALXY data;
@@ -596,6 +742,45 @@ void CncMachine::RouteXY(TRAVERSALXY movement)
 	{
 		ReadStatus();
 	}
+}
+
+void CncMachine::ExecuteRouteData(CncMachine::TRAVERSALXY  route_data)
+{
+    printf("executing route data\n");
+    this->WriteRouterPWM(40000);
+    //DisplayRoutes(route_data);
+
+    switch(route_data.router_state)
+    {
+    case(router_on):
+        //turn router on
+        break;
+    case(router_off):
+        //turn router off
+        break;
+    case(router_up):
+    case(router_down):
+        this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = route_data.router_state == router_up ? 1 : 0;
+        this->StepNumZ = this->LayerThickness;
+        this->MoveZ();
+        //wait until stepping is done
+        ReadStatus();
+        while(!this->CNC_STATUS.STUS.STUS_BITS.ZDONE)
+        {
+            ReadStatus();
+        }
+        break;
+    case(router_xy):
+        //move xy
+        RouteXY(route_data);
+        break;
+    case(router_z):
+        RouteZ(route_data);
+        break;
+    default:
+        printf("undefined router state %d", route_data.router_state);
+        break;
+    }
 }
 
 void CncMachine::StartRouting()

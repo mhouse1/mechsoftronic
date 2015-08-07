@@ -11,6 +11,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 #include "command_processor.hpp"
+//#include "machine_shared_data.hpp"
+
 extern "C"
 {
 #include "stdio.h"
@@ -221,7 +223,7 @@ void CommandProcessor::set_coordinate(string payload)
 {
 	alt_32 value1 = (alt_32)this->get_long_from_string(payload,0);
 	alt_32 value2 = (alt_32)this->get_long_from_string(payload,1);
-	printf("x = %lu, y = %lu",value1,value2);
+	//printf("x = %lu, y = %lu",value1,value2);
 	this->SetNextPosition(value1,value2);
 }
 
@@ -286,7 +288,7 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		this->set_pw_x(payload);
 		break;
 	case(G_XY):
-		printf("GCode XY\n");
+		//printf("GCode XY\n");
 		this->set_coordinate(payload);
 		break;
 	case(START_ROUTE):
@@ -317,6 +319,7 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
         break;
 	default:
 		printf("unrecognized command received %d\n",command);
+
 		return 1;
 	}
 	return 0;

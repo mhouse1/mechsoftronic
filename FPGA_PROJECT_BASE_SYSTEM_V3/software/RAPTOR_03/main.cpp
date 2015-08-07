@@ -129,11 +129,11 @@ list<CncMachine::TRAVERSALXY> global_machine_route;
 void task1(void* pdata)
 {
   pUART->sControl.sBits.rts = 1;
-  printf("task 1 initialized\n");
+  printf("task 1 080615 \n");
   char c;
   list<char> task1_local_recvd;
-  INT8U error_code;
-  BOOLEAN available;
+//  INT8U error_code;
+//  BOOLEAN available;
   while (1)//reading loop
   {
 
@@ -144,29 +144,29 @@ void task1(void* pdata)
 	}
 	else
 	{
-	    if (!task1_local_recvd.empty())
-	    {
-            //OSTimeDlyHMSM(0, 0, 0, 1); //delay 1ms
-            //OSMutexAccept() checks if mutex is available (does not block if not available)
-            //returns 1 if available returns 0 if owned by another task
-            available = OSMutexAccept(global_recvr_mutex, &error_code);
-
-            if(!error_code && available)
-            {
+//	    if (!task1_local_recvd.empty())
+//	    {
+//            //OSTimeDlyHMSM(0, 0, 0, 1); //delay 1ms
+//            //OSMutexAccept() checks if mutex is available (does not block if not available)
+//            //returns 1 if available returns 0 if owned by another task
+//            available = OSMutexAccept(global_recvr_mutex, &error_code);
+//
+//            if(!error_code && available)
+//            {
                 if (!task1_local_recvd.empty())
                 {
                     clist.splice(clist.end(),task1_local_recvd);
                 }
-            }
-            else
-            {
-                if (error_code)
-                {
-                    printf("task 1 error getting recvr mutex\n");
-                }
-            }
-            OSMutexPost(global_recvr_mutex);
-	    }
+//            }
+//            else
+//            {
+//                if (error_code)
+//                {
+//                    printf("task 1 error getting recvr mutex\n");
+//                }
+//            }
+//            OSMutexPost(global_recvr_mutex);
+//	    }
 	}
   }
 }
@@ -234,19 +234,19 @@ void task2(void* pdata)
 	  }
 	  else
 	  {
-	      OSMutexPend(global_recvr_mutex, 0, &error_code);
-	      if(!error_code)
-	      {
+//	      OSMutexPend(global_recvr_mutex, 0, &error_code);
+//	      if(!error_code)
+//	      {
 	          if (!clist.empty())
 	          {
 	              local_recvd.splice(local_recvd.end(),clist);
 	          }
-	      }
-	      else
-	      {
-	          printf("task 2 waited too long for global_recvr_mutex\n");
-	      }
-	      OSMutexPost(global_recvr_mutex);
+//	      }
+//	      else
+//	      {
+//	          printf("task 2 waited too long for global_recvr_mutex\n");
+//	      }
+//	      OSMutexPost(global_recvr_mutex);
 
 	      OSTimeDlyHMSM(0, 0, 0, 300);
 	  }
@@ -261,6 +261,8 @@ void task3(void* pdata)
   CncMachine cnc_task3;
   INT8U error_code;
   list<CncMachine::TRAVERSALXY> local_route;
+  alt_u8 popcorn = 0;
+
   while (1)
   {
     OSMutexPend(global_route_mutex, 0, &error_code);
@@ -282,7 +284,10 @@ void task3(void* pdata)
 
     while(!local_route.empty())
     {
-        cnc_task3.ExecuteRouteData(local_route.front());
+        popcorn++;
+        printf("popped one %d\n",popcorn);
+        //cnc_task3.ExecuteRouteData(local_route.front());
+        OSTimeDlyHMSM(0, 0, 3, 0);
         local_route.pop_front();
     }
 
@@ -303,7 +308,7 @@ int main(void)
 
 	//create mutex for shared memory
 	global_route_mutex = OSMutexCreate(ROUTE_MUTEX_PRIORITY, &err);
-	global_recvr_mutex = OSMutexCreate(RECVR_MUTEX_PRIORITY, &err);
+//	global_recvr_mutex = OSMutexCreate(RECVR_MUTEX_PRIORITY, &err);
 
 
     // Create tasks
