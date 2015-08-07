@@ -42,7 +42,15 @@ int CommSimple::input(UBYTE new_byte)
 		if (this->msg_length == 0)
 		{
 			//process the command with payload
-			this->input_command(this->msg_command,this->msg_payload);
+
+		    //if input_command returns error aka "unrecognized command"
+		    //change to wait command state and return decode status ERROR
+			if ( this->input_command(this->msg_command,this->msg_payload) == 1)
+			{
+			    printf("input_command returned 1\n");
+			    this->decode_state = WAIT_COMMAND;
+			    return this->decode_status = ERROR;
+			}
 			this->decode_state = WAIT_COMMAND;
 			return this->decode_status = DONE;
 		}
@@ -65,8 +73,9 @@ int CommSimple::input(UBYTE new_byte)
 			this->decode_state = WAIT_COMMAND;
 			return this->decode_status = DONE;
 		}
-
+		break;
 	default:
+	    printf("communication_tcp_based unexpectedly received default switch option");
 		return this->decode_status = ERROR;
 	}
 

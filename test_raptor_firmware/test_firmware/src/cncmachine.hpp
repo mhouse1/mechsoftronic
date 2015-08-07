@@ -19,11 +19,14 @@
 #include <list>
 
 using namespace std;
+
+
+
 class CncMachine
 {
 public:
 
-	enum Peripheral {router_off = 0, router_on, router_up, router_down,router_xy,router_z};
+	enum Peripheral {router_off = 0, router_on, router_up, router_down, router_xy, router_z, router_unknown};
 
 	//This struct has the exact mapping as defined in the VHDL file
 	//the control_register only contains the bits to signal start
@@ -82,7 +85,6 @@ public:
 		Peripheral router_state;
 	};
 	//Public data
-
 	list<TRAVERSALXY> routes;
 	CONTROL_REGISTER CNC_CONTROL;
 	STATUS_REGISTER CNC_STATUS;
@@ -94,6 +96,7 @@ public:
 	void SetCurrentPosition(alt_u32 x, alt_u32 y); //@todo may not need this func
 	alt_u8 SetNextPosition(alt_32 x, alt_32 y);
 	alt_u8 SetNextZPosition(alt_32 nextz);
+	//alt_u8 RouteCircular(alt_32 endx, alt_32 endy, alt_32 ivar, alt_32 jvar);
 	void MotorXDir(alt_u32 x);
 	void MotorYDir(alt_u32 y);
 	void MotorZDir(alt_u32 z);
@@ -118,6 +121,7 @@ public:
 	void DisplayRoutes(list<TRAVERSALXY> route_data);
 
 	void StartRouting(void);
+	void ExecuteRouteData(CncMachine::TRAVERSALXY  route_data);
 	void ClearRoute(void);
 	void ReadStatus(void);
 
@@ -174,5 +178,6 @@ private:
 
 
 
+//OS_EVENT *mem_mutex;
 
 #endif /* CNCMACHINE_HPP_ */
