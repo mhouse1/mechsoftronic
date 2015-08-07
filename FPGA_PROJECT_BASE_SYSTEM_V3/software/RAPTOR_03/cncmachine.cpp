@@ -370,7 +370,10 @@ alt_u8 CncMachine::SetNextZPosition(alt_32 nextz)
 	//			 the actual StepNum should be StepNum = (distanceX*44.45)/GUI_Scaling
 	//			 in instruction terms this would be (distanceX/220)
 	//07/16/2015 the above was done for x axis, will need to figureout the correct number for z axis
-	data.X.StepNum = (alt_32)fabs(distanceZ)/221;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+	data.X.StepNum = (alt_32)fabs(distanceZ)/219;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+
+	alt_u32 actualDistanceZ = data.X.StepNum*219;
+	this->PresentZ = distanceZ >= 0? this->PresentZ + actualDistanceZ : this->PresentZ - actualDistanceZ;
 
 	//for now just use the feedrate as speed for Z axis movement
 	data.X.HighPulseWidth = this->FeedRate;
@@ -398,6 +401,10 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 {
 	TRAVERSALXY data;
 
+	//@todo move scaling constant elsewhere
+	//for now just keep it within the function stack
+	alt_16 scaling_constant = 229;//bigger means smaller, smaller means bigger
+
 	//assign state router_xy to indicate data is xy movement
 	data.router_state = router_xy;
 
@@ -417,8 +424,8 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 	//			 the received distanceXY is scaled up by a number in the GUI,
 	//			 the actual StepNum should be StepNum = (distanceX*44.45)/GUI_Scaling
 	//			 in instruction terms this would be (distanceX/220)
-	data.X.StepNum = (alt_32)fabs(distanceX)/221;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
-	data.Y.StepNum = (alt_32)fabs(distanceY)/221;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
+	data.X.StepNum = (alt_32)fabs(distanceX)/scaling_constant;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+	data.Y.StepNum = (alt_32)fabs(distanceY)/scaling_constant;//(this->FullRangeStepCount*(alt_32)fabs(distanceY))/this->FullRangeDistance;
 
 	//set calculate the present X Y after stepping data.X.StepNum and data.Y.StepNum
 	//the present XY would ideally be equal to function arguments x y:
@@ -426,8 +433,8 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 	//		this->PresentY = y;
 	//but because the machine cant step fractional steps there will be some error
 	//so the actual present X Y values would have to be reverse calculated like below
-	alt_u32 actualDistanceX = data.X.StepNum*221;
-	alt_u32 actualDistanceY = data.Y.StepNum*221;
+	alt_u32 actualDistanceX = data.X.StepNum*scaling_constant;
+	alt_u32 actualDistanceY = data.Y.StepNum*scaling_constant;
 	this->PresentX = distanceX >= 0? this->PresentX + actualDistanceX : this->PresentX - actualDistanceX;
 	this->PresentY = distanceY >= 0? this->PresentY + actualDistanceY : this->PresentY - actualDistanceY;
 
