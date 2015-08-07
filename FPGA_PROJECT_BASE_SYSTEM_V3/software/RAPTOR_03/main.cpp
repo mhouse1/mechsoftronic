@@ -3,14 +3,22 @@ Name: main.cpp
 Date: Sep 25, 2014 10:54:09 PM
 Author: Mike
 Description: firmware that sends pulses to stepper motor based on input data
-
 Copyright: 2014
+
+07/30/2015
+mutex for machine route data exist for task 2 and task 3
+Info: (CNC_V01.elf) 457 KBytes program size (code + initialized data).
+Info:               32311 KBytes free for stack + heap.
+
 */
 
 #include <list>
 #include "types.hpp"
-#include "cncmachine.hpp"
+
 #include "communication_tcp_based.hpp"
+//#include "machine_shared_data.hpp"
+#include "cncmachine.hpp"
+
 
 extern "C"
 {
@@ -96,12 +104,24 @@ struct UART_HW_struct *pUART;
 #define   TASK_STACKSIZE       2048
 OS_STK    task1_stk[TASK_STACKSIZE];
 OS_STK    task2_stk[TASK_STACKSIZE];
+OS_STK    task3_stk[TASK_STACKSIZE];
+
+//define a mutex
+OS_EVENT *global_route_mutex;
+OS_EVENT *global_recvr_mutex;
 
 /* Definition of Task Priorities */
-#define TASK1_PRIORITY      1
-#define TASK2_PRIORITY      2
+//note that MUTEX priority must have a lower number than task priority
+#define TASK1_PRIORITY          10
+#define TASK2_PRIORITY          9
+#define TASK3_PRIORITY          8
+#define ROUTE_MUTEX_PRIORITY    7
+#define RECVR_MUTEX_PRIORITY    6
 
 list<char> clist;
+list<CncMachine::TRAVERSALXY> global_machine_route;
+
+
 /*!
  * check rrdy pin, if active then save value from
  * rxdata into char list else wait
@@ -111,95 +131,166 @@ void task1(void* pdata)
   pUART->sControl.sBits.rts = 1;
   printf("task 1 initialized\n");
   char c;
+  list<char> task1_local_recvd;
+  INT8U error_code;
+  BOOLEAN available;
   while (1)//reading loop
   {
+
 	if (pUART->sStatus.sBits.rrdy) //check data available
 	{	c = (alt_u8)(pUART->rxdata);
-		printf("%c",c);
-		clist.push_back(c);//save data
+		//printf("%c",c);
+	    task1_local_recvd.push_back(c);//save data
 	}
-	else //delay
+	else
 	{
-		OSTimeDlyHMSM(0, 0, 0, 1); //delay 1ms
+	    if (!task1_local_recvd.empty())
+	    {
+            //OSTimeDlyHMSM(0, 0, 0, 1); //delay 1ms
+            //OSMutexAccept() checks if mutex is available (does not block if not available)
+            //returns 1 if available returns 0 if owned by another task
+            available = OSMutexAccept(global_recvr_mutex, &error_code);
+
+            if(!error_code && available)
+            {
+                if (!task1_local_recvd.empty())
+                {
+                    clist.splice(clist.end(),task1_local_recvd);
+                }
+            }
+            else
+            {
+                if (error_code)
+                {
+                    printf("task 1 error getting recvr mutex\n");
+                }
+            }
+            OSMutexPost(global_recvr_mutex);
+	    }
 	}
   }
 }
-/* Prints "Hello World" and sleeps for three seconds */
+
 //processData
 void task2(void* pdata)
 {
-	printf("Data processor online june 23 2015\n");
-//	ProtocolWrapper pw;
-//	protocol_status ps;
-//	PsychoFrameHeart psycommu;
-	CommSimple listener;
-	list<string> fields_list;
+	printf("task 2 online August 4th 4:33 2015\n");
+	CommSimple machine_object;
 	list<string> layer1;
 	list<string>::iterator it;
 	string fld;
-
+	list<char> local_recvd;
 	char new_byte;
+	INT8U error_code;
+	alt_u8 ignore_period = 10;
+	alt_u8 comstat;
   while (1)
   {
-	  //if receiver not in ready state and data queue is not empty
-	  if(!pUART->sStatus.sBits.rrdy && !clist.empty())
+      if (ignore_period < 10)
+      {
+          if(!local_recvd.empty())
+          {local_recvd.clear();}
+          ignore_period++;
+          OSTimeDlyHMSM(0, 0, 1, 0);
+      }
+	  //if local received not empty then read from front and input into machine object
+      //else wait interval for mutex then check if clist is empty, if not empty merge with local
+	  if(!local_recvd.empty())
 	  {
+
 		  //read from front then pop off of front
-		  new_byte = clist.front();
-		  clist.pop_front();
+		  new_byte = local_recvd.front();
+		  local_recvd.pop_front();
+		  comstat = machine_object.input(new_byte);
+		  if ( comstat == ERROR)
+		  {
+		      printf("comm error %d ...will ignore input for 10 seconds\n", comstat);
+		     ignore_period = 0;
 
-		  listener.input(new_byte);
+		  }
+	      if (!machine_object.routes.empty())
+	      {
+	          //printf("front state %d\n",listener.routes.front().router_state);
+	          OSMutexPend(global_route_mutex, 0, &error_code);
 
+	          //the splice function a.splice(a.end(), b);
+	          //moves items of B to end of A (emptying B at the same time)
+	          //this operation is O(1)
+	          if (!error_code)
+	          {
+	              global_machine_route.splice(global_machine_route.end(),machine_object.routes);
+	              printf("items in global_machine_route:  %lu\n",global_machine_route.size());
+	          }
+	          else
+	          {
+	              printf("task 2 waited too long\n");
+	          }
+
+	          //copy front into global then pop front off
+	          //global_machine_state.push_back(listener.machine_state.front());
+	          //listener.machine_state.pop_front();
+	          OSMutexPost(global_route_mutex);
+	      }
 	  }
 	  else
 	  {
-		  OSTimeDlyHMSM(0, 0, 0, 300);
+	      OSMutexPend(global_recvr_mutex, 0, &error_code);
+	      if(!error_code)
+	      {
+	          if (!clist.empty())
+	          {
+	              local_recvd.splice(local_recvd.end(),clist);
+	          }
+	      }
+	      else
+	      {
+	          printf("task 2 waited too long for global_recvr_mutex\n");
+	      }
+	      OSMutexPost(global_recvr_mutex);
+
+	      OSTimeDlyHMSM(0, 0, 0, 300);
 	  }
 
-//	//size = clist.size();
-//	if (!pUART->sStatus.sBits.rrdy)
-//	{
-//	if (!clist.empty())
-//	{
-//		c = clist.front();//read front item
-//		clist.pop_front();//remove front item
-//		ps = (protocol_status) pw.input(c);
-//		//printf("   protocol status = %d\n",ps);
-//		if(ps == MSG_OK)
-//		{
-//
-//			//get fields layer 1
-//			fields_list = pw.get_fields();
-//			printf("last message %s \n", pw.last_message.c_str());
-//
-//			//process fields_list
-//			try
-//			{
-//				if (!(psycommu.input(pw.get_lastmessage()) == 0))
-//				{
-//					printf("error non zero exit for psycommu\n");
-//				}
-//			}
-//			catch(...)
-//			{
-//				printf("exception processing input\n");
-//			}
-//		}
-//
-//	}
-//	else
-//	{
-//    OSTimeDlyHMSM(0, 0, 1, 0);
-//    //printf("\n");
-//	}
-//	}
-//	else
-//	{
-//    OSTimeDlyHMSM(0, 0, 1, 0);
-//    //printf("\n");
-//	}
+
   }
 }
+
+//processData
+void task3(void* pdata)
+{
+  CncMachine cnc_task3;
+  INT8U error_code;
+  list<CncMachine::TRAVERSALXY> local_route;
+  while (1)
+  {
+    OSMutexPend(global_route_mutex, 0, &error_code);
+    if(!error_code)
+    {
+        if (!global_machine_route.empty())
+        {
+
+            //move global_machine_route to end of local_route and empty it at the same time
+            //this operation is of O(1) so it is quite fast
+            local_route.splice(local_route.end(),global_machine_route);
+        }
+    }
+    else
+    {
+        printf(" task 3 waited too long\n");
+    }
+    OSMutexPost(global_route_mutex); //release mutex
+
+    while(!local_route.empty())
+    {
+        cnc_task3.ExecuteRouteData(local_route.front());
+        local_route.pop_front();
+    }
+
+    printf("task 3 is alive\n");
+    OSTimeDlyHMSM(0, 0, 1, 0);
+  }
+}
+
 /* The main function creates two task and starts multi-tasking */
 int main(void)
 {
@@ -208,19 +299,43 @@ int main(void)
 	pUART = (struct UART_HW_struct *)(UART_BASE | 0x4000000);
 	pUART->sControl.word = 0;
 
-  OSTaskCreateExt(task1,NULL, (OS_STK *)(void *)&task1_stk[TASK_STACKSIZE-1], TASK1_PRIORITY,
-		  TASK1_PRIORITY, task1_stk, TASK_STACKSIZE,  NULL, 0);
+	INT8U err;
+
+	//create mutex for shared memory
+	global_route_mutex = OSMutexCreate(ROUTE_MUTEX_PRIORITY, &err);
+	global_recvr_mutex = OSMutexCreate(RECVR_MUTEX_PRIORITY, &err);
 
 
-  OSTaskCreateExt(task2,
-                  NULL,
-                  (OS_STK *)(void *)&task2_stk[TASK_STACKSIZE-1],
-                  TASK2_PRIORITY,
-                  TASK2_PRIORITY,
-                  task2_stk,
-                  TASK_STACKSIZE,
-                  NULL,
-                  0);
+    // Create tasks
+    OSTaskCreate(task1, NULL, &task1_stk[TASK_STACKSIZE-1], TASK1_PRIORITY);
+    OSTaskCreate(task2, NULL, &task2_stk[TASK_STACKSIZE-1], TASK2_PRIORITY);
+    OSTaskCreate(task3, NULL, &task3_stk[TASK_STACKSIZE-1], TASK3_PRIORITY);
+
+
+//
+//  OSTaskCreateExt(task1,NULL, (OS_STK *)(void *)&task1_stk[TASK_STACKSIZE-1], TASK1_PRIORITY,
+//		  TASK1_PRIORITY, task1_stk, TASK_STACKSIZE,  NULL, 0);
+//
+//
+//  OSTaskCreateExt(task2,
+//                  NULL,
+//                  (OS_STK *)(void *)&task2_stk[TASK_STACKSIZE-1],
+//                  TASK2_PRIORITY,
+//                  TASK2_PRIORITY,
+//                  task2_stk,
+//                  TASK_STACKSIZE,
+//                  NULL,
+//                  0);
+//
+//  OSTaskCreateExt(task3,
+//                  NULL,
+//                  (OS_STK *)(void *)&task3_stk[TASK_STACKSIZE-1],
+//                  TASK3_PRIORITY,
+//                  TASK3_PRIORITY,
+//                  task3_stk,
+//                  TASK_STACKSIZE,
+//                  NULL,
+//                  0);
   OSStart();
   return 0;
 }
