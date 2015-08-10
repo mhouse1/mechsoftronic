@@ -29,7 +29,17 @@ entity my_top_system is
 			  
          STEP_C : out std_logic;
          DONE_C : out std_logic; 
-         DIRE_C : out std_logic;                     
+         DIRE_C : out std_logic;  
+
+			DEBUG_0 : out std_logic;
+			DEBUG_1 : out std_logic;
+			DEBUG_2 : out std_logic;
+			DEBUG_3 : out std_logic;
+			DEBUG_4 : out std_logic;
+			DEBUG_5 : out std_logic;
+			DEBUG_6 : out std_logic;
+			DEBUG_7 : out std_logic;
+
          --
          -- EPCS
          --
@@ -240,7 +250,7 @@ architecture syn of my_top_system is
             multi_reg_1_dataout_10 : out std_logic_vector(31 downto 0);                    -- dataout_10
             multi_reg_1_dataout_11 : out std_logic_vector(31 downto 0);                    -- dataout_11
             multi_reg_1_dataout_12 : out std_logic_vector(31 downto 0);                    -- dataout_12
---            multi_reg_1_dataout_13 : out std_logic_vector(31 downto 0);                    -- dataout_13
+            multi_reg_1_dataout_13 : out std_logic_vector(31 downto 0);                    -- dataout_13
 --            multi_reg_1_dataout_14 : out std_logic_vector(31 downto 0);                    -- dataout_14
 --            multi_reg_1_dataout_15 : out std_logic_vector(31 downto 0);                    -- dataout_15
             multi_reg_1_datain_0   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_0 hall effect sensor
@@ -365,6 +375,7 @@ architecture syn of my_top_system is
     signal sig_cnc_step_B, sig_cnc_done_B , sig_cnc_dire_B: std_logic;
 	 signal sig_cnc_step_C, sig_cnc_done_C , sig_cnc_dire_C: std_logic;
     signal sig_cnc_control : std_logic_vector(31 downto 0);
+	 signal sig_cnc_debug : std_logic_vector(31 downto 0);
     signal sig_pulse_width_high_A, sig_pulse_width_low_A, sig_number_of_steps_A : std_logic_vector(31 downto 0);
     signal sig_pulse_width_high_B, sig_pulse_width_low_B, sig_number_of_steps_B : std_logic_vector(31 downto 0);
 	 signal sig_pulse_width_high_C, sig_pulse_width_low_C, sig_number_of_steps_C : std_logic_vector(31 downto 0);
@@ -425,8 +436,8 @@ begin
                         b => sig_cnc_control(7 downto 0),     --1 [0001]
                         c => sig_cnc_control(15 downto 8),   --2  [0010]
                         d => sig_cnc_done_A& sig_cnc_control(0) & sig_Heartbeat& "1" &sig_cnc_done_B &sig_cnc_control(1) &sig_Heartbeat & "1",  --[0011]                         --3
-                        e => sig_pulse_width_high_B(7 downto 0),--sig_PWM_Steering32(7 downto 0),                            --4
-                        f => sig_number_of_steps_B (7 downto 0),                           --5
+                        e => sig_cnc_debug(7 downto 0),--sig_PWM_Steering32(7 downto 0),                            --4
+                        f => sig_cnc_debug (15 downto 8),                           --5
                         g => sig_pulse_width_low_B (7 downto 0),--sig_HE_counter(6 downto 0) & HALL_EFFECT,                          --6
 								h => sig_pulse_width_high_A(7 downto 0), 
 								i => sig_number_of_steps_A (7 downto 0), --8
@@ -624,7 +635,7 @@ begin
             multi_reg_1_dataout_10 => sig_number_of_steps_C, --            .dataout_10
             multi_reg_1_dataout_11 => sig_speed_start, --            .dataout_11
             multi_reg_1_dataout_12 => sig_speed_change, --            .dataout_12
---            multi_reg_1_dataout_13 => CONNECTED_TO_multi_reg_1_dataout_13, --            .dataout_13
+            multi_reg_1_dataout_13 => sig_cnc_debug, --            .dataout_13
 --            multi_reg_1_dataout_14 => CONNECTED_TO_multi_reg_1_dataout_14, --            .dataout_14
 --            multi_reg_1_dataout_15 => CONNECTED_TO_multi_reg_1_dataout_15, --            .dataout_15
             multi_reg_1_datain_0   => sig_HE_counter,   --            .datain_0  connect to hall effect sensor
@@ -728,5 +739,15 @@ begin
 	LASER_2 <= sig_cnc_control(7);
 	LASER_3 <= sig_cnc_control(8);
 	LASER_4 <= sig_cnc_control(9);
+	
+	DEBUG_0 <= sig_cnc_debug(0);
+	DEBUG_1 <= sig_cnc_debug(1);
+	DEBUG_2 <= sig_cnc_debug(2);
+	DEBUG_3 <= sig_cnc_debug(3);
+	DEBUG_4 <= sig_cnc_debug(4);
+	DEBUG_5 <= sig_cnc_debug(5);
+	DEBUG_6 <= sig_cnc_debug(6);
+	DEBUG_7 <= sig_cnc_debug(7);
+	
 end architecture syn;
 -- *** EOF ***
