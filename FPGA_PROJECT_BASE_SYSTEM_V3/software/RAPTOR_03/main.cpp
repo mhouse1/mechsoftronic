@@ -300,13 +300,13 @@ void task3(void* pdata)
     {
         popcorn++;
         printf("popped one %d\n",popcorn);
-        //cnc_task3.ExecuteRouteData(local_route.front());
-        OSTimeDlyHMSM(0, 0, 3, 0);
+        cnc_task3.ExecuteRouteData(local_route.front());
+        //OSTimeDlyHMSM(0, 0, 3, 0);
         local_route.pop_front();
     }
 
-    printf("task 3 is alive\n");
-    OSTimeDlyHMSM(0, 0, 1, 0);
+    //printf("task 3 is alive\n");
+    OSTimeDlyHMSM(0, 0, 0, 300);
   }
 }
 
