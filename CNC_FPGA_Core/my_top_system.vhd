@@ -280,8 +280,10 @@ architecture syn of my_top_system is
             sdram_dqm              : out   std_logic_vector(1 downto 0);                     -- dqm
             sdram_ras_n            : out   std_logic;                                        -- ras_n
             sdram_we_n             : out   std_logic;                                         -- we_n
-            uart_export_rxd      : in    std_logic                     := 'X';             -- rxd
-            uart_export_txd      : out   std_logic;                                        -- txd
+            fifoed_avalon_uart_0_g1_txd : out   std_logic;                                        -- txd
+            fifoed_avalon_uart_0_g1_rxd : in    std_logic                     := 'X';              -- rxd
+            --uart_export_rxd      : in    std_logic                     := 'X';             -- rxd
+            --uart_export_txd      : out   std_logic;                                        -- txd
                 pio_led_export : inout std_logic_vector(15 downto 0) := (others => 'X');  -- export
             epcs_data0    : in  std_logic := 'X'  -- data0
         );
@@ -665,9 +667,10 @@ begin
                  sdram_dqm            => sdram_dqm,
                  sdram_ras_n          => SDRAM_RAS_N,
                  sdram_we_n           => SDRAM_WE_N,
-                 
-            uart_export_rxd      => RxD,      --  uart_export.rxd
-            uart_export_txd      => TxD,      --             .txd
+            fifoed_avalon_uart_0_g1_txd => TxD, -- fifoed_avalon_uart_0_g1.txd
+            fifoed_avalon_uart_0_g1_rxd => RxD,  --                        .rxd               
+            --uart_export_rxd      => RxD,      --  uart_export.rxd
+            --uart_export_txd      => TxD,      --             .txd
             epcs_dclk     => EPCS_DCLK,     --  epcs.dclk
             epcs_sce      => EPCS_SCE,      --      .sce
             epcs_sdo      => EPCS_SDO,      --      .sdo
