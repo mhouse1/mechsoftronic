@@ -93,6 +93,14 @@ struct UART_HW_struct
   alt_u16 divisor_unused;
   alt_u16 end_of_packet;
   alt_u16 end_of_packet_unused;
+  alt_u16 uart_rx_fifo_used;
+  alt_u16 uart_rx_fifo_unused;
+  alt_u16 uart_tx_fifo_used;
+  alt_u16 uart_tx_fifo_unused;
+  alt_u16 gap_timeout_value;
+  alt_u16 gap_timeout_unvalue;
+  alt_u16 timestamp_value;
+  alt_u16 timestamp_unvalue;
 };
 
 //protocol_status ps;
@@ -129,17 +137,23 @@ list<CncMachine::TRAVERSALXY> global_machine_route;
 void task1(void* pdata)
 {
   pUART->sControl.sBits.rts = 1;
-  printf("task 1 080615 \n");
+  printf("task 1 081015 \n");
   char c;
   list<char> task1_local_recvd;
 //  INT8U error_code;
 //  BOOLEAN available;
+  alt_u16 char_count;
   while (1)//reading loop
   {
-
+	 char_count = pUART->uart_rx_fifo_used;
+	if (char_count > 0)
+		{
+		printf("count %d\n",char_count);
+		}
 	if (pUART->sStatus.sBits.rrdy) //check data available
 	{	c = (alt_u8)(pUART->rxdata);
 		//printf("%c",c);
+		//printf("count %d\n",pUART->uart_rx_fifo_used);
 	    task1_local_recvd.push_back(c);//save data
 	}
 	else
@@ -174,7 +188,7 @@ void task1(void* pdata)
 //processData
 void task2(void* pdata)
 {
-	printf("task 2 online August 4th 4:33 2015\n");
+	printf("task 2 online August 10th 9:47 2015\n");
 	CommSimple machine_object;
 	list<string> layer1;
 	list<string>::iterator it;
@@ -301,7 +315,8 @@ int main(void)
 {
 
 	//standard UART
-	pUART = (struct UART_HW_struct *)(UART_BASE | 0x4000000);
+	//FIFOED_AVALON_UART_0_BASE
+	pUART = (struct UART_HW_struct *)(FIFOED_AVALON_UART_0_BASE | 0x4000000);//(UART_BASE | 0x4000000);
 	pUART->sControl.word = 0;
 
 	INT8U err;
