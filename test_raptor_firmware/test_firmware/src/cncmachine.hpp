@@ -17,6 +17,7 @@
 #define CNCMACHINE_HPP_
 
 #include <list>
+#include "machine_shared_data.hpp"
 
 using namespace std;
 
