@@ -314,7 +314,7 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
         this->set_router_state(payload);
         break;
     case(G_Z):
-		printf("G code Z\n");
+		//printf("G code Z\n");
     	this->SetNextZPosition((alt_32)this->get_long_from_string(payload,0));
         break;
 	default:
