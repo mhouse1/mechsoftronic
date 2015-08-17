@@ -254,6 +254,7 @@ void task2(void* pdata)
 	INT8U error_code;
 	alt_u8 ignore_period = 10;
 	alt_u8 comstat;
+	alt_u16 size_of_global_route;
   while (1)
   {
       if (ignore_period < 10)
@@ -280,6 +281,23 @@ void task2(void* pdata)
 		  }
 
 	  }
+	  OSMutexPend(global_route_mutex, 0, &error_code);
+	  size_of_global_route = global_machine_route.size();
+	  OSMutexPost(global_route_mutex);
+      if (size_of_global_route < 10)
+      {
+          // wait for xmit ready
+          alt_u16 timeout = 0;
+          while(!pUART->sStatus.sBits.trdy)
+          {
+              //poll the transmit ready bit in 1ms intervals
+              OSTimeDlyHMSM(0, 0, 0, 1);
+              timeout++;
+              if (timeout > 100)
+                  printf("timed out waiting for tx ready\n");
+          }
+          pUART->txdata = '2';
+      }
       if (!machine_object.routes.empty())
       {
           //printf("front state %d\n",listener.routes.front().router_state);
@@ -291,7 +309,29 @@ void task2(void* pdata)
           if (!error_code)
           {
               global_machine_route.splice(global_machine_route.end(),machine_object.routes);
-              printf("items in global_machine_route:  %lu\n",global_machine_route.size());
+
+              size_of_global_route = global_machine_route.size();
+              //if there are 100 or more then tell GUI to stopp sending gcode for a while
+              //and keep sending until there are less than 100 in global_route
+              //@todo will replace this with more advanced transmit message later
+              //if theres a need to send more complex messages
+              if (size_of_global_route > 10)
+              {
+                      // wait for xmit ready
+                      alt_u16 timeout = 0;
+                      while(!pUART->sStatus.sBits.trdy)
+                      {
+                          //poll the transmit ready bit in 1ms intervals
+                          OSTimeDlyHMSM(0, 0, 0, 1);
+                          timeout++;
+                          if (timeout > 100)
+                              printf("timed out waiting for tx ready\n");
+                      }
+                      pUART->txdata = '1';
+              }
+
+              printf("items in global_machine_route:  %lu\n",size_of_global_route);
+
           }
           else
           {
@@ -317,7 +357,7 @@ void task2(void* pdata)
 	              //this delay will determine how fast a command is processed
 	              //from the  first button click
 	              OSTimeDlyHMSM(0, 0, 0, 300);
-	              printf("task 2 alive\n");
+	              //printf("task 2 alive\n");
 
 	          }
 //	      }
