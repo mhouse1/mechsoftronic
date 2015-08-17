@@ -19,8 +19,6 @@ import parse_gcode
 from parse_gcode import router_state
 framer = protocolwrapper.ProtocolWrapper()
 
-def add(x,y):
-    return x+y
 
 def get_bin_with_padding(number,padding):
     '''
@@ -97,7 +95,7 @@ class GuiSupport(object):
         'SET_ROUTE_STATE' :{'command_number' : 15 , 'command_length' : 1}, 
         'G_Z'             :{'command_number' : 16 , 'command_length' : 4}, 
         }
-        print 'GUI support initialized'
+        #print 'GUI support initialized'
         #self.cfg_file_handle.load_settings()
         #host = "127.0.0.1"#"10.88.143.235" # set to IP address of target computer
         #port = 2055
@@ -118,9 +116,10 @@ class GuiSupport(object):
         self.gs_speed_start = 0
         self.gs_speed_change = 0
         
-    def _send(self,command = 'ADEAD',payload = ''):
+    def _send(self,command = 'ADEAD',payload = '', queue_priority = 0):
         '''
         payload should be a binary string in the format of the length of payload
+        queue_priority == 0 is the fastest and the higher the number the slower 
         '''
         payload_len = self.command_list[command]['command_length']
         received_payload_len = len(payload)/self.bits_per_byte
@@ -145,7 +144,9 @@ class GuiSupport(object):
         #print 'full_command_decode',full_command_hex.decode('hex')
         #print 'full_command hex: ',full_command_hex
         #print 'full_command ascii:',full_command_ascii
-        Communications.transmit(full_command_hex.decode('hex'))
+#         producer1 = Communications.count_stuff(1,5,Communications.myQueue)
+#         producer1.start()
+        Communications.transmit(full_command_hex.decode('hex'), queue_priority)
         
     def quit(self):
         print 'closed handle'
@@ -219,14 +220,14 @@ class GuiSupport(object):
                 payload = self.get_bin(int(data1),32) +\
                           self.get_bin(int(data2),32)
                           
-                self._send(command, payload)
+                self._send(command, payload, 1)
             elif cnc_state == router_state.router_z:
                 command = 'G_Z'
                 payload = self.get_bin(data1,32)
-                self._send(command, payload)
+                self._send(command, payload, 1)
             else:
                 payload = self.get_bin(cnc_state,8)
-                self._send('SET_ROUTE_STATE',payload)
+                self._send('SET_ROUTE_STATE',payload, 1)
                 #print 'tool status ', router_state.reverse_mapping[cnc_state]
             #print 'index ',idx
             

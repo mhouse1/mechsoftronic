@@ -14,6 +14,12 @@ import time
 import Communications
 import gui_support
 from gui_support import GuiSupport
+import threading
+import multiprocessing
+import gobject
+
+#Allow only the main thread to touch the GUI (gtk) part, while letting other threads do background work.
+gobject.threads_init()
 
 class KshatriaGUI(GuiSupport):
 
@@ -74,7 +80,7 @@ class KshatriaGUI(GuiSupport):
         #print 'class of window ',self.window.__class__
         self.window.show()
         #self._update_data()
-        
+        self.comthread = None
 
     def _update_data(self):
         self.axis_z.dir = self.DirZComboHandle.get_selection_index()
@@ -155,6 +161,7 @@ class KshatriaGUI(GuiSupport):
 
     def on_pause_routing_clicked(self, widget):
         self.pause_routing()
+        #Communications.myQueue.put('hello')
             
     def on_Transfer_Coord_clicked(self, widget, data = None):
         print 'Transfer Coord button activated'
@@ -175,7 +182,8 @@ class KshatriaGUI(GuiSupport):
 
         #set selection state 0 as a false state
         if not self.index == 0:
-            Communications.Set_Active_Serial_Channel(port_name = self.item)
+            Communications.consumer_portname = self.item
+            Communications.serial_activated = True
         #self.builder.get_object("label1").set_text(self.item)
     
     def notebook1_switch_page_cb(self,  notebook, page, page_num, data=None):
@@ -208,5 +216,13 @@ class KshatriaGUI(GuiSupport):
     
     ###################### End of actions for all signals#################
 if __name__ == "__main__":
+    comthreadWriter = threading.Thread(target = Communications.set_writer)
+    comthreadWriter.start()
+    comthreadReader = threading.Thread(target = Communications.set_reader)
+    comthreadReader.start()
+#     keepsending = threading.Thread(target = Communications.set_keep_sending)
+#     keepsending.start()
+    
     main = KshatriaGUI()
     gtk.main()
+    #main.comthread.join()
