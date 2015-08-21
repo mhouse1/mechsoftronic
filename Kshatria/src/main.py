@@ -164,6 +164,10 @@ class KshatriaGUI(GuiSupport):
         #Communications.myQueue.put('hello')
             
     def on_Transfer_Coord_clicked(self, widget, data = None):
+        for i in xrange(3):
+            print 'starting in:',4-i
+            time.sleep(1)
+            
         print 'Transfer Coord button activated'
         self.gs_feed_cut = int(self.feed_cut.get_text())
         self.set_feed()
@@ -217,8 +221,10 @@ class KshatriaGUI(GuiSupport):
     ###################### End of actions for all signals#################
 if __name__ == "__main__":
     comthreadWriter = threading.Thread(target = Communications.set_writer)
+    comthreadWriter.daemon = True #terminate thread when program ends
     comthreadWriter.start()
     comthreadReader = threading.Thread(target = Communications.set_reader)
+    comthreadReader.daemon = True #terminate when program ends
     comthreadReader.start()
 #     keepsending = threading.Thread(target = Communications.set_keep_sending)
 #     keepsending.start()
