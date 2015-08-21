@@ -150,46 +150,46 @@ void CncMachine::WriteStepNumXY(alt_u32 XSteps, alt_u32 YSteps)
 
 void CncMachine::WriteStepNumX(alt_u32 Steps)
 {
-    if (Steps > 20000 )
-    {
-        printf("X tried to step = %lu\n",Steps);
-
-     }
-    else
-    {
-
-        Steps = 200;
-    }
-	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_2*4),200 );
+//    if (Steps > 20000 )
+//    {
+//        printf("X tried to step = %lu\n",Steps);
+//
+//     }
+//    else
+//    {
+//
+//        Steps = 200;
+//    }
+	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_2*4),Steps );
 }
 
 void CncMachine::WriteStepNumY(alt_u32 Steps)
 {
-    if (Steps > 20000 )
-    {
-        printf("Y tried to step = %lu\n",Steps);
-
-     }
-    else
-    {
-
-        Steps = 200;
-    }
-	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_6*4),200 );
+//    if (Steps > 20000 )
+//    {
+//        printf("Y tried to step = %lu\n",Steps);
+//
+//     }
+//    else
+//    {
+//
+//        Steps = 200;
+//    }
+	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_6*4),Steps );
 }
 void CncMachine::WriteStepNumZ(alt_u32 Steps)
 {
-    if (Steps > 20000 )
-    {
-        printf("Z tried to step = %lu\n",Steps);
-
-     }
-    else
-    {
-
-        Steps = 200;
-    }
-	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_10*4),200 );
+//    if (Steps > 20000 )
+//    {
+//        printf("Z tried to step = %lu\n",Steps);
+//
+//     }
+//    else
+//    {
+//
+//        Steps = 200;
+//    }
+	IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_10*4),Steps );
 }
 
 void CncMachine::WriteRouterPWM(alt_u32 PWMVal)
@@ -223,20 +223,20 @@ void CncMachine::WritePulseInfoXY(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidt
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::WritePulseInfoZ(alt_u32 HighPulseWidth,alt_u32 LowPulseWidth)
 {
-    if ((HighPulseWidth <=3000000) && (LowPulseWidth <=3000000))
-    {
-//        printf("set Z High Pulse Width Min = %lu\n",HighPulseWidth);
-//        printf("set Z Low Pulse Width Min = %lu\n",LowPulseWidth);
-
-     }
-    else
-    {
-
-        printf("tried Z High Pulse Width Min = %lu\n",HighPulseWidth);
-        printf("tried Z Low Pulse Width Min = %lu\n",LowPulseWidth);
-        HighPulseWidth = 200000;
-        LowPulseWidth = 80000;
-    }
+//    if ((HighPulseWidth <=3000000) && (LowPulseWidth <=3000000))
+//    {
+////        printf("set Z High Pulse Width Min = %lu\n",HighPulseWidth);
+////        printf("set Z Low Pulse Width Min = %lu\n",LowPulseWidth);
+//
+//     }
+//    else
+//    {
+//
+//        printf("tried Z High Pulse Width Min = %lu\n",HighPulseWidth);
+//        printf("tried Z Low Pulse Width Min = %lu\n",LowPulseWidth);
+//        HighPulseWidth = 200000;
+//        LowPulseWidth = 80000;
+//    }
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_8*4),HighPulseWidth); //pulse_width_high_C
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_9*4),LowPulseWidth); //pulse_width_low_C
 
@@ -249,20 +249,20 @@ void CncMachine::WritePulseInfoZ(alt_u32 HighPulseWidth,alt_u32 LowPulseWidth)
 void CncMachine::WritePulseInfoY(alt_u32 HighPulseWidth, alt_u32 LowPulseWidth)
 {
 
-    if ((HighPulseWidth <=3000000) && (LowPulseWidth <=3000000))
-    {
-//	    printf("set Y High Pulse Width Min = %lu\n",HighPulseWidth);
-//	    printf("set Y Low Pulse Width Min = %lu\n",LowPulseWidth);
-
-     }
-	else
-	{
-
-        printf("tried Y High Pulse Width Min = %lu\n",HighPulseWidth);
-        printf("tried Y Low Pulse Width Min = %lu\n",LowPulseWidth);
-        HighPulseWidth = 200000;
-        LowPulseWidth = 80000;
-	}
+//    if ((HighPulseWidth <=3000000) && (LowPulseWidth <=3000000))
+//    {
+////	    printf("set Y High Pulse Width Min = %lu\n",HighPulseWidth);
+////	    printf("set Y Low Pulse Width Min = %lu\n",LowPulseWidth);
+//
+//     }
+//	else
+//	{
+//
+//        printf("tried Y High Pulse Width Min = %lu\n",HighPulseWidth);
+//        printf("tried Y Low Pulse Width Min = %lu\n",LowPulseWidth);
+//        HighPulseWidth = 200000;
+//        LowPulseWidth = 80000;
+//	}
     IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_4*4),HighPulseWidth);
        IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_5*4),LowPulseWidth );
 
@@ -274,20 +274,20 @@ void CncMachine::WritePulseInfoY(alt_u32 HighPulseWidth, alt_u32 LowPulseWidth)
 /////////////////////////////////////////////////////////////////////////////
 void CncMachine::WritePulseInfoX(alt_u32 HighPulseWidth, alt_u32 LowPulseWidth)
 {
-    if ((HighPulseWidth <=3000000) && (LowPulseWidth <=3000000))
-    {
-//        printf("set X High Pulse Width Min = %lu\n",HighPulseWidth);
-//        printf("set X Low Pulse Width Min = %lu\n",LowPulseWidth);
-
-     }
-    else
-    {
-
-        printf("tried X High Pulse Width Min = %lu\n",HighPulseWidth);
-        printf("tried X Low Pulse Width Min = %lu\n",LowPulseWidth);
-        HighPulseWidth = 200000;
-        LowPulseWidth = 80000;
-    }
+//    if ((HighPulseWidth <=3000000) && (LowPulseWidth <=3000000))
+//    {
+////        printf("set X High Pulse Width Min = %lu\n",HighPulseWidth);
+////        printf("set X Low Pulse Width Min = %lu\n",LowPulseWidth);
+//
+//     }
+//    else
+//    {
+//
+//        printf("tried X High Pulse Width Min = %lu\n",HighPulseWidth);
+//        printf("tried X Low Pulse Width Min = %lu\n",LowPulseWidth);
+//        HighPulseWidth = 200000;
+//        LowPulseWidth = 80000;
+//    }
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_0*4),HighPulseWidth);
 	 IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_1*4),LowPulseWidth);
 }
@@ -486,7 +486,7 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 
 	//@todo move scaling constant elsewhere
 	//for now just keep it within the function stack
-	alt_16 scaling_constant = 229;//bigger means smaller, smaller means bigger
+	alt_16 scaling_constant = 220;//smaller constant means smaller plot
 
 	//assign state router_xy to indicate data is xy movement
 	data.router_state = router_xy;
@@ -861,61 +861,62 @@ void CncMachine::ExecuteRouteData(CncMachine::TRAVERSALXY  route_data)
     }
 }
 
-void CncMachine::StartRouting()
-{
-    printf("started routing\n");
-    this->WriteRouterPWM(40000);
-    list<CncMachine::TRAVERSALXY> route_data;
-    route_data = this->routes;
-    //DisplayRoutes(route_data);
-    CncMachine::TRAVERSALXY movement;
-    list<CncMachine::TRAVERSALXY>::iterator it;
-
-    alt_u16 layer_count;
-    printf("router will route %d layers\n",this->LayerNumber);
-    for(layer_count = 0; layer_count< this->LayerNumber; layer_count++)
-    {
-
-        for(it = route_data.begin(); it != route_data.end(); it++)
-        {
-            movement = *it;
-            printf("router state %d\n",movement.router_state);
-            switch(movement.router_state)
-            {
-            case(router_on):
-                //turn router on
-                break;
-            case(router_off):
-                //turn router off
-                break;
-            case(router_up):
-            case(router_down):
-            	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = movement.router_state == router_up ? 1 : 0;
-                this->StepNumZ = this->LayerThickness;
-                this->MoveZ();
-            	//wait until stepping is done
-            	ReadStatus();
-            	while(!this->CNC_STATUS.STUS.STUS_BITS.ZDONE)
-            	{
-            		ReadStatus();
-            	}
-                break;
-            case(router_xy):
-                //move xy
-                RouteXY(movement);
-                break;
-            case(router_z):
-            	RouteZ(movement);
-				break;
-            default:
-                printf("undefined router state");
-                break;
-            }
-
-        }
-    }
-    printf("completed routing\n");
-}
+////no longer used, remove later
+//void CncMachine::StartRouting()
+//{
+//    printf("started routing\n");
+//    this->WriteRouterPWM(40000);
+//    list<CncMachine::TRAVERSALXY> route_data;
+//    route_data = this->routes;
+//    //DisplayRoutes(route_data);
+//    CncMachine::TRAVERSALXY movement;
+//    list<CncMachine::TRAVERSALXY>::iterator it;
+//
+//    alt_u16 layer_count;
+//    printf("router will route %d layers\n",this->LayerNumber);
+//    for(layer_count = 0; layer_count< this->LayerNumber; layer_count++)
+//    {
+//
+//        for(it = route_data.begin(); it != route_data.end(); it++)
+//        {
+//            movement = *it;
+//            printf("router state %d\n",movement.router_state);
+//            switch(movement.router_state)
+//            {
+//            case(router_on):
+//                //turn router on
+//                break;
+//            case(router_off):
+//                //turn router off
+//                break;
+//            case(router_up):
+//            case(router_down):
+//            	this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = movement.router_state == router_up ? 1 : 0;
+//                this->StepNumZ = this->LayerThickness;
+//                this->MoveZ();
+//            	//wait until stepping is done
+//            	ReadStatus();
+//            	while(!this->CNC_STATUS.STUS.STUS_BITS.ZDONE)
+//            	{
+//            		ReadStatus();
+//            	}
+//                break;
+//            case(router_xy):
+//                //move xy
+//                RouteXY(movement);
+//                break;
+//            case(router_z):
+//            	RouteZ(movement);
+//				break;
+//            default:
+//                printf("undefined router state");
+//                break;
+//            }
+//
+//        }
+//    }
+//    printf("completed routing\n");
+//}
 
 /////////////////////////////////////////////////////////////////////////////
 ///@brief clears the bits in CNC control register

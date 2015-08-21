@@ -315,7 +315,7 @@ void task2(void* pdata)
               //and keep sending until there are less than 100 in global_route
               //@todo will replace this with more advanced transmit message later
               //if theres a need to send more complex messages
-              if (size_of_global_route > 10)
+              if (size_of_global_route > 30)
               {
                       // wait for xmit ready
                       alt_u16 timeout = 0;
