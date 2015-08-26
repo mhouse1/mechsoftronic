@@ -138,7 +138,6 @@ void routeTest()
 	machine.SetNextPosition(175520,307195);
 	machine.SetNextPosition(64840,84800);
 
-	machine.StartRouting();
 }
 
 void routeTestSmallNumbers()
@@ -180,7 +179,6 @@ void routeTestSmallNumbers()
 	machine.SetNextPosition(28773, 5806);
 	machine.SetNextPosition(28773, 5806);
 	machine.SetNextPosition(28773, 5806);
-	machine.StartRouting();
 
 }
 

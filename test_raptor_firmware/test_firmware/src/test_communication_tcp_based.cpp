@@ -277,7 +277,8 @@ void testReadByteStream()
 	//C:\workspace_luna\test_cnc_firmware\Debug>test_cnc_firmware.exe > output.txt
 	CommSimple listener;
 
-    std::fstream myfile("c:/bytestream0.txt", std::ios_base::in);
+    //std::fstream myfile("c:/bytestream0.txt", std::ios_base::in);
+    std::fstream myfile("c:/snowflake_poly_circle6.txt", std::ios_base::in);
 
     int a;
     while (myfile >> a)

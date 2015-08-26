@@ -23,7 +23,7 @@
 /////////////////////////////////////////////////////////////////////////////
 void DisplayStepCoordinate(list<CncMachine::TRAVERSALXY> route_data)
 {
-    printf("started routing\n");
+    printf("test_helper started routing\n");
     //DisplayRoutes(route_data);
     CncMachine::TRAVERSALXY movement;
     list<CncMachine::TRAVERSALXY>::iterator it;
@@ -56,9 +56,11 @@ void DisplayStepCoordinate(list<CncMachine::TRAVERSALXY> route_data)
 		   }
 
 		   //cout<<"X"<<movement.X.StepNum<<"Y"<<movement.Y.StepNum<<endl;
-		   //printf("G3 X%li Y%li\n",xpos, ypos);
-		   printf("G3 X%ld Y%ld\n",xpos, ypos);
+		   //printf("G3 X%ld Y%ld\n",xpos, ypos);
 		   break;
+       case (CncMachine::router_z):
+    		   printf("Z step %ld dir %ld\n",movement.X.StepNum, movement.X.StepDir);
+       	   break;
        default:
     	   break;
        }

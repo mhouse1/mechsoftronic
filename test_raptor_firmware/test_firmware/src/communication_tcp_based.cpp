@@ -13,7 +13,11 @@
 
 #include "communication_tcp_based.hpp"
 
+extern "C"
+{
+#include "stdio.h"
 
+}
 using namespace std;
 
 CommSimple::CommSimple()
