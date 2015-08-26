@@ -291,19 +291,35 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		//printf("GCode XY\n");
 		this->set_coordinate(payload);
 		break;
-	case(START_ROUTE):
-		this->StartRouting();
-		break;
+//	case(START_ROUTE):
+//		this->StartRouting();
+//		break;
 	case(FEED):
 
 		this->set_pw_feed(payload);
 		break;
+	case(PAUSE):
+        printf("pause routing set\n");
+		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRoutePause = 1;
+		this->WriteDebugRegister();
+		break;
+	case(CANCEL):
+        printf("cancel routing set\n");
+		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRouteCancel = 1;
+		this->WriteDebugRegister();
+		break;
 	case(ERASE_COORD):
         printf("coordinates erased\n");
+		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRouteCancel = 1;
+		this->WriteDebugRegister();
 		this->routes.clear();
 		cout<<"route cleared!"<<endl;
 		break;
-
+	case(START_ROUTE):
+		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRouteCancel = 0;
+		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRoutePause = 0;
+		this->WriteDebugRegister();
+		break;
 	case(SET_LAYER):
 		this->set_layer(payload);
 		break;

@@ -143,7 +143,6 @@ void task1(void* pdata)
 //    pUART->txdata = ubChar;
   pUART->sControl.sBits.rts = 1;
   printf("task 1 081015 \n");
-  char c;
   list<char> task1_local_recvd;
 //  INT8U error_code;
 //  BOOLEAN available;
@@ -172,9 +171,10 @@ void task1(void* pdata)
 	    if (char_count> max_char_cnt_in_fifo)
 	    {
 	        max_char_cnt_in_fifo = char_count;
+	        printf("max count %d\n",max_char_cnt_in_fifo);
 	    }
 	    //printf("count %d, ",char_count);
-	    printf("max count %d\n",max_char_cnt_in_fifo);
+
 	    //push all char into list
 	    for (int i = 0; i < char_count; i++)
 	    {
@@ -234,7 +234,7 @@ void task1(void* pdata)
 	loop_count++;
 	if(loop_count > 10000)
 	{
-	    printf("max count %d\n",max_char_cnt_in_fifo);
+	    //printf("max count %d\n",max_char_cnt_in_fifo);
 	    loop_count = 0;
 	}
   }
@@ -330,7 +330,7 @@ void task2(void* pdata)
                       pUART->txdata = '1';
               }
 
-              printf("items in global_machine_route:  %lu\n",size_of_global_route);
+              //printf("items in global_machine_route:  %d\n",size_of_global_route);
 
           }
           else
@@ -380,6 +380,8 @@ void task3(void* pdata)
   list<CncMachine::TRAVERSALXY> local_route;
   alt_u16 popcorn = 0;
   OSTimeDlyHMSM(0, 0, 3, 0);
+  cnc_task3.CNC_DEBUG.DEBUG.ULONG = 0;
+  cnc_task3.WriteDebugRegister();
   while (1)
   {
     OSMutexPend(global_route_mutex, 0, &error_code);
@@ -396,6 +398,7 @@ void task3(void* pdata)
         else
         {
             OSMutexPost(global_route_mutex); //release mutex
+            //printf("task3!\n");
             OSTimeDlyHMSM(0, 0, 2, 0);
         }
     }
@@ -407,13 +410,42 @@ void task3(void* pdata)
 
     while(!local_route.empty())
     {
-        popcorn++;
-        printf("popping one %d, %d left\n",(int)popcorn, (int)local_route.size());
-        cnc_task3.ExecuteRouteData(local_route.front());
-        //OSTimeDlyHMSM(0, 0, 3, 0);
-        local_route.pop_front();
-    }
+    	//this delay is required so other task does not block for long
+    	//periods of time, this delay also needs to be as small as possible
+    	//so it seems like transitions from point to point instantaneous
+    	//OSTimeDlyHMSM(0, 0, 0, 2);
+    	cnc_task3.ReadStatus();
+    	if(cnc_task3.CNC_STATUS.STUS.STUS_BITS.XDONE &&
+    	   cnc_task3.CNC_STATUS.STUS.STUS_BITS.YDONE &&
+    	   cnc_task3.CNC_STATUS.STUS.STUS_BITS.ZDONE &&
+    	   !cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRoutePause &&
+    	   !cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
+		{
+			popcorn++;
+			printf("popping one %d, %d left\n",(int)popcorn, (int)local_route.size());
+			cnc_task3.ExecuteRouteData(local_route.front());
+			local_route.pop_front();
+			OSTimeDlyHMSM(0, 0, 0, 2);
+		}
 
+
+    	//wait until stepping is done or until pause not active
+    	while(!cnc_task3.CNC_STATUS.STUS.STUS_BITS.XDONE ||
+    		  !cnc_task3.CNC_STATUS.STUS.STUS_BITS.YDONE ||
+    		  !cnc_task3.CNC_STATUS.STUS.STUS_BITS.ZDONE ||
+    		  cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRoutePause ||
+    		  cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
+    	{
+    		OSTimeDlyHMSM(0, 0, 0, 2);
+        	if (cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
+        	{
+        		local_route.clear();
+        		break;
+        	}
+
+        	cnc_task3.ReadStatus();
+    	}
+    }
     //printf("task 3 is alive\n");
 
   }
@@ -434,7 +466,7 @@ int main(void)
 	global_route_mutex = OSMutexCreate(ROUTE_MUTEX_PRIORITY, &err);
 //	global_recvr_mutex = OSMutexCreate(RECVR_MUTEX_PRIORITY, &err);
 
-	printf("creating tasks 081215\n");
+	printf("creating tasks 082415 3:43\n");
     // Create tasks
     OSTaskCreate(task1, NULL, &task1_stk[TASK_STACKSIZE-1], TASK1_PRIORITY);
     OSTaskCreate(task2, NULL, &task2_stk[TASK_STACKSIZE-1], TASK2_PRIORITY);

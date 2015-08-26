@@ -60,6 +60,7 @@ CncMachine::CncMachine()
 	this->FullRangeStepCount= 2000;
 	this->FullRangeDistance = 380000; //38mm scaled by 10000
 	this->CNC_CONTROL.CTRL.ULONG  = 0;
+	this->CNC_DEBUG.DEBUG.ULONG = 0;
 	this->CNC_STATUS.STUS.ULONG = 0;
 
 	//this->ControlRegister	= 0;
@@ -452,14 +453,21 @@ alt_u8 CncMachine::SetNextZPosition(alt_32 nextz)
 	//			 the actual StepNum should be StepNum = (distanceX*44.45)/GUI_Scaling
 	//			 in instruction terms this would be (distanceX/220)
 	//07/16/2015 the above was done for x axis, will need to figureout the correct number for z axis
-	data.X.StepNum = (alt_32)fabs(distanceZ)/219;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+	//08/24/2015 z axis is measured as 1000 steps == 3.14mm of movement
+	//			 this is equivalent of 318.4714 steps per mm
+	//			 318.4714/10000 = 0.0318
+	data.X.StepNum = (alt_32)fabs(distanceZ)/180;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
 
-	alt_u32 actualDistanceZ = data.X.StepNum*219;
+	alt_u32 actualDistanceZ = data.X.StepNum*180;
 	this->PresentZ = distanceZ >= 0? this->PresentZ + actualDistanceZ : this->PresentZ - actualDistanceZ;
 
 	//for now just use the feedrate as speed for Z axis movement
 	data.X.HighPulseWidth = this->FeedRate;
 	data.X.LowPulseWidth = this->FeedRate;
+	printf("z step %lu\n",data.X.StepNum);
+	printf("z pwh %lu\n",data.X.HighPulseWidth);
+	printf("z pwl %lu\n",data.X.LowPulseWidth);
+
 	this->routes.push_back(data);
 //	OSMutexPend(mem_mutex, 0, OS_OPT_PEND_BLOCKING);
 	return 0;
@@ -486,7 +494,7 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 
 	//@todo move scaling constant elsewhere
 	//for now just keep it within the function stack
-	alt_16 scaling_constant = 220;//smaller constant means smaller plot
+	alt_16 scaling_constant = 220;//smaller constant means bigger plot
 
 	//assign state router_xy to indicate data is xy movement
 	data.router_state = router_xy;
@@ -591,7 +599,31 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 		data.Y.HighPulseWidth = basePWH;
 		data.Y.LowPulseWidth = basePWL;
 	}
+	if (data.X.HighPulseWidth > 1000000)
+	{
+		printf("Limit: x high pw %lu\n", data.X.HighPulseWidth);
+	}
+	if (data.X.LowPulseWidth > 1000000)
+	{
+		printf("Limit: x low pw %lu\n", data.X.LowPulseWidth);
+	}
+	if (data.X.StepNum > 1000000)
+	{
+		printf("Limit: x step %lu\n", data.X.StepNum);
+	}
 
+	if (data.Y.HighPulseWidth > 1000000)
+	{
+		printf("Limit: Y high pw %lu\n", data.Y.HighPulseWidth);
+	}
+	if (data.Y.LowPulseWidth > 1000000)
+	{
+		printf("Limit: Y low pw %lu\n", data.Y.LowPulseWidth);
+	}
+	if (data.Y.StepNum > 1000000)
+	{
+		printf("Limit: Y step %lu\n", data.Y.StepNum);
+	}
 	this->routes.push_back(data);
 	return 0;
 }
@@ -755,13 +787,13 @@ void CncMachine::RouteZ(TRAVERSALXY movement)
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunZ = 0;
 	WriteControlRegister();
 	printf("RoutZ steps %lu",movement.X.StepNum);
-	//wait until stepping is done
-	ReadStatus();
-	while(!this->CNC_STATUS.STUS.STUS_BITS.ZDONE)
-	{
-		ReadStatus();
-		OSTimeDlyHMSM(0, 0, 0, 2);
-	}
+//	//wait until stepping is done
+//	ReadStatus();
+//	while(!this->CNC_STATUS.STUS.STUS_BITS.ZDONE)
+//	{
+//		ReadStatus();
+//		OSTimeDlyHMSM(0, 0, 0, 2);
+//	}
 }
 
 void CncMachine::RouteXY(TRAVERSALXY movement)
@@ -813,13 +845,13 @@ void CncMachine::RouteXY(TRAVERSALXY movement)
 	this->CNC_CONTROL.CTRL.CTRL_BITS.RunY = 0;
 	WriteControlRegister();
 
-	//wait until stepping is done
-	ReadStatus();
-	while(!this->CNC_STATUS.STUS.STUS_BITS.XDONE || !this->CNC_STATUS.STUS.STUS_BITS.YDONE)
-	{
-		ReadStatus();
-		OSTimeDlyHMSM(0, 0, 0, 2);
-	}
+//	//wait until stepping is done
+//	ReadStatus();
+//	while(!this->CNC_STATUS.STUS.STUS_BITS.XDONE || !this->CNC_STATUS.STUS.STUS_BITS.YDONE)
+//	{
+//		ReadStatus();
+//		OSTimeDlyHMSM(0, 0, 0, 2);
+//	}
 }
 
 void CncMachine::ExecuteRouteData(CncMachine::TRAVERSALXY  route_data)
@@ -932,4 +964,9 @@ void CncMachine::ClearControlRegister()
 void CncMachine::WriteControlRegister()
 {
     IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_3*4),this->CNC_CONTROL.CTRL.ULONG);
+}
+
+void CncMachine::WriteDebugRegister()
+{
+    IOWR_32DIRECT(SLAVE_TEMPLATE_1_BASE,(DATA_OUT_13*4),this->CNC_DEBUG.DEBUG.ULONG);
 }

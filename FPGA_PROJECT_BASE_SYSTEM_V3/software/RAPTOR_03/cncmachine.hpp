@@ -54,6 +54,31 @@ public:
 		}CTRL;
 	};
 
+	//this register is meant to be only written to by task2
+	//CncRoutePause and CncRouteCancel is routed to status
+	//register to allow task 3 to read it
+	struct DEBUG_REGISTER
+	{
+		union
+		{
+			alt_u32 ULONG;
+			struct
+			{
+				alt_u32 Debug0			: 1;
+				alt_u32 Debug1			: 1;
+				alt_u32 Debug2			: 1;
+				alt_u32 Debug3			: 1;
+				alt_u32 Debug4			: 1;
+				alt_u32 Debug5			: 1;
+				alt_u32 Debug6			: 1;
+				alt_u32 Debug7			: 1;
+				alt_u32 CncRoutePause	: 1;
+				alt_u32 CncRouteCancel	: 1;
+				alt_u32 DebugUnused	    : 22;
+			}DEBUG_BITS;
+		}DEBUG;
+	};
+
 	struct STATUS_REGISTER
 	{
 		union
@@ -64,7 +89,9 @@ public:
 				alt_u32 XDONE           : 1;
 				alt_u32 YDONE           : 1;
 				alt_u32 ZDONE			: 1;
-				alt_u32 reserved       : 29;
+				alt_u32 CncRouteCancel  : 1;
+				alt_u32 CncRoutePause	: 1;
+				alt_u32 reserved       : 27;
 			}STUS_BITS;
 		}STUS;
 	};
@@ -87,6 +114,7 @@ public:
 	//Public data
 	list<TRAVERSALXY> routes;
 	CONTROL_REGISTER CNC_CONTROL;
+	DEBUG_REGISTER CNC_DEBUG;
 	STATUS_REGISTER CNC_STATUS;
 
 
@@ -120,10 +148,11 @@ public:
 	void DisplayMovement(TRAVERSALXY movement);
 	void DisplayRoutes(list<TRAVERSALXY> route_data);
 
-	void StartRouting(void);
+	//void StartRouting(void);//@todo remove this, should no longer be used
 	void ExecuteRouteData(CncMachine::TRAVERSALXY  route_data);
 	void ClearRoute(void);
 	void ReadStatus(void);
+	void WriteDebugRegister(void);
 
 protected:
 	alt_u32  StepNumX;
@@ -152,6 +181,7 @@ protected:
 	void WritePulseInfoX(alt_u32 XHighPulseWidth, alt_u32 XLowPulseWidth);
 	void ClearControlRegister(void);
 	void WriteControlRegister(void);
+
 	void RouteXY(TRAVERSALXY movement);
 	void RouteZ(TRAVERSALXY movement);
 	void AppendStateToRoutes(Peripheral state);
