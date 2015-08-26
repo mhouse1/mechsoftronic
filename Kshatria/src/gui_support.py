@@ -76,7 +76,6 @@ class GuiSupport(object):
         #where command number is the number of command
         # and command_length is the number of bytes in payload
         self.command_list = {
-        #
         'JOG_Z'           :{'command_number' : 0 , 'command_length' : 4},
         'JOG_Y'           :{'command_number' : 1 , 'command_length' : 4},
         'JOG_X'           :{'command_number' : 2 , 'command_length' : 4},
@@ -171,6 +170,7 @@ class GuiSupport(object):
     def erase_coordinates(self):
         '''tell firmware to erase the route
         '''
+        Communications.slow_queue.queue.clear()
         self._send('ERASE_COORD')
 
     def set_layer(self):
@@ -209,14 +209,21 @@ class GuiSupport(object):
 
 
     def send_coordinates(self,scale = 10000):
+        '''
+        parse gcode file to get coordinates then send the coordinates
+        by putting them in the queue
+        '''
         coordinates = parse_gcode.get_gcode_data(self.gcode_file, scale)
         total_num_coordinates = len(coordinates)
+        
+        #clear empty the gcode transmission queue incase its not empty
+        Communications.slow_queue.queue.clear()
         for idx, coordinate_data in enumerate(coordinates):
             data1, data2 , cnc_state  = coordinate_data
             #print xpos, ypos
             if cnc_state == router_state.router_xy:
                 command = 'G_XY'
-                print 'x ',int(data1), 'y', int(data2)
+                #print 'x ',int(data1), 'y', int(data2)
                 payload = self.get_bin(int(data1),32) +\
                           self.get_bin(int(data2),32)
                           
@@ -231,10 +238,10 @@ class GuiSupport(object):
                 #print 'tool status ', router_state.reverse_mapping[cnc_state]
             #print 'index ',idx
             
-            #print progress of transmission
-            if str(idx)[-1] == '0':
-                print "\r{0}".format((float(idx)/total_num_coordinates)*100),
-        print 'finished sending coordinates'
+#             #print % progress of putting coordinates in queue
+#             if str(idx)[-1] == '0':
+#                 print "\r{0}".format((float(idx)/total_num_coordinates)*100),
+        print 'finished putting coordinates in queue'
 
 class CfgFile:
     ''' manages a GUI configuration file 
@@ -489,11 +496,10 @@ def get_com_port_list():
 class ComCombo:
     '''deals with the combo box that allow selection of com port to use
     '''
-    def __init__(self,builder,cfg_handle):
+    def __init__(self,builder):
         '''initialize the combo box
         '''
         self.name = 'Com_channel_combo_box'
-        #cfg_handle.settings.extend(self.name)
         self.builder = builder
         #get an instance of the combo box
         self.Com_channel_combo = self.builder.get_object(self.name)

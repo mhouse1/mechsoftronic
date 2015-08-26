@@ -32,26 +32,35 @@ def transmit(message, transmit_speed = 0):
     #log transmitted message into a text file
     #the file can then be read by CUTE unit test to simulate
     #actual data sent over serial channel
-#     global fast_queue
-#     default_file_name = 'bytestream'
-#     default_file_ext = '.txt'
-#     default_file_index = 0
-#     file_name = default_file_name+str(default_file_index)+default_file_ext
-
+    #//c++ usage example
+    #CommSimple listener;
+    #
+    #std::fstream myfile("c:/bytestream0.txt", std::ios_base::in);
+    #
+    #int a;
+    #while (myfile >> a)
+    #{
+    #    //printf("%d ", a);
+    #    listener.input(a);
+    #}
+    default_file_name = 'bytestream'
+    default_file_ext = '.txt'
+    default_file_index = 0
+    file_name = default_file_name+str(default_file_index)+default_file_ext
 #     while os.path.isfile(file_name):
 #         default_file_index += 1
 #         file_name = default_file_name+str(default_file_index)+default_file_ext
-#     with open(file_name, "a") as myfile:
-#         for char in message:
-#             myfile.write(str(ord(char))+' ')
-#             #myfile.write(char)
-#         #myfile.write(message[:-1])
+    with open(file_name, "a") as myfile:
+        for char in message:
+            myfile.write(str(ord(char))+' ')
+            #myfile.write(char)
+        #myfile.write(message[:-1])
     
     if transmit_speed == 0:
-        print 'putFast',message
+        #print 'putFast',message
         fast_queue.put(message)
     else:
-        print 'putSlow',message
+        #print 'putSlow',message
         slow_queue.put(message)
 
 
@@ -95,13 +104,13 @@ def set_writer(baud_rate = 19200, bytesize = 8, timeout = 1, ):
         #print 'consumer active'
         while not fast_queue.empty():
             message_to_send = fast_queue.get()
-            print "OutF: {}".format(message_to_send)
+            #print "OutF: {}".format(message_to_send)
             com_handle.write(message_to_send)
         time.sleep(0.5) 
         #print 'stopsend = {}'.format(stop_sending)
         while not slow_queue.empty() and fast_queue.empty() and not stop_sending:
             message_to_send = slow_queue.get()
-            print "OutS: {}".format(message_to_send)
+            #print "OutS: {}".format(message_to_send)
             com_handle.write(message_to_send)
             #set a delay for slow transfer queue
             #break out of delay early if detected fast_queue not empty
@@ -134,12 +143,12 @@ def set_reader():
         time.sleep(0.3)
         received = com_handle.read()
         if received == '1':
-            print 'stop it!'
+            #print 'stop it!'
             stop_sending = True
         elif received == '2':
-            print 'send it'
+            #print 'send it'
             stop_sending = False
-        print 'read {}'.format(received)
+        #print 'read {}'.format(received)
 
                         
 

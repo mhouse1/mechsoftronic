@@ -2,6 +2,10 @@
 Created on May 1, 2015
 
 @author: MHouse1
+
+@details: contains function to parse gcode and returns coordinates to calling function
+          and function to plot 2D result in realtime to visualize the parsed results
+          before sending to firwmare
 '''
 import matplotlib.pyplot as plt 
 import math
@@ -33,16 +37,16 @@ router_state = enum('router_off', 'router_on', 'router_up','router_down','router
 
 def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     '''
-    Reads and parses gcode returns a coordinate list for gui_support
+    Reads and parses gcode returns a coordinate list for calling function
     to send to firmware
     '''
     #read all lines in gcode file
     with open(input_file) as f:
         gcode_file = f.read().splitlines()
     
-    #do post processing on lines read from gcode file
+    #does post processing on lines read from gcode file
     #this is done to get the gocde file into a 
-    #recognizable format for the rest of the parsing code
+    #standardized format 
     #what is done:
     #    replace three spaces with no space ex: '   ' = ''
     #    replace two spaces with no space ex: '  ' = ''
@@ -52,8 +56,9 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     #    DXF2GCODE
     post_processed = []
     for sentence in gcode_file:
-        sentence = sentence.replace('   ','')
-        sentence = sentence.replace('  ','')
+        #sentence = sentence.replace('   ','')
+        #sentence = sentence.replace('  ','')
+        #sentence = sentence.replace(' ','')
         post_processed.append(sentence)
     gcode_file = post_processed
         
@@ -77,23 +82,51 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
             gcode_type = tokens[0]
             #if GCODE found in list
             if gcode_type in ['G0','G1','G2','G3']:
+                
+                first_coord_type = tokens[1][0]
+                if first_coord_type == 'X':
+                    #second_coord_type = tokens[2][0]
+                    parsed_coord = line.split('X')[1].replace(' ','') #condensed string no space
+                    #print parsed_coord, 'parsed1'
+                    parsed_coord = parsed_coord.replace('I',' I')#add a space infront of I
+                    parsed_coord = parsed_coord.replace('F',' F')#add a space infront of F
+                    #print parsed_coord, 'parsed2'
+                    parsed_coord = parsed_coord.split(' ')[0].split('Y')#separate on space
+                    #print parsed_coord, 'parsed'
+                    xnum = parsed_coord[0]#tokens[1][1:]
+                    ynum = parsed_coord[1]#tokens[2][1:]
+                elif first_coord_type == 'Z':
+                    parsed_coord = line.split('Z')[1].replace(' ','') #condensed string no space
+#                     print parsed_coord, 'parsed1'
+#                     parsed_coord = parsed_coord.replace('I',' I')#add a space infront of I
+#                     print parsed_coord, 'parsed2'
+                    parsed_coord = parsed_coord.replace('F',' F')#add a space infront of F
+                    parsed_coord = parsed_coord.split(' ')[0]
+                    #print parsed_coord, 'parsed3'
+                    znum = parsed_coord#tokens[1][1:]
+                    
+                    
                 #print tokens
                 #if next two parameter begins with X and Y
-                if tokens[1][0] =='X' and tokens[2][0] == 'Y':
+                if first_coord_type =='X':# and second_coord_type == 'Y':
+                    #print tokens[1][1:] , tokens[2][1:]
+                    #print line, Decimal(xnum) , Decimal(ynum)
                     #print tokens
                     #print tokens[1][1:],tokens[2][1:]
                     #convert (x,y) string to float then scale it then convert to int
-                    coordinates.append((int(Decimal(tokens[1][1:])*Decimal(scale)),int(Decimal(tokens[2][1:])*Decimal(scale)),int(router_state.router_xy)))
-                    print coordinates[-1] #print last item in list
-                elif tokens[1][0] =='Z':
-                    print 'gcode z motion', double(tokens[1][1:])
+                    coordinates.append((int(Decimal(xnum)*Decimal(scale)),int(Decimal(ynum)*Decimal(scale)),int(router_state.router_xy)))
+                    #print coordinates[-1] #print last item in list
+                elif first_coord_type =='Z':
+                    #print line,'zline' , znum, 'zum'
+                    #print 'gcode z motion', double(znum)
                     if gcode_type =='G0' or gcode_type =='G1':
-                        coordinates.append((int(Decimal(tokens[1][1:])*Decimal(scale)),1,int(router_state.router_z)))
+                        coordinates.append((int(Decimal(znum)*Decimal(scale)),1,int(router_state.router_z)))
                     else:
                         raise ValueError('unexpected gcode type with command z')
                     
                 else:
-                    print 'ignored:*',tokens
+                    print 'ignored:*',tokens, first_coord_type#, second_coord_type
+                    print 'line:*',line
             elif gcode_type == 'M3' or gcode_type == 'M03':
                 coordinates.append((int(3),int(3),int(router_on)))
             elif gcode_type == 'M5' or gcode_type == 'M05':
@@ -104,6 +137,10 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     return coordinates
 
 def draw_coord(coordinates):
+    '''
+    draw a 2D view of coordinates in realtime to visualize parsed coordinates
+    drawn in order from beginning to end
+    '''
     fig, ax = plt.subplots()
     x = []
     y = []
@@ -127,7 +164,7 @@ def draw_coord(coordinates):
         
         if tool_stat == router_state.router_xy:
             #print this and copy to c++ test code to test cnc firmware in CUTE
-            #print 'machine.SetNextPosition(',x_coord,',', y_coord,');'
+            print 'machine.SetNextPosition(',x_coord,',', y_coord,');'
             
             x.append(x_coord)
             y.append(y_coord)
@@ -141,11 +178,15 @@ def draw_coord(coordinates):
         print 'did you press the red x?'
         
 if __name__ == '__main__':
-    xycoord = get_gcode_data('PenHolderBottomPolyCircleSimplemultilayer.ngc')#('step_motion.nc', scale = 1)#('step_motion1.nc', scale = 1)#('rd_bm1.nc')#('RR.nc')#
-    #xycoord = get_gcode_data('step_motion2.nc', scale = 1)#
+    #get a set of coordinates
+    xycoord = get_gcode_data('snowflake6optimized.ngc', scale = 10000)
+    #xycoord = get_gcode_data('RR.nc', scale = 1)
+    #xycoord = get_gcode_data('rect150x100.nc', scale = 1)
+    #xycoord = get_gcode_data('rd_bm1.nc', scale = 10000)
+    #xycoord = get_gcode_data('PenHolderBottomPolyCircleSimplemultilayer.ngc', scale = 10000)
+    #xycoord = get_gcode_data('step_motion1.nc', scale = 1)
 
-#     for data in xycoord:
-#         print data
+    #draw start drawing
     print len(xycoord)
     draw_coord(xycoord)
     #print router_state.router_up
