@@ -442,6 +442,7 @@ alt_u8 CncMachine::SetNextZPosition(alt_32 nextz)
 	//Convert distance to steps
 	//calculate distance change
 	alt_32 distanceZ = nextz - this->PresentZ;
+	//printf("presentz %ld nextz %ld distanceZ %ld \n",this->PresentZ, nextz, distanceZ);
 	//calculate and set direction
 	//if change in distance is positive move up, else move down
 	data.X.StepDir = distanceZ >= 0? 1:0;
@@ -455,18 +456,18 @@ alt_u8 CncMachine::SetNextZPosition(alt_32 nextz)
 	//07/16/2015 the above was done for x axis, will need to figureout the correct number for z axis
 	//08/24/2015 z axis is measured as 1000 steps == 3.14mm of movement
 	//			 this is equivalent of 318.4714 steps per mm
-	//			 318.4714/10000 = 0.0318
-	data.X.StepNum = (alt_32)fabs(distanceZ)/180;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
+	//			 318.4714/10000 = 0.0318 ~=1/32
+	data.X.StepNum = (alt_32)fabs(distanceZ)/32;//(this->FullRangeStepCount*(alt_32)fabs(distanceX))/this->FullRangeDistance;
 
-	alt_u32 actualDistanceZ = data.X.StepNum*180;
+	alt_u32 actualDistanceZ = data.X.StepNum*32;
 	this->PresentZ = distanceZ >= 0? this->PresentZ + actualDistanceZ : this->PresentZ - actualDistanceZ;
 
 	//for now just use the feedrate as speed for Z axis movement
 	data.X.HighPulseWidth = this->FeedRate;
 	data.X.LowPulseWidth = this->FeedRate;
-	printf("z step %lu\n",data.X.StepNum);
-	printf("z pwh %lu\n",data.X.HighPulseWidth);
-	printf("z pwl %lu\n",data.X.LowPulseWidth);
+//	printf("z step %lu\n",data.X.StepNum);
+//	printf("z pwh %lu\n",data.X.HighPulseWidth);
+//	printf("z pwl %lu\n",data.X.LowPulseWidth);
 
 	this->routes.push_back(data);
 //	OSMutexPend(mem_mutex, 0, OS_OPT_PEND_BLOCKING);
@@ -599,31 +600,31 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 		data.Y.HighPulseWidth = basePWH;
 		data.Y.LowPulseWidth = basePWL;
 	}
-	if (data.X.HighPulseWidth > 1000000)
-	{
-		printf("Limit: x high pw %lu\n", data.X.HighPulseWidth);
-	}
-	if (data.X.LowPulseWidth > 1000000)
-	{
-		printf("Limit: x low pw %lu\n", data.X.LowPulseWidth);
-	}
-	if (data.X.StepNum > 1000000)
-	{
-		printf("Limit: x step %lu\n", data.X.StepNum);
-	}
-
-	if (data.Y.HighPulseWidth > 1000000)
-	{
-		printf("Limit: Y high pw %lu\n", data.Y.HighPulseWidth);
-	}
-	if (data.Y.LowPulseWidth > 1000000)
-	{
-		printf("Limit: Y low pw %lu\n", data.Y.LowPulseWidth);
-	}
-	if (data.Y.StepNum > 1000000)
-	{
-		printf("Limit: Y step %lu\n", data.Y.StepNum);
-	}
+//	if (data.X.HighPulseWidth > 1000000)
+//	{
+//		printf("Limit: x high pw %lu\n", data.X.HighPulseWidth);
+//	}
+//	if (data.X.LowPulseWidth > 1000000)
+//	{
+//		printf("Limit: x low pw %lu\n", data.X.LowPulseWidth);
+//	}
+//	if (data.X.StepNum > 1000000)
+//	{
+//		printf("Limit: x step %lu\n", data.X.StepNum);
+//	}
+//
+//	if (data.Y.HighPulseWidth > 1000000)
+//	{
+//		printf("Limit: Y high pw %lu\n", data.Y.HighPulseWidth);
+//	}
+//	if (data.Y.LowPulseWidth > 1000000)
+//	{
+//		printf("Limit: Y low pw %lu\n", data.Y.LowPulseWidth);
+//	}
+//	if (data.Y.StepNum > 1000000)
+//	{
+//		printf("Limit: Y step %lu\n", data.Y.StepNum);
+//	}
 	this->routes.push_back(data);
 	return 0;
 }
