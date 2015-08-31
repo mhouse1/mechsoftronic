@@ -155,6 +155,9 @@ public:
 	void WriteDebugRegister(void);
 
 protected:
+	alt_u32 PresentX;
+	alt_u32 PresentY;
+	alt_u32 PresentZ;
 	alt_u32  StepNumX;
 	alt_u32  StepNumY;
 	alt_u32  StepNumZ;
@@ -191,9 +194,7 @@ private:
 	alt_u32 StepPosX; //step count to indicate how far X moved
 	alt_u32 StepPosY; //step count to indicate how far Y moved
 	alt_u32 StepPosZ;
-	alt_u32 PresentX;
-	alt_u32 PresentY;
-	alt_u32 PresentZ;
+
 	alt_u32 NextX;
 	alt_u32 NextY;
 	alt_u32 NextZ;
