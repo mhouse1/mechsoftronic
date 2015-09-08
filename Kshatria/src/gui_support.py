@@ -119,6 +119,8 @@ class GuiSupport(object):
         '''
         payload should be a binary string in the format of the length of payload
         queue_priority == 0 is the fastest and the higher the number the slower 
+        #note:set all gcode commands priority = 1, this will place gcode in slow queue
+        #allowing user sent commands to be processed quickly even if routing is in progress
         '''
         payload_len = self.command_list[command]['command_length']
         received_payload_len = len(payload)/self.bits_per_byte

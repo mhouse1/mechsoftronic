@@ -33,7 +33,7 @@ def enum(*sequential, **named):
     enums['reverse_mapping'] = reverse
     return type('Enum', (), enums)
 
-router_state = enum('router_off', 'router_on', 'router_up','router_down','router_xy','router_z')
+router_state = enum('router_off', 'router_on', 'router_up','router_down','router_xy','router_z','cnc_pause')
 
 def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
     '''
@@ -128,12 +128,15 @@ def get_gcode_data(input_file = 'bridesmaid_inner_01.nc',scale=10000):
                     print 'ignored:*',tokens, first_coord_type#, second_coord_type
                     print 'line:*',line
             elif gcode_type == 'M3' or gcode_type == 'M03':
-                coordinates.append((int(3),int(3),int(router_on)))
+                coordinates.append((int(3),int(3),int(router_state.router_on)))
             elif gcode_type == 'M5' or gcode_type == 'M05':
-                coordinates.append((int(5),int(5),int(router_off)))
-                
+                coordinates.append((int(5),int(5),int(router_state.router_off)))
+            elif gcode_type == 'M0' or gcode_type == 'M00':
+                coordinates.append((int(6),int(6),int(router_state.cnc_pause)))                
             else:
                 print 'ignored: ',tokens
+                if gcode_type == 'M0':
+                    raw_input('detected M0 pause command')
     return coordinates
 
 def draw_coord(coordinates):
@@ -179,7 +182,8 @@ def draw_coord(coordinates):
         
 if __name__ == '__main__':
     #get a set of coordinates
-    xycoord = get_gcode_data('snowflake6optimized.ngc', scale = 10000)
+    #xycoord = get_gcode_data('snowflake6optimized.ngc', scale = 10000)
+    xycoord = get_gcode_data('leaf_engrooving_bit_1.ngc', scale = 10000)
     #xycoord = get_gcode_data('RR.nc', scale = 1)
     #xycoord = get_gcode_data('rect150x100.nc', scale = 1)
     #xycoord = get_gcode_data('rd_bm1.nc', scale = 10000)

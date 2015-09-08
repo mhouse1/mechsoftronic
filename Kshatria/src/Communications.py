@@ -85,9 +85,11 @@ def list_serial_ports():
         #['/dev/cu.Michael-SerialServer-1', '/dev/cu.MikeHousesiPod-Wireless', '/dev/cu.Bluetooth-Modem', '/dev/cu.Bluetooth-Incoming-Port', '/dev/cu.MikeHousesiPhone-Wirele', '/dev/cu.SLAB_USBtoUART']
 
 def set_writer(baud_rate = 19200, bytesize = 8, timeout = 1, ):
-    '''sets the active serial channel
-    
+    '''
         this function will be called once when the GUI first initializes
+        it then waits until the user sets an active serial chanel.
+        Then goes into the loop that writes messages to queues that will
+        be pushed to firmware via the active serial channel.
     '''
     global com_handle
     global stop_sending
@@ -99,6 +101,10 @@ def set_writer(baud_rate = 19200, bytesize = 8, timeout = 1, ):
     com_handle = serial.Serial(port = consumer_portname,baudrate = 19200)
 
     print 'serial activated'
+    
+    #if fast queue is not empty then send messages in the fast queue
+    #until queue is empty. The slow queue will only send messages
+    #if the fast queue is not empty and stop_sending is not active.
     
     while True:
         #print 'consumer active'
@@ -112,22 +118,19 @@ def set_writer(baud_rate = 19200, bytesize = 8, timeout = 1, ):
             message_to_send = slow_queue.get()
             #print "OutS: {}".format(message_to_send)
             com_handle.write(message_to_send)
+            #put a little delay so firwmare receiver buffer does not overflow before
+            #it can set stop_sending, not the delay must be long enough so the buffer
+            #does not overflow, and short enough so firmware does not run out of data to consume
+            time.sleep(0.01)
             #set a delay for slow transfer queue
             #break out of delay early if detected fast_queue not empty
-            for i in xrange(5):
-                if not fast_queue.empty():
-                    break
-                time.sleep(0.1)#resolution of checking for not empty  
+#             for i in xrange(2):
+#                 if not fast_queue.empty():
+#                     break
+#                 time.sleep(0.1)#interval to check fast_queue is not empty
         #stop_sending = False
         
-# def set_keep_sending():
-#     '''
-#     after a time period turn stop_sending back to False
-#     '''
-#     global stop_sending
-#     while True:
-#         time.sleep(5)#wait time period before changing stop_sending to False
-#         stop_sending = False
+
 def set_reader():
     '''sets the active serial channel
     
@@ -140,7 +143,7 @@ def set_reader():
         #print '=',
     print 'starting reader'
     while True:
-        time.sleep(0.3)
+        #time.sleep(0.3)
         received = com_handle.read()
         if received == '1':
             #print 'stop it!'
