@@ -300,8 +300,7 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		break;
 	case(PAUSE):
         printf("pause routing set\n");
-		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRoutePause = 1;
-		this->WriteDebugRegister();
+		this->CncPauseRouting();
 		break;
 	case(CANCEL):
         printf("cancel routing set\n");
