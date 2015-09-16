@@ -1,0 +1,202 @@
+/*
+WARNING: Do NOT edit the input and output ports in this file in a text
+editor if you plan to continue editing the block that represents it in
+the Block Editor! File corruption is VERY likely to occur.
+*/
+/*
+Copyright (C) 1991-2011 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+*/
+(header "graphic" (version "1.4"))
+(pin
+	(input)
+	(rect 224 160 392 176)
+	(text "INPUT" (rect 125 0 153 10)(font "Arial" (font_size 6)))
+	(text "clk_clk " (rect 5 0 42 12)(font "Arial" ))
+	(pt 168 8)
+	(drawing
+		(line (pt 84 12)(pt 109 12))
+		(line (pt 84 4)(pt 109 4))
+		(line (pt 113 8)(pt 168 8))
+		(line (pt 84 12)(pt 84 4))
+		(line (pt 109 4)(pt 113 8))
+		(line (pt 109 12)(pt 113 8))
+	)
+	(text "VCC" (rect 128 7 148 17)(font "Arial" (font_size 6)))
+)
+(pin
+	(input)
+	(rect 216 216 392 232)
+	(text "INPUT" (rect 133 0 161 10)(font "Arial" (font_size 6)))
+	(text "reset_reset_n " (rect 5 0 75 12)(font "Arial" ))
+	(pt 176 8)
+	(drawing
+		(line (pt 92 12)(pt 117 12))
+		(line (pt 92 4)(pt 117 4))
+		(line (pt 121 8)(pt 176 8))
+		(line (pt 92 12)(pt 92 4))
+		(line (pt 117 4)(pt 121 8))
+		(line (pt 117 12)(pt 121 8))
+	)
+	(text "VCC" (rect 136 7 156 17)(font "Arial" (font_size 6)))
+)
+(pin
+	(input)
+	(rect 224 320 392 336)
+	(text "INPUT" (rect 125 0 153 10)(font "Arial" (font_size 6)))
+	(text "epcs_data0 " (rect 5 0 65 12)(font "Arial" ))
+	(pt 168 8)
+	(drawing
+		(line (pt 84 12)(pt 109 12))
+		(line (pt 84 4)(pt 109 4))
+		(line (pt 113 8)(pt 168 8))
+		(line (pt 84 12)(pt 84 4))
+		(line (pt 109 4)(pt 113 8))
+		(line (pt 109 12)(pt 113 8))
+	)
+	(text "VCC" (rect 128 7 148 17)(font "Arial" (font_size 6)))
+)
+(pin
+	(output)
+	(rect 216 272 392 288)
+	(text "OUTPUT" (rect 137 6 175 16)(font "Arial" (font_size 6)))
+	(text "epcs_dclk " (rect 5 4 58 16)(font "Arial" ))
+	(pt 176 8)
+	(drawing
+		(line (pt 176 8)(pt 124 8))
+		(line (pt 124 12)(pt 98 12))
+		(line (pt 124 4)(pt 98 4))
+		(line (pt 124 4)(pt 124 12))
+		(line (pt 98 12)(pt 94 8))
+		(line (pt 94 8)(pt 98 4))
+		(line (pt 98 4)(pt 94 8))
+	)
+	(rotate180)
+)
+(pin
+	(output)
+	(rect 216 288 392 304)
+	(text "OUTPUT" (rect 137 6 175 16)(font "Arial" (font_size 6)))
+	(text "epcs_sce " (rect 5 4 55 16)(font "Arial" ))
+	(pt 176 8)
+	(drawing
+		(line (pt 176 8)(pt 124 8))
+		(line (pt 124 12)(pt 98 12))
+		(line (pt 124 4)(pt 98 4))
+		(line (pt 124 4)(pt 124 12))
+		(line (pt 98 12)(pt 94 8))
+		(line (pt 94 8)(pt 98 4))
+		(line (pt 98 4)(pt 94 8))
+	)
+	(rotate180)
+)
+(pin
+	(output)
+	(rect 216 304 392 320)
+	(text "OUTPUT" (rect 137 6 175 16)(font "Arial" (font_size 6)))
+	(text "epcs_sdo " (rect 5 4 55 16)(font "Arial" ))
+	(pt 176 8)
+	(drawing
+		(line (pt 176 8)(pt 124 8))
+		(line (pt 124 12)(pt 98 12))
+		(line (pt 124 4)(pt 98 4))
+		(line (pt 124 4)(pt 124 12))
+		(line (pt 98 12)(pt 94 8))
+		(line (pt 94 8)(pt 98 4))
+		(line (pt 98 4)(pt 94 8))
+	)
+	(rotate180)
+)
+(symbol
+	(rect 392 96 536 352)
+	(text "mynios2" (rect 8 -4 127 28)(font "Arial" (color 0 64 0)(font_size 20)))
+	(text "inst" (rect 0 244 24 260)(font "Arial" (color 255 255 255)(font_size 10)))
+	(port
+		(pt 0 72)
+		(input)
+		(text "clk_clk " (rect 0 0 37 12)(font "Arial" ))
+		(text " " (rect 0 0 3 12)(font "Arial" ))
+		(line (pt 0 72)(pt 0 72))
+	)
+	(port
+		(pt 0 128)
+		(input)
+		(text "reset_reset_n " (rect 0 0 70 12)(font "Arial" ))
+		(text " " (rect 0 0 3 12)(font "Arial" ))
+		(line (pt 0 128)(pt 0 128))
+	)
+	(port
+		(pt 0 232)
+		(input)
+		(text "epcs_data0 " (rect 0 0 60 12)(font "Arial" ))
+		(text " " (rect 0 0 3 12)(font "Arial" ))
+		(line (pt 0 232)(pt 0 232))
+	)
+	(port
+		(pt 0 184)
+		(output)
+		(text "epcs_dclk " (rect 0 0 53 12)(font "Arial" ))
+		(text " " (rect 0 0 3 12)(font "Arial" ))
+		(line (pt 0 184)(pt 0 184))
+	)
+	(port
+		(pt 0 200)
+		(output)
+		(text "epcs_sce " (rect 0 0 50 12)(font "Arial" ))
+		(text " " (rect 0 0 3 12)(font "Arial" ))
+		(line (pt 0 200)(pt 0 200))
+	)
+	(port
+		(pt 0 216)
+		(output)
+		(text "epcs_sdo " (rect 0 0 50 12)(font "Arial" ))
+		(text " " (rect 0 0 3 12)(font "Arial" ))
+		(line (pt 0 216)(pt 0 216))
+	)
+	(drawing
+		(text "mynios2" (rect 90 0 158 18)(font "Arial" (color 128 128 128)(font_size 12)))
+		(text "clk" (rect 8 40 35 62)(font "Arial" (color 64 0 0)(font_size 14)))
+		(text "clk_clk" (rect 16 64 64 80)(font "Arial" (color 48 0 64)(font_size 10)))
+		(text "reset" (rect 8 96 58 118)(font "Arial" (color 64 0 0)(font_size 14)))
+		(text "reset_reset_n" (rect 16 120 109 136)(font "Arial" (color 48 0 64)(font_size 10)))
+		(text "epcs" (rect 8 152 57 174)(font "Arial" (color 64 0 0)(font_size 14)))
+		(text "epcs_dclk" (rect 16 176 85 192)(font "Arial" (color 48 0 64)(font_size 10)))
+		(text "epcs_sce" (rect 16 192 82 208)(font "Arial" (color 48 0 64)(font_size 10)))
+		(text "epcs_sdo" (rect 16 208 82 224)(font "Arial" (color 48 0 64)(font_size 10)))
+		(text "epcs_data0" (rect 16 224 95 240)(font "Arial" (color 48 0 64)(font_size 10)))
+		(line (pt 4 28)(pt 140 28)(color 240 240 240))
+		(line (pt 4 36)(pt 42 36)(color 240 240 240)(line_width 2))
+		(line (pt 42 36)(pt 50 44)(color 240 240 240)(line_width 2))
+		(line (pt 50 44)(pt 50 76)(color 240 240 240)(line_width 2))
+		(line (pt 50 76)(pt 42 84)(color 240 240 240)(line_width 2))
+		(line (pt 42 84)(pt 4 84)(color 240 240 240)(line_width 2))
+		(line (pt 0 72)(pt 12 72)(color 96 0 128))
+		(line (pt 4 92)(pt 76 92)(color 240 240 240)(line_width 2))
+		(line (pt 76 92)(pt 84 100)(color 240 240 240)(line_width 2))
+		(line (pt 84 100)(pt 84 132)(color 240 240 240)(line_width 2))
+		(line (pt 84 132)(pt 76 140)(color 240 240 240)(line_width 2))
+		(line (pt 76 140)(pt 4 140)(color 240 240 240)(line_width 2))
+		(line (pt 0 128)(pt 12 128)(color 96 0 128))
+		(line (pt 4 148)(pt 67 148)(color 240 240 240)(line_width 2))
+		(line (pt 67 148)(pt 75 156)(color 240 240 240)(line_width 2))
+		(line (pt 75 156)(pt 75 236)(color 240 240 240)(line_width 2))
+		(line (pt 75 236)(pt 67 244)(color 240 240 240)(line_width 2))
+		(line (pt 67 244)(pt 4 244)(color 240 240 240)(line_width 2))
+		(line (pt 0 184)(pt 12 184)(color 96 0 128))
+		(line (pt 0 200)(pt 12 200)(color 96 0 128))
+		(line (pt 0 216)(pt 12 216)(color 96 0 128))
+		(line (pt 0 232)(pt 12 232)(color 96 0 128))
+	)
+	(fill (color 224 224 224))
+)

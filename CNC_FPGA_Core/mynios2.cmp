@@ -1,0 +1,78 @@
+	component mynios2 is
+		port (
+			clk_clk                : in  std_logic                     := 'X';             -- clk
+			reset_reset_n          : in  std_logic                     := 'X';             -- reset_n
+			epcs_dclk              : out std_logic;                                        -- dclk
+			epcs_sce               : out std_logic;                                        -- sce
+			epcs_sdo               : out std_logic;                                        -- sdo
+			epcs_data0             : in  std_logic                     := 'X';             -- data0
+			pio_led_export         : out std_logic_vector(15 downto 0);                    -- export
+			multi_reg_dataout_0    : out std_logic_vector(31 downto 0);                    -- dataout_0
+			multi_reg_dataout_1    : out std_logic_vector(31 downto 0);                    -- dataout_1
+			multi_reg_dataout_2    : out std_logic_vector(31 downto 0);                    -- dataout_2
+			multi_reg_dataout_3    : out std_logic_vector(31 downto 0);                    -- dataout_3
+			multi_reg_dataout_4    : out std_logic_vector(31 downto 0);                    -- dataout_4
+			multi_reg_dataout_5    : out std_logic_vector(31 downto 0);                    -- dataout_5
+			multi_reg_dataout_6    : out std_logic_vector(31 downto 0);                    -- dataout_6
+			multi_reg_dataout_7    : out std_logic_vector(31 downto 0);                    -- dataout_7
+			multi_reg_dataout_8    : out std_logic_vector(31 downto 0);                    -- dataout_8
+			multi_reg_dataout_9    : out std_logic_vector(31 downto 0);                    -- dataout_9
+			multi_reg_dataout_10   : out std_logic_vector(31 downto 0);                    -- dataout_10
+			multi_reg_dataout_11   : out std_logic_vector(31 downto 0);                    -- dataout_11
+			multi_reg_dataout_12   : out std_logic_vector(31 downto 0);                    -- dataout_12
+			multi_reg_dataout_13   : out std_logic_vector(31 downto 0);                    -- dataout_13
+			multi_reg_dataout_14   : out std_logic_vector(31 downto 0);                    -- dataout_14
+			multi_reg_dataout_15   : out std_logic_vector(31 downto 0);                    -- dataout_15
+			multi_reg_datain_0     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_0
+			multi_reg_datain_1     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_1
+			multi_reg_datain_2     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_2
+			multi_reg_datain_3     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_3
+			multi_reg_datain_4     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_4
+			multi_reg_datain_5     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_5
+			multi_reg_datain_6     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_6
+			multi_reg_datain_7     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_7
+			multi_reg_datain_8     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_8
+			multi_reg_datain_9     : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_9
+			multi_reg_datain_10    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_10
+			multi_reg_datain_11    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_11
+			multi_reg_datain_12    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_12
+			multi_reg_datain_13    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_13
+			multi_reg_datain_14    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_14
+			multi_reg_datain_15    : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_15
+			uart_export_rxd        : in  std_logic                     := 'X';             -- rxd
+			uart_export_txd        : out std_logic;                                        -- txd
+			multi_reg_1_dataout_0  : out std_logic_vector(31 downto 0);                    -- dataout_0
+			multi_reg_1_dataout_1  : out std_logic_vector(31 downto 0);                    -- dataout_1
+			multi_reg_1_dataout_2  : out std_logic_vector(31 downto 0);                    -- dataout_2
+			multi_reg_1_dataout_3  : out std_logic_vector(31 downto 0);                    -- dataout_3
+			multi_reg_1_dataout_4  : out std_logic_vector(31 downto 0);                    -- dataout_4
+			multi_reg_1_dataout_5  : out std_logic_vector(31 downto 0);                    -- dataout_5
+			multi_reg_1_dataout_6  : out std_logic_vector(31 downto 0);                    -- dataout_6
+			multi_reg_1_dataout_7  : out std_logic_vector(31 downto 0);                    -- dataout_7
+			multi_reg_1_dataout_8  : out std_logic_vector(31 downto 0);                    -- dataout_8
+			multi_reg_1_dataout_9  : out std_logic_vector(31 downto 0);                    -- dataout_9
+			multi_reg_1_dataout_10 : out std_logic_vector(31 downto 0);                    -- dataout_10
+			multi_reg_1_dataout_11 : out std_logic_vector(31 downto 0);                    -- dataout_11
+			multi_reg_1_dataout_12 : out std_logic_vector(31 downto 0);                    -- dataout_12
+			multi_reg_1_dataout_13 : out std_logic_vector(31 downto 0);                    -- dataout_13
+			multi_reg_1_dataout_14 : out std_logic_vector(31 downto 0);                    -- dataout_14
+			multi_reg_1_dataout_15 : out std_logic_vector(31 downto 0);                    -- dataout_15
+			multi_reg_1_datain_0   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_0
+			multi_reg_1_datain_1   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_1
+			multi_reg_1_datain_2   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_2
+			multi_reg_1_datain_3   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_3
+			multi_reg_1_datain_4   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_4
+			multi_reg_1_datain_5   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_5
+			multi_reg_1_datain_6   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_6
+			multi_reg_1_datain_7   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_7
+			multi_reg_1_datain_8   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_8
+			multi_reg_1_datain_9   : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_9
+			multi_reg_1_datain_10  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_10
+			multi_reg_1_datain_11  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_11
+			multi_reg_1_datain_12  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_12
+			multi_reg_1_datain_13  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_13
+			multi_reg_1_datain_14  : in  std_logic_vector(31 downto 0) := (others => 'X'); -- datain_14
+			multi_reg_1_datain_15  : in  std_logic_vector(31 downto 0) := (others => 'X')  -- datain_15
+		);
+	end component mynios2;
+
