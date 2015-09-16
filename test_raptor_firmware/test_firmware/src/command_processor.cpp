@@ -300,8 +300,7 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		break;
 	case(PAUSE):
         printf("pause routing set\n");
-		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRoutePause = 1;
-		this->WriteDebugRegister();
+		this->CncPauseRouting();
 		break;
 	case(CANCEL):
         printf("cancel routing set\n");
@@ -316,6 +315,13 @@ int CommandProcessor::input_command(alt_u8 command, string payload)
 		cout<<"route cleared!"<<endl;
 		break;
 	case(START_ROUTE):
+		//set XYZ present position to zero so all movement is
+		//relative to router's current position
+		this->PresentX = 0;
+		this->PresentY = 0;
+		this->PresentZ = 0;
+		//clear the cancel and pause routing bits just incase
+		//they are active, so routing can start
 		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRouteCancel = 0;
 		this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRoutePause = 0;
 		this->WriteDebugRegister();

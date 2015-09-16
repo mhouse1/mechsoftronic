@@ -276,17 +276,17 @@ void testReadByteStream()
 	//run the exe and redirect output to capture full output
 	//C:\workspace_luna\test_cnc_firmware\Debug>test_cnc_firmware.exe > output.txt
 	CommSimple listener;
-
+	printf("will try to open file\n");
     //std::fstream myfile("c:/bytestream0.txt", std::ios_base::in);
-    std::fstream myfile("c:/snowflake_poly_circle6.txt", std::ios_base::in);
-
+    std::fstream myfile("/Users/Dynames/delete_me/route_snowflake_origin2.txt", std::ios_base::in);
+    printf("file opened\n");
     int a;
     while (myfile >> a)
     {
         //printf("%d ", a);
         listener.input(a);
     }
-
+    printf("exited while loop\n");
     DisplayStepCoordinate(listener.routes);
 
 }

@@ -26,7 +26,7 @@ class CncMachine
 {
 public:
 
-	enum Peripheral {router_off = 0, router_on, router_up, router_down, router_xy, router_z, router_unknown};
+	enum Peripheral {router_off = 0, router_on, router_up, router_down, router_xy, router_z, cnc_pause,router_unknown};
 
 	//This struct has the exact mapping as defined in the VHDL file
 	//the control_register only contains the bits to signal start
@@ -155,6 +155,9 @@ public:
 	void WriteDebugRegister(void);
 
 protected:
+	alt_u32 PresentX;
+	alt_u32 PresentY;
+	alt_u32 PresentZ;
 	alt_u32  StepNumX;
 	alt_u32  StepNumY;
 	alt_u32  StepNumZ;
@@ -185,15 +188,14 @@ protected:
 	void RouteXY(TRAVERSALXY movement);
 	void RouteZ(TRAVERSALXY movement);
 	void AppendStateToRoutes(Peripheral state);
+	void CncPauseRouting();
 private:
 
 	//Stepper Motor private data
 	alt_u32 StepPosX; //step count to indicate how far X moved
 	alt_u32 StepPosY; //step count to indicate how far Y moved
 	alt_u32 StepPosZ;
-	alt_u32 PresentX;
-	alt_u32 PresentY;
-	alt_u32 PresentZ;
+
 	alt_u32 NextX;
 	alt_u32 NextY;
 	alt_u32 NextZ;

@@ -23,7 +23,6 @@ extern "C"
 #include "stdio.h"
 #include "altera_avalon_pio_regs.h"
 #include "slave_template_macros.h"
-#include "includes.h"
 }
 #include <iostream>
 #include <cmath>
@@ -495,7 +494,7 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 
 	//@todo move scaling constant elsewhere
 	//for now just keep it within the function stack
-	alt_16 scaling_constant = 220;//smaller constant means bigger plot
+	alt_16 scaling_constant = 222;//smaller constant means bigger plot
 
 	//assign state router_xy to indicate data is xy movement
 	data.router_state = router_xy;
@@ -855,6 +854,22 @@ void CncMachine::RouteXY(TRAVERSALXY movement)
 //	}
 }
 
+/////////////////////////////////////////////////////////////////////////////
+///@brief 	pause routing
+///@details works by setting a bit in the FPGA register. the thread that does
+///			the routing will see the bit is set and pause until it is reset.
+///			This function is callable by pressing the Pause routing button in
+///			the GUI or inserting the M0 Gcode in the the GCode file where
+///			a pause is desired.
+///			This pause using the M0 command in Gcode is a great way to pause
+///			routing and then change the tool/drill bit or anything else.
+/////////////////////////////////////////////////////////////////////////////
+void CncMachine::CncPauseRouting()
+{
+	this->CNC_DEBUG.DEBUG.DEBUG_BITS.CncRoutePause = 1;
+	this->WriteDebugRegister();
+}
+
 void CncMachine::ExecuteRouteData(CncMachine::TRAVERSALXY  route_data)
 {
     //printf("executing route data\n");
@@ -871,6 +886,7 @@ void CncMachine::ExecuteRouteData(CncMachine::TRAVERSALXY  route_data)
         break;
     case(router_up):
     case(router_down):
+    //not used
 //        this->CNC_CONTROL.CTRL.CTRL_BITS.DirectionZ = route_data.router_state == router_up ? 1 : 0;
 //        this->StepNumZ = this->LayerThickness;
 //        this->MoveZ();
@@ -887,6 +903,9 @@ void CncMachine::ExecuteRouteData(CncMachine::TRAVERSALXY  route_data)
         break;
     case(router_z):
         RouteZ(route_data);
+        break;
+    case(cnc_pause):
+    	this->CncPauseRouting();
         break;
     default:
         printf("undefined router state %d", route_data.router_state);
