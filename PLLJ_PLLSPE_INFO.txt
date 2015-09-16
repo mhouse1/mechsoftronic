@@ -1,0 +1,5 @@
+PLL_Name	SPIPLL:U0|altpll:altpll_component|SPIPLL_altpll:auto_generated|pll1
+PLLJITTER	30
+PLLSPEmax	84
+PLLSPEmin	-53
+
