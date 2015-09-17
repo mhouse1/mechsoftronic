@@ -11,7 +11,7 @@ The goal of this project is to create an OpenSource FPGA based CNC controller.
     XYZ CNC machine axis.*
   * *CNC_Machine_Complete > Kshatria*
     * *[Python] the Graphical User Interface (GUI) that allows the user to communicate with the CNC controller; 
-    allowing users to select GCode file to send to firmware, start, pause, and stop routing, jog the axis.*
+    allowing users to select GCode file to send to firmware, start, pause, and stop routing, and jog the axes.*
   * *CNC_Machine_Complete > test_raptor_firmware*
     * *[C++] unit tests that test firmware components*
 
@@ -19,7 +19,7 @@ The goal of this project is to create an OpenSource FPGA based CNC controller.
 video of the initial prototyping hardware made from scrapped DVD drives and other bits and pieces can be found here,
 [![mini cnc with laser mount](https://raw.githubusercontent.com/mhouse1/mechsoftronic/GUI_and_FW_Test/Kshatria/R_and_D/prototyping_hardware.png)](https://www.youtube.com/watch?v=V51caXYTmaI)
 
-<br>The small scale prototype has since been replaced with a much larger machine based on open hardware [**shapeoko v2**](https://github.com/shapeoko/Shapeoko_2). This hardware is used as base for development, the hardware will be heavily modified to supporting many more tools and functionalities and may look nothing like it is right now in the coming months.
+<br>The small scale prototype has since been replaced with a much larger machine based on open hardware [**shapeoko v2**](https://github.com/shapeoko/Shapeoko_2). This hardware is used as base for development, the intent of this CNC controller project is to be adaptable to any hardware platform. For example automating a manual router by attaching stepper motors to its axes and controlling motion with this CNC controller.
 [![CNC machine prototype hardware 2](https://raw.githubusercontent.com/mhouse1/mechsoftronic/GUI_and_FW_Test/Kshatria/R_and_D/prototyping_hardware_v2.png)]
 
 See video of cuts on youtube: https://www.youtube.com/watch?v=i7nqlkxr84E
