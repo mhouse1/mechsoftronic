@@ -1,19 +1,19 @@
 # mechsoftronic
 The goal of this project is to create an OpenSource FPGA based CNC controller. 
 
-* *Components of this project:*
-* *CNC_Machine_Complete > CNC_FPGA_Core*
-* *[VHDL/Verilog] includes the core FPGA project and custom FPGA modules created specifically for the CNC machine 
-system*
-* *CNC_Machine_Complete > FPGA_PROJECT_BASE_SYSTEM_V3 > software > RAPTOR_03*
-* *[C++] includes the MicroC OS II RTOS firmware that runs on the FPGA. Firmware communicates with the GUI, 
-interprets GCode, and interfaces the FPGA components to output motor motion control signals to move the 
-XYZ CNC machine axis.*
-* *CNC_Machine_Complete > Kshatria*
-* *[Python] the Graphical User Interface (GUI) that allows the user to communicate with the CNC controller; 
-allowing users to select GCode file to send to firmware, start, pause, and stop routing, jog the axis.*
-* *CNC_Machine_Complete > test_raptor_firmware*
-* *[C++] unit tests that test firmware components*
+**Components of this project:**
+  * *CNC_Machine_Complete > CNC_FPGA_Core*
+    * *[VHDL/Verilog] includes the core FPGA project and custom FPGA modules created specifically for the CNC machine 
+    system*
+  * *CNC_Machine_Complete > FPGA_PROJECT_BASE_SYSTEM_V3 > software > RAPTOR_03*
+    * *[C++] includes the MicroC OS II RTOS firmware that runs on the FPGA. Firmware communicates with the GUI, 
+    interprets GCode, and interfaces the FPGA components to output motor motion control signals to move the 
+    XYZ CNC machine axis.*
+  * *CNC_Machine_Complete > Kshatria*
+    * *[Python] the Graphical User Interface (GUI) that allows the user to communicate with the CNC controller; 
+    allowing users to select GCode file to send to firmware, start, pause, and stop routing, jog the axis.*
+  * *CNC_Machine_Complete > test_raptor_firmware*
+    * *[C++] unit tests that test firmware components*
 
 
 video of the initial prototyping hardware made from scrapped DVD drives and other bits and pieces can be found here,
