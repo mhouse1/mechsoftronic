@@ -19,7 +19,7 @@ The goal of this project is to create an OpenSource FPGA based CNC controller.
 video of the initial prototyping hardware made from scrapped DVD drives and other bits and pieces can be found here,
 [![mini cnc with laser mount](https://raw.githubusercontent.com/mhouse1/mechsoftronic/GUI_and_FW_Test/Kshatria/R_and_D/prototyping_hardware.png)](https://www.youtube.com/watch?v=V51caXYTmaI)
 
-<br>The small scale prototype has since been replaced with a much larger machine based a modified version of open hardware [**shapeoko v2**](https://github.com/shapeoko/Shapeoko_2). This hardware is used as base for development, the intent of this CNC controller project is to be adaptable to any hardware platform. For example automating a manual router by attaching stepper motors to its axes and controlling motion with this CNC controller.
+<br>The small scale prototype has since been replaced with a much larger machine based on a modified version of open hardware [**shapeoko v2**](https://github.com/shapeoko/Shapeoko_2). This hardware is used as base for development, the intent of this CNC controller project is to be adaptable to any hardware platform. For example automating a manual router by attaching stepper motors to its axes and controlling motion with this CNC controller.
 [![CNC machine prototype hardware 2](https://raw.githubusercontent.com/mhouse1/mechsoftronic/GUI_and_FW_Test/Kshatria/R_and_D/prototyping_hardware_v2.png)]
 
 See video of cuts on youtube: https://www.youtube.com/watch?v=i7nqlkxr84E
