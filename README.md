@@ -1,4 +1,4 @@
-# mechsoftronic
+# OpenSource CNC Controller
 The goal of this project is to create an OpenSource FPGA based CNC controller. 
 
 **Components of this project:**
