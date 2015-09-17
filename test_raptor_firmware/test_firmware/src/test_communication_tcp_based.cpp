@@ -277,8 +277,8 @@ void testReadByteStream()
 	//C:\workspace_luna\test_cnc_firmware\Debug>test_cnc_firmware.exe > output.txt
 	CommSimple listener;
 	printf("will try to open file\n");
-    //std::fstream myfile("c:/bytestream0.txt", std::ios_base::in);
-    std::fstream myfile("/Users/Dynames/delete_me/route_snowflake_origin2.txt", std::ios_base::in);
+    //std::fstream myfile("c:/bytestream0.txt", std::ios_base::in); //on windows systems
+    std::fstream myfile("/Users/Dynames/delete_me/route_snowflake_origin2.txt", std::ios_base::in); //on MAC OS
     printf("file opened\n");
     int a;
     while (myfile >> a)
