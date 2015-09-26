@@ -4,9 +4,10 @@ Created on Aug 13, 2014
 @author: Mike
 
 @details    GUI interface allowing user to:
-                 configure pulse width for each axis
-                 jog the X, Y, Z axis or jog XY axis at the same time
-                 transmit parsed gcode to firmware for routing
+                configure pulse width for each axis
+                jog the X, Y, Z axis or jog XY axis at the same time
+                transmit parsed gcode to firmware for routing, start
+                pause and clear route planned.
 '''
 import gtk
 import time
@@ -24,7 +25,8 @@ gobject.threads_init()
 class KshatriaGUI(GuiSupport):    
     def __init__(self):
         '''
-        inherits GUI support object and links it to GUI objects
+        inherits GUI support object and links it to GUI signals
+        to provide an action to a user response.
         '''
         super(KshatriaGUI,self).__init__()
         
@@ -80,16 +82,18 @@ class KshatriaGUI(GuiSupport):
         self.layer_numbers  = self.builder.get_object('layer_numbers')
         self.speed_start    = self.builder.get_object('speed_start')
         self.speed_change   = self.builder.get_object('speed_change')                                                
-                        
+        
+        #load GUI default values from a settings file                
         self.cfg_file_handle.load_settings()
         
+        #set current gcode file to whatever file path is 
+        #displayed in the GCode file path text box
         self.set_gcode_file()
-        self.window = self.builder.get_object("window1")
-        #print 'class of window ',self.window.__class__
-        self.window.show()
-        #self._update_data()
-        self.comthread = None
         
+        #show the GUI window
+        self.window = self.builder.get_object("window1")
+        self.window.show()
+        self.comthread = None
 
 
     ###################### Actions for all signals#########################
@@ -130,8 +134,8 @@ class KshatriaGUI(GuiSupport):
         '''
         dummy button: use this to run whatever code you wish
         '''
+        #print how many items are left in slow_queue
         print Communications.slow_queue.qsize(),' in slow queue'
-        pass
     
     def on_set_acceleration_clicked(self,widget):
         '''
@@ -219,6 +223,10 @@ class KshatriaGUI(GuiSupport):
         self.erase_coordinates()
         
     def on_cancel_routing_clicked(self, widget):
+        '''
+        tell firmware to stop routing and erase whatever
+        route is planned in the queue
+        '''
         self.cancel_routing()
 
     def on_pause_routing_clicked(self, widget):
@@ -260,10 +268,16 @@ class KshatriaGUI(GuiSupport):
         #gui_support.send_file(self.GTKGCode_File.get_text())
         
     def on_rescan_coms_clicked(self,widget, data = None):
+        '''
+        rescan for available serial ports and update drop down box
+        to display serial ports available
+        '''
         self.ComComboHandle.rescan()
         
     def on_Com_channel_combo_box_changed(self,widget, data = None):
-        #set combo box selection as active serial channel
+        '''
+        set combo box selection as active serial channel
+        '''
         self.index = widget.get_active() #index indicate the nth item
         self.model = widget.get_model()
         self.item = self.model[self.index][1] #item is the text in combo box
@@ -275,19 +289,34 @@ class KshatriaGUI(GuiSupport):
         #self.builder.get_object("label1").set_text(self.item)
     
     def notebook1_switch_page_cb(self,  notebook, page, page_num, data=None):
+        '''
+        do something when the gui changes from one tab to another
+        this currently does nothing
+        '''
         self.tab = notebook.get_nth_page(page_num)
         self.switched_page = notebook.get_tab_label(self.tab).get_label()
         print 'switched to page ',self.switched_page
     
     def on_Quit_activate(self,widget, data = None):
+        '''
+        exit gui and save config file
+        '''
         print 'quitting...'
         self._quit_program()
     
     def on_window1_destroy(self, widget, data = None):
+        '''
+        exit gui and save config file
+        '''
         print 'quitting...'
         self._quit_program()
     
     def set_gcode_file(self):
+        '''
+        set current gcode file to whatever file path is 
+        displayed in the GCode file path text box
+        '''
+        
         self.gcode_file = self.GTKGCode_File.get_text()
         
     def on_Browse_For_GCode_pressed(self, widget, data = None):
