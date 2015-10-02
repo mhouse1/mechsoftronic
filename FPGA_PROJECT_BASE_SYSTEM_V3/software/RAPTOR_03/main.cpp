@@ -136,34 +136,30 @@ list<CncMachine::TRAVERSALXY> global_machine_route;
  */
 void task1(void* pdata)
 {
-//    // wait for xmit ready
-//    while(!pUART->sStatus.sBits.trdy)
-//      ;
-//
-//    pUART->txdata = ubChar;
   pUART->sControl.sBits.rts = 1;
   printf("task 1 081015 \n");
   list<char> task1_local_recvd;
-//  INT8U error_code;
-//  BOOLEAN available;
+
   alt_u16 char_count;
   alt_u16 max_char_cnt_in_fifo = 0;
   alt_u16 loop_count;
+
+  //clear any data in the rx fifo
   if (pUART->sStatus.sBits.rrdy)
   {
       char_count = pUART->uart_rx_fifo_used;
       printf("will clear %d from rx fifo\n",char_count);
     while (pUART->sStatus.sBits.rrdy) //check data available
     {
+    	//must read it once to remove from FIFO
        //(alt_u8)(pUART->rxdata);
        printf("%c",(char)(pUART->rxdata));
     }
     printf("cleared rx fifo\n");
   }
+
   while (1)//reading loop
   {
-
-
     //read number of characters are in fifo
 	char_count = pUART->uart_rx_fifo_used;
 	if (char_count > 0)
@@ -173,64 +169,21 @@ void task1(void* pdata)
 	        max_char_cnt_in_fifo = char_count;
 	        printf("max count %d\n",max_char_cnt_in_fifo);
 	    }
-	    //printf("count %d, ",char_count);
 
 	    //push all char into list
 	    for (int i = 0; i < char_count; i++)
 	    {
 	        task1_local_recvd.push_back((alt_u8)(pUART->rxdata));//save data
 	    }
-
-
-//	    if (!task1_local_recvd.empty())
-//	    {
 	        clist.splice(clist.end(),task1_local_recvd);
-	        //printf("total ch %lu \n",clist.size());
-//	    }
 	}
 	else
 	{
 	    //this delay will determine the loop rate of task1
 	    //it determines the interval we want to scan for chars in fifo
 	    OSTimeDlyHMSM(0, 0, 0, 10);
-	    //printf("max count %d\n",max_char_cnt_in_fifo);
 	}
 
-//	if (pUART->sStatus.sBits.rrdy) //check data available
-//	{
-//	    c = (alt_u8)(pUART->rxdata);
-//		//printf("%c",c);
-//		//printf("count %d\n",pUART->uart_rx_fifo_used);
-//	    task1_local_recvd.push_back(c);//save data
-//	}
-//	else
-//	{
-//
-////	    if (!task1_local_recvd.empty())
-////	    {
-////            //OSTimeDlyHMSM(0, 0, 0, 1); //delay 1ms
-////            //OSMutexAccept() checks if mutex is available (does not block if not available)
-////            //returns 1 if available returns 0 if owned by another task
-////            available = OSMutexAccept(global_recvr_mutex, &error_code);
-////
-////            if(!error_code && available)
-////            {
-//                if (!task1_local_recvd.empty())
-//                {
-//                    clist.splice(clist.end(),task1_local_recvd);
-//                    printf("total ch %d\n",clist.size());
-//                }
-////            }
-////            else
-////            {
-////                if (error_code)
-////                {
-////                    printf("task 1 error getting recvr mutex\n");
-////                }
-////            }
-////            OSMutexPost(global_recvr_mutex);
-////	    }
-//	}
 	loop_count++;
 	if(loop_count > 10000)
 	{
