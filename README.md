@@ -12,17 +12,17 @@ The goal of this project is to create an open source FPGA based CNC controller.
 
 **Components of this project:**
   * *CNC_Machine_Complete > CNC_FPGA_Core*
-    * *[VHDL/Verilog] includes the core FPGA project and custom FPGA modules created specifically for the CNC machine 
-    system*
+    * *includes the core FPGA project and custom FPGA modules created specifically for the CNC machine
+    system. Implemented in [VHDL/Verilog] *
   * *CNC_Machine_Complete > FPGA_PROJECT_BASE_SYSTEM_V3 > software > RAPTOR_03*
-    * *[C++] includes the MicroC OS II RTOS firmware that runs on the FPGA. Firmware communicates with the GUI, 
+    * *Includes the MicroC OS II RTOS firmware that runs on the FPGA. Firmware communicates with the GUI, 
     interprets GCode, and interfaces the FPGA components to output motor motion control signals to move the 
-    XYZ CNC machine axis.*
+    XYZ CNC machine axis. Implemented in [C++]*
   * *CNC_Machine_Complete > Kshatria*
-    * *[Python] the Graphical User Interface (GUI) that allows the user to communicate with the CNC controller; 
-    allowing users to select GCode file to send to firmware, start, pause, and stop routing, and jog the axes.*
+    * *The Graphical User Interface (GUI) that allows the user to communicate with the CNC controller; 
+    allowing users to select GCode file to send to firmware, start, pause, and stop routing, and jog the axes. Implemented in [Python]*
   * *CNC_Machine_Complete > test_raptor_firmware*
-    * *[C++] unit tests that test firmware components*
+    * *Unit tests that test firmware components. Implemented in [C++]*
 
 
 video of the initial prototyping hardware made from scrapped DVD drives and other bits and pieces can be found here,
