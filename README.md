@@ -1,6 +1,11 @@
 # OpenSource CNC Controller
 The goal of this project is to create an open source FPGA based CNC controller. 
 
+For a more detailed overview see the document here:
+https://github.com/mhouse1/mechsoftronic/blob/CNC_Machine_Complete/documentation/Overview_Project_Mechsoftronic.pdf
+
+Otherwise keep reading for a brief overview.
+
 **By using an FPGA it will allow:**
  * *creation of a dedicated device that would not require a separate PC to run.*
  * *any peripheral to be easily added in the future*
