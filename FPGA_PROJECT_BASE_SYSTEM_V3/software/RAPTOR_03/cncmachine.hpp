@@ -12,6 +12,7 @@
 /// @ingroup [SUBSYSTEM_PREFIX]
 ///
 /// @par Copyright (c) 2014 All rights reserved.
+/////////////////////////////////////////////////////////////////////////////
 
 #ifndef CNCMACHINE_HPP_
 #define CNCMACHINE_HPP_
