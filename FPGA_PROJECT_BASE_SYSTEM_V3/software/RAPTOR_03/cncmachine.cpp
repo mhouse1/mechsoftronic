@@ -873,7 +873,7 @@ void CncMachine::CncPauseRouting()
 void CncMachine::ExecuteRouteData(CncMachine::TRAVERSALXY  route_data)
 {
     //printf("executing route data\n");
-    this->WriteRouterPWM(40000);
+    //this->WriteRouterPWM(40000);
     //DisplayRoutes(route_data);
 
     switch(route_data.router_state)
