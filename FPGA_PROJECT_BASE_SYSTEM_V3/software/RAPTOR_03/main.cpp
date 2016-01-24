@@ -1,22 +1,23 @@
-/*
-Name: main.cpp
-Date: Sep 25, 2014 10:54:09 PM
-Author: Mike
-Description: firmware that sends pulses to stepper motor based on input data
-Copyright: 2014
-
-07/30/2015
-mutex for machine route data exist for task 2 and task 3
-Info: (CNC_V01.elf) 457 KBytes program size (code + initialized data).
-Info:               32311 KBytes free for stack + heap.
-
-*/
-
+/////////////////////////////////////////////////////////////////////////////
+///Name: main.cpp
+///Date: Sep 25, 2014 10:54:09 PM
+///Author: Mike
+///Description: firmware that sends pulses to stepper motor based on input data
+///Copyright: 2014
+///
+///07/30/2015
+///mutex for machine route data exist for task 2 and task 3
+///Info: (CNC_V01.elf) 457 KBytes program size (code + initialized data).
+///Info:               32311 KBytes free for stack + heap.
+///
+///01/24/2016 improved synchronization between the 3 tasks
+///Info: (RAPTOR_03.elf) 458 KBytes program size (code + initialized data).
+///Info:                 32309 KBytes free for stack + heap.
+/////////////////////////////////////////////////////////////////////////////
 #include <list>
 #include "types.hpp"
 
 #include "communication_tcp_based.hpp"
-//#include "machine_shared_data.hpp"
 #include "cncmachine.hpp"
 
 
@@ -133,37 +134,40 @@ list<CncMachine::TRAVERSALXY> global_machine_route;
 /*!
  * check rrdy pin, if active then save value from
  * rxdata into char list else wait
+ *
  */
+///FIFOED_AVALON_UART_0_RX_FIFO_SIZE = 8192
+///pUART->uart_rx_fifo_used must not exceed FIFOED_AVALON_UART_0_RX_FIFO_SIZE
+///if FIFOED_AVALON_UART_0_RX_FIFO_SIZE exceeded then communication error will occur
 void task1(void* pdata)
 {
-//    // wait for xmit ready
-//    while(!pUART->sStatus.sBits.trdy)
-//      ;
-//
-//    pUART->txdata = ubChar;
   pUART->sControl.sBits.rts = 1;
-  printf("task 1 081015 \n");
+  printf("task 1 01/18/2015 930\n");
+  OSTimeDlyHMSM(0, 0, 2, 0);
   list<char> task1_local_recvd;
-//  INT8U error_code;
-//  BOOLEAN available;
+
   alt_u16 char_count;
   alt_u16 max_char_cnt_in_fifo = 0;
   alt_u16 loop_count;
+
+  //clear any data in the rx fifo
   if (pUART->sStatus.sBits.rrdy)
   {
+	  OSTimeDlyHMSM(0, 0, 2, 0);
+
       char_count = pUART->uart_rx_fifo_used;
       printf("will clear %d from rx fifo\n",char_count);
     while (pUART->sStatus.sBits.rrdy) //check data available
     {
+    	//must read it once to remove from FIFO
        //(alt_u8)(pUART->rxdata);
        printf("%c",(char)(pUART->rxdata));
     }
     printf("cleared rx fifo\n");
   }
+
   while (1)//reading loop
   {
-
-
     //read number of characters are in fifo
 	char_count = pUART->uart_rx_fifo_used;
 	if (char_count > 0)
@@ -172,79 +176,91 @@ void task1(void* pdata)
 	    {
 	        max_char_cnt_in_fifo = char_count;
 	        printf("max count %d\n",max_char_cnt_in_fifo);
-	    }
-	    //printf("count %d, ",char_count);
 
+	    }
+	    printf("char_count count %d\n",char_count);
+
+
+        //only add to clist if size of clist is less than a certain amount
+        //
 	    //push all char into list
 	    for (int i = 0; i < char_count; i++)
 	    {
 	        task1_local_recvd.push_back((alt_u8)(pUART->rxdata));//save data
 	    }
 
-
-//	    if (!task1_local_recvd.empty())
-//	    {
-	        clist.splice(clist.end(),task1_local_recvd);
-	        //printf("total ch %lu \n",clist.size());
-//	    }
+	    clist.splice(clist.end(),task1_local_recvd);
+	    if (char_count == 10)
+	    {
+	    	printf("clist task 1 %d\n",clist.size());
+	    }
 	}
 	else
 	{
 	    //this delay will determine the loop rate of task1
 	    //it determines the interval we want to scan for chars in fifo
 	    OSTimeDlyHMSM(0, 0, 0, 10);
-	    //printf("max count %d\n",max_char_cnt_in_fifo);
 	}
 
-//	if (pUART->sStatus.sBits.rrdy) //check data available
+    //if there are 100 or more then tell GUI to stopp sending gcode for a while
+    //and keep sending until there are less than 100 in global_route
+    //@todo will replace this with more advanced transmit message later
+    //if theres a need to send more complex messages
+    //if char count is more than 1000 then tell gui to stop sending for a bit
+    if (char_count > 1000)
+    {
+            // wait for xmit ready
+            alt_u16 timeout = 0;
+            while(!pUART->sStatus.sBits.trdy)
+            {
+                //poll the transmit ready bit in 1ms intervals
+                OSTimeDlyHMSM(0, 0, 0, 1);
+                timeout++;
+                if (timeout > 100)
+                    printf("timed out waiting for tx ready\n");
+            }
+            pUART->txdata = '1';//tell gui to stop sending
+            //@todo even though we tell gui to stop sending
+            //we should still keep processing any data gui sends
+            //after the stop sending request is received, because although
+            //firmware request stop sending data, it is required to process
+            //high priority commands.
+    }
+    else
+    {
+    	OSTimeDlyHMSM(0, 0, 0, 300);
+    	          // wait for xmit ready
+    	          alt_u16 timeout = 0;
+    	          while(!pUART->sStatus.sBits.trdy)
+    	          {
+    	              //poll the transmit ready bit in 1ms intervals
+    	              OSTimeDlyHMSM(0, 0, 0, 1);
+    	              timeout++;
+    	              if (timeout > 100)
+    	                  printf("timed out waiting for tx ready\n");
+    	          }
+    	          pUART->txdata = '2';//tell gui to start sending
+    }
+//	loop_count++;
+//	if(loop_count > 10000)
 //	{
-//	    c = (alt_u8)(pUART->rxdata);
-//		//printf("%c",c);
-//		//printf("count %d\n",pUART->uart_rx_fifo_used);
-//	    task1_local_recvd.push_back(c);//save data
+//	    //printf("max count %d\n",max_char_cnt_in_fifo);
+//	    loop_count = 0;
 //	}
-//	else
-//	{
-//
-////	    if (!task1_local_recvd.empty())
-////	    {
-////            //OSTimeDlyHMSM(0, 0, 0, 1); //delay 1ms
-////            //OSMutexAccept() checks if mutex is available (does not block if not available)
-////            //returns 1 if available returns 0 if owned by another task
-////            available = OSMutexAccept(global_recvr_mutex, &error_code);
-////
-////            if(!error_code && available)
-////            {
-//                if (!task1_local_recvd.empty())
-//                {
-//                    clist.splice(clist.end(),task1_local_recvd);
-//                    printf("total ch %d\n",clist.size());
-//                }
-////            }
-////            else
-////            {
-////                if (error_code)
-////                {
-////                    printf("task 1 error getting recvr mutex\n");
-////                }
-////            }
-////            OSMutexPost(global_recvr_mutex);
-////	    }
-//	}
-	loop_count++;
-	if(loop_count > 10000)
-	{
-	    //printf("max count %d\n",max_char_cnt_in_fifo);
-	    loop_count = 0;
-	}
   }
   printf("task 1 stopped!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n");
 }
 
-//processData
+/////////////////////////////////////////////////////////////////////////////
+///@brief 	process the transmitted data from GUI. Transmitted data include
+///			commands and/or GCode. This task will process gcode point to
+///			point coordinates and calculate the number of steps the axes
+///			needs to move.
+///
+/////////////////////////////////////////////////////////////////////////////
 void task2(void* pdata)
 {
-	printf("task 2 online August 12th 9:47 2015\n");
+	printf("task 2 online 0116 956\n");
 	CommSimple machine_object;
 	list<string> layer1;
 	list<string>::iterator it;
@@ -254,9 +270,14 @@ void task2(void* pdata)
 	INT8U error_code;
 	alt_u8 ignore_period = 10;
 	alt_u8 comstat;
-	alt_u16 size_of_global_route;
+	alt_u16 size_of_global_route = 0;
+	alt_u16 size_of_local_route = 0;
+	alt_u16 processed_count = 0;
+
   while (1)
   {
+	  printf(".");
+	  //ignore_period is enabled when an error in communication is received
       if (ignore_period < 10)
       {
           if(!local_recvd.empty())
@@ -264,11 +285,62 @@ void task2(void* pdata)
           ignore_period++;
           OSTimeDlyHMSM(0, 0, 1, 0);
       }
-	  //if local received not empty then read from front and input into machine object
-      //else wait interval for mutex then check if clist is empty, if not empty merge with local
-	  while(!local_recvd.empty())
-	  {
 
+	  //prevent while loop from starving other tasks
+	  OSTimeDlyHMSM(0, 0, 0, 300);
+
+      //conditions for adding to local communication queue
+      if (!clist.empty())
+      {
+          local_recvd.splice(local_recvd.end(),clist);
+          printf("#");
+      }
+      else
+      {
+    	  printf("@");
+      }
+
+	  //if local received not empty and global queue is not over threshold then read
+      //from front and input into machine object else wait interval for mutex then
+      //check if clist is empty, if not empty merge with local
+
+
+      size_of_local_route = machine_object.routes.size();
+      //tell gui task 2 request stop sending low priority data if over threshold
+      //tell gui task 2 says ok to send low priority data is under threshold
+      if ( (size_of_local_route > 100) || (local_recvd.size() >500))
+      {
+          alt_u16 timeout = 0;
+          while(!pUART->sStatus.sBits.trdy)
+          {
+              //poll the transmit ready bit in 1ms intervals
+              OSTimeDlyHMSM(0, 0, 0, 1);
+              timeout++;
+              if (timeout > 100)
+                  printf("timed out waiting for tx ready\n");
+          }
+          pUART->txdata = '3';//tell gui task 2 request stop sending
+          printf("*\n");
+      }
+      else if (size_of_local_route < 100 && (local_recvd.size() < 500) )
+      {
+          alt_u16 timeout = 0;
+          while(!pUART->sStatus.sBits.trdy)
+          {
+              //poll the transmit ready bit in 1ms intervals
+              OSTimeDlyHMSM(0, 0, 0, 1);
+              timeout++;
+              if (timeout > 100)
+                  printf("timed out waiting for tx ready\n");
+          }
+          pUART->txdata = '4';//tell gui task 2 says okay to send
+      }
+      printf("&");
+
+      //always decode transmission from GUI if there is data
+	  while(!local_recvd.empty() )//&& (machine_object.routes.size() < 100))
+	  {
+		  processed_count += 1;
 		  //read from front then pop off of front
 		  new_byte = local_recvd.front();
 		  local_recvd.pop_front();
@@ -280,27 +352,36 @@ void task2(void* pdata)
 		     break;
 		  }
 
+		  //make sure to only process 500 bytes at a time
+		  if (processed_count >= 500)
+		  {
+			  //reset counter
+			  processed_count = 0;
+			  break;
+		  }
+		  //prevent while loop from starving other tasks
+		 // OSTimeDlyHMSM(0, 0, 0, 100);
 	  }
-	  OSMutexPend(global_route_mutex, 0, &error_code);
+
+	  if( processed_count > 0)
+	  {
+		  printf("processed %d\n", processed_count);
+		  processed_count = 0;
+	  }
+	  printf(")");
+	  //update size of global route
+	  //OSMutexPend(global_route_mutex, 0, &error_code);
 	  size_of_global_route = global_machine_route.size();
-	  OSMutexPost(global_route_mutex);
-      if (size_of_global_route < 10)
+	  //OSMutexPost(global_route_mutex);
+	  printf("^");
+
+	  //conditions for adding to global route queue
+	  //in the statement if (!machine_object.routes.empty() && (size_of_global_route < x))
+	  //'x' is one of the variables that will affect how long until
+	  //the high priority communication will get processed
+      if ((size_of_global_route < 100) && !machine_object.routes.empty() )
       {
-          // wait for xmit ready
-          alt_u16 timeout = 0;
-          while(!pUART->sStatus.sBits.trdy)
-          {
-              //poll the transmit ready bit in 1ms intervals
-              OSTimeDlyHMSM(0, 0, 0, 1);
-              timeout++;
-              if (timeout > 100)
-                  printf("timed out waiting for tx ready\n");
-          }
-          pUART->txdata = '2';
-      }
-      if (!machine_object.routes.empty())
-      {
-          //printf("front state %d\n",listener.routes.front().router_state);
+    	  //wait for mutex
           OSMutexPend(global_route_mutex, 0, &error_code);
 
           //the splice function a.splice(a.end(), b);
@@ -309,155 +390,138 @@ void task2(void* pdata)
           if (!error_code)
           {
               global_machine_route.splice(global_machine_route.end(),machine_object.routes);
-
-              size_of_global_route = global_machine_route.size();
-              //if there are 100 or more then tell GUI to stopp sending gcode for a while
-              //and keep sending until there are less than 100 in global_route
-              //@todo will replace this with more advanced transmit message later
-              //if theres a need to send more complex messages
-              if (size_of_global_route > 30)
-              {
-                      // wait for xmit ready
-                      alt_u16 timeout = 0;
-                      while(!pUART->sStatus.sBits.trdy)
-                      {
-                          //poll the transmit ready bit in 1ms intervals
-                          OSTimeDlyHMSM(0, 0, 0, 1);
-                          timeout++;
-                          if (timeout > 100)
-                              printf("timed out waiting for tx ready\n");
-                      }
-                      pUART->txdata = '1';
-              }
-
-              //printf("items in global_machine_route:  %d\n",size_of_global_route);
-
           }
           else
           {
               printf("task 2 waited too long\n");
           }
 
-          //copy front into global then pop front off
-          //global_machine_state.push_back(listener.machine_state.front());
-          //listener.machine_state.pop_front();
           OSMutexPost(global_route_mutex);
       }
-//	  else
-//	  {
-//	      OSMutexPend(global_recvr_mutex, 0, &error_code);
-//	      if(!error_code)
-//	      {
-	          if (!clist.empty())
-	          {
-	              local_recvd.splice(local_recvd.end(),clist);
-	          }
-	          else
-	          {
-	              //this delay will determine how fast a command is processed
-	              //from the  first button click
-	              OSTimeDlyHMSM(0, 0, 0, 300);
-	              //printf("task 2 alive\n");
-
-	          }
-//	      }
-//	      else
-//	      {
-//	          printf("task 2 waited too long for global_recvr_mutex\n");
-//	      }
-//	      OSMutexPost(global_recvr_mutex);
-//	  }
-
-
+      printf("~");
   }
 }
 
-//processData
+/////////////////////////////////////////////////////////////////////////////
+///@brief 	execute routes created by task 2
+/////////////////////////////////////////////////////////////////////////////
 void task3(void* pdata)
 {
-  CncMachine cnc_task3;
-  INT8U error_code;
-  list<CncMachine::TRAVERSALXY> local_route;
-  alt_u16 popcorn = 0;
-  OSTimeDlyHMSM(0, 0, 3, 0);
-  cnc_task3.CNC_DEBUG.DEBUG.ULONG = 0;
-  cnc_task3.WriteDebugRegister();
-  while (1)
-  {
-    OSMutexPend(global_route_mutex, 0, &error_code);
-    if(!error_code)
-    {
-        if (!global_machine_route.empty())
-        {
-
-            //move global_machine_route to end of local_route and empty it at the same time
-            //this operation is of O(1) so it is quite fast
-            local_route.splice(local_route.end(),global_machine_route);
-            OSMutexPost(global_route_mutex); //release mutex
-        }
-        else
-        {
-            OSMutexPost(global_route_mutex); //release mutex
-            //printf("task3!\n");
-            OSTimeDlyHMSM(0, 0, 2, 0);
-        }
-    }
-    else
-    {
-        printf(" task 3 waited too long\n");
-    }
-
-
-    while(!local_route.empty())
-    {
-    	//this delay is required so other task does not block for long
-    	//periods of time, this delay also needs to be as small as possible
-    	//so it seems like transitions from point to point instantaneous
-    	//OSTimeDlyHMSM(0, 0, 0, 2);
-    	cnc_task3.ReadStatus();
-    	if(cnc_task3.CNC_STATUS.STUS.STUS_BITS.XDONE &&
-    	   cnc_task3.CNC_STATUS.STUS.STUS_BITS.YDONE &&
-    	   cnc_task3.CNC_STATUS.STUS.STUS_BITS.ZDONE &&
-    	   !cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRoutePause &&
-    	   !cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
+	CncMachine cnc_task3;
+	INT8U error_code;
+	list<CncMachine::TRAVERSALXY> local_route;
+	CncMachine::TRAVERSALXY will_execute;
+	alt_u16 popcorn = 0;
+	OSTimeDlyHMSM(0, 0, 3, 0);
+	cnc_task3.CNC_DEBUG.DEBUG.ULONG = 0;
+	cnc_task3.WriteDebugRegister();
+	while (1)
+	{
+		OSMutexPend(global_route_mutex, 0, &error_code);
+		if(!error_code)
 		{
-			popcorn++;
-			printf("popping one %d, %d left\n",(int)popcorn, (int)local_route.size());
-			cnc_task3.ExecuteRouteData(local_route.front());
-			local_route.pop_front();
-			OSTimeDlyHMSM(0, 0, 0, 2);
+			//conditions for adding to local route
+			if (!global_machine_route.empty())
+			{
+
+				//move global_machine_route to end of local_route and empty it at the same time
+				//this operation is of O(1) so it is quite fast
+				local_route.splice(local_route.end(),global_machine_route);
+			}
+			else
+			{
+				//printf("task3!\n");
+				OSTimeDlyHMSM(0, 0, 2, 0);
+			}
 		}
+		else
+		{
+			printf(" task 3 waited too long\n");
+		}
+		OSMutexPost(global_route_mutex); //release mutex
 
 
-    	//wait until stepping is done or until pause not active
-    	while(!cnc_task3.CNC_STATUS.STUS.STUS_BITS.XDONE ||
-    		  !cnc_task3.CNC_STATUS.STUS.STUS_BITS.YDONE ||
-    		  !cnc_task3.CNC_STATUS.STUS.STUS_BITS.ZDONE ||
-    		  cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRoutePause ||
-    		  cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
-    	{
-    		OSTimeDlyHMSM(0, 0, 0, 2);
-        	if (cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
-        	{
-        		local_route.clear();
-        		break;
-        	}
+		//execute route until local route is empty
+		//there's a mechanism in this while loop that appends data to local_route if it reaches
+		//a low level threshold and if there is time to add data to local_route
+		//note that if local_route does reach zero and end of routes has not been reached
+		//it will cause machine to pause until more data is received into local_route
+		while(!local_route.empty())
+		{
 
-        	cnc_task3.ReadStatus();
-    	}
+			cnc_task3.ReadStatus();
+			if(cnc_task3.CNC_STATUS.STUS.STUS_BITS.XDONE &&
+			   cnc_task3.CNC_STATUS.STUS.STUS_BITS.YDONE &&
+			   cnc_task3.CNC_STATUS.STUS.STUS_BITS.ZDONE &&
+			   !cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRoutePause &&
+			   !cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
+			{
+				popcorn++;
+				//printf("popping one %d, %d left\n",(int)popcorn, (int)local_route.size());
+				will_execute = local_route.front();
+				cnc_task3.ExecuteRouteData(will_execute);
+				local_route.pop_front();
+
+
+				// if local route data almost depleted and there is time(such as when moving more than
+				// 500 steps) then add more data to local_route.
+				//1000 steps to move 22mm; equivalent of 44.45 pulses per mm.
+				if (((will_execute.X.StepNum>= 500)||(will_execute.Y.StepNum >= 500)) && ( local_route.size() < 100))
+				{
+					OSMutexPend(global_route_mutex, 0, &error_code);
+					if(!error_code)
+					{
+						//conditions for adding to local route
+						if (!global_machine_route.empty())
+						{
+							//move global_machine_route to end of local_route and empty it at the same time
+							//this operation is of O(1) so it is quite fast
+							local_route.splice(local_route.end(),global_machine_route);
+						}
+						else
+						{
+							OSTimeDlyHMSM(0, 0, 2, 0);
+						}
+					}
+					else
+					{
+						printf(" task 3 waited too long\n");
+					}
+					OSMutexPost(global_route_mutex); //release mutex
+				}
+			}
+
+			//this delay is required so other task does not block for long
+			//periods of time, strategically placed here after ExecuteRouteData was
+			//called in the if statement above
+			OSTimeDlyHMSM(0, 0, 0, 2);
+
+			//wait until stepping is done or until pause not active
+			while(!cnc_task3.CNC_STATUS.STUS.STUS_BITS.XDONE ||
+				  !cnc_task3.CNC_STATUS.STUS.STUS_BITS.YDONE ||
+				  !cnc_task3.CNC_STATUS.STUS.STUS_BITS.ZDONE ||
+				  cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRoutePause ||
+				  cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
+			{
+				if (cnc_task3.CNC_STATUS.STUS.STUS_BITS.CncRouteCancel)
+				{
+					local_route.clear();
+					break;
+				}
+				OSTimeDlyHMSM(0, 0, 0, 2);//polling interval to readstatus update
+				cnc_task3.ReadStatus();
+
+			}
+		}
     }
     //printf("task 3 is alive\n");
-
-  }
 }
+
 
 /* The main function creates two task and starts multi-tasking */
 int main(void)
 {
-
-	//standard UART
-	//FIFOED_AVALON_UART_0_BASE
-	pUART = (struct UART_HW_struct *)(FIFOED_AVALON_UART_0_BASE | 0x4000000);//(UART_BASE | 0x4000000);
+	pUART = (struct UART_HW_struct *)(FIFOED_AVALON_UART_0_BASE | 0x4000000);
 	pUART->sControl.word = 0;
 
 	INT8U err;
@@ -466,37 +530,12 @@ int main(void)
 	global_route_mutex = OSMutexCreate(ROUTE_MUTEX_PRIORITY, &err);
 //	global_recvr_mutex = OSMutexCreate(RECVR_MUTEX_PRIORITY, &err);
 
-	printf("creating tasks 082415 3:43\n");
+	printf("creating tasks 01/24/2016 task 3 modified to keep adding to local route if there is time \n");
     // Create tasks
     OSTaskCreate(task1, NULL, &task1_stk[TASK_STACKSIZE-1], TASK1_PRIORITY);
     OSTaskCreate(task2, NULL, &task2_stk[TASK_STACKSIZE-1], TASK2_PRIORITY);
     OSTaskCreate(task3, NULL, &task3_stk[TASK_STACKSIZE-1], TASK3_PRIORITY);
 
-
-//
-//  OSTaskCreateExt(task1,NULL, (OS_STK *)(void *)&task1_stk[TASK_STACKSIZE-1], TASK1_PRIORITY,
-//		  TASK1_PRIORITY, task1_stk, TASK_STACKSIZE,  NULL, 0);
-//
-//
-//  OSTaskCreateExt(task2,
-//                  NULL,
-//                  (OS_STK *)(void *)&task2_stk[TASK_STACKSIZE-1],
-//                  TASK2_PRIORITY,
-//                  TASK2_PRIORITY,
-//                  task2_stk,
-//                  TASK_STACKSIZE,
-//                  NULL,
-//                  0);
-//
-//  OSTaskCreateExt(task3,
-//                  NULL,
-//                  (OS_STK *)(void *)&task3_stk[TASK_STACKSIZE-1],
-//                  TASK3_PRIORITY,
-//                  TASK3_PRIORITY,
-//                  task3_stk,
-//                  TASK_STACKSIZE,
-//                  NULL,
-//                  0);
-  OSStart();
-  return 0;
+    OSStart();
+    return 0;
 }

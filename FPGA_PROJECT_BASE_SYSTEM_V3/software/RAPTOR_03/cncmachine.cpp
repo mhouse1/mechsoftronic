@@ -23,7 +23,6 @@ extern "C"
 #include "stdio.h"
 #include "altera_avalon_pio_regs.h"
 #include "slave_template_macros.h"
-#include "includes.h"
 }
 #include <iostream>
 #include <cmath>
@@ -495,7 +494,7 @@ alt_u8 CncMachine::SetNextPosition(alt_32 x, alt_32 y)
 
 	//@todo move scaling constant elsewhere
 	//for now just keep it within the function stack
-	alt_16 scaling_constant = 220;//smaller constant means bigger plot
+	alt_16 scaling_constant = 222;//smaller constant means bigger plot
 
 	//assign state router_xy to indicate data is xy movement
 	data.router_state = router_xy;
@@ -874,7 +873,7 @@ void CncMachine::CncPauseRouting()
 void CncMachine::ExecuteRouteData(CncMachine::TRAVERSALXY  route_data)
 {
     //printf("executing route data\n");
-    this->WriteRouterPWM(40000);
+    //this->WriteRouterPWM(40000);
     //DisplayRoutes(route_data);
 
     switch(route_data.router_state)
