@@ -41,3 +41,11 @@ Video of the initial prototyping hardware made from scrapped DVD drives and othe
   * *or* 
   * *https://www.youtube.com/c/MHouseOne*
 
+
+# required python packages
+* to use the GUI the supporting packages required are contained in pygtk-all-in-one-2.22.6.win32-py2.7.msi file (~31.6MB)
+* other python packges required
+	* pip install pyserial
+		* note do not install serial via "pip install serial" it will cause an error about exec() then you have to uninstall pyserial and serial then reinstall pyserial
+
+	* pip install matplotlib
