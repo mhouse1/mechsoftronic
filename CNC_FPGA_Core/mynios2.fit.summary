@@ -1,0 +1,16 @@
+Fitter Status : Successful - Sun Apr 19 11:42:11 2015
+Quartus II Version : 11.0 Build 208 07/03/2011 SP 1 SJ Full Version
+Revision Name : mynios2
+Top-level Entity Name : my_top_system
+Family : Cyclone IV E
+Device : EP4CE22F17C6
+Timing Models : Final
+Total logic elements : 5,002 / 22,320 ( 22 % )
+    Total combinational functions : 4,383 / 22,320 ( 20 % )
+    Dedicated logic registers : 3,114 / 22,320 ( 14 % )
+Total registers : 3183
+Total pins : 86 / 154 ( 56 % )
+Total virtual pins : 0
+Total memory bits : 379,456 / 608,256 ( 62 % )
+Embedded Multiplier 9-bit elements : 0 / 132 ( 0 % )
+Total PLLs : 2 / 4 ( 50 % )
