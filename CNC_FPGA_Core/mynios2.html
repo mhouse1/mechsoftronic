@@ -1,0 +1,922 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head>
+  <title>Report</title>
+  <style type="text/css">
+body { font-family:arial ;}
+a { text-decoration:underline ; color:#003000 ;}
+a:hover { text-decoration:underline ; color:0030f0 ;}
+td { padding : 5px ;}
+table.topTitle { width:100% ;}
+table.topTitle td.l { text-align:left ; font-weight: bold ; font-size:30px ;}
+table.topTitle td.r { text-align:right ; font-weight: bold ; font-size:16px ;}
+table.blueBar { width : 100% ; border-spacing : 0px ;}
+table.blueBar td { background:#0036ff ; font-size:12px ; color : white ; text-align : left ; font-weight : bold ;}
+table.blueBar td.l { text-align : left ;}
+table.blueBar td.r { text-align : right ;}
+table.items { width:100% ; border-collapse:collapse ;}
+table.items td.label { font-weight:bold ; font-size:16px ; vertical-align:top ;}
+table.items td.mono { font-family:courier ; font-size:12px ; white-space:pre ;}
+div.label { font-weight:bold ; font-size:16px ; vertical-align:top ; text-align:center ;}
+table.grid { border-collapse:collapse ;}
+table.grid td { border:1px solid #bbb ; font-size:12px ;}
+body { font-family:arial ;}
+table.x { font-family:courier ; border-collapse:collapse ; padding:2px ;}
+table.x td { border:1px solid #bbb ;}
+td.tableTitle { font-weight:bold ; text-align:center ;}
+table.grid { border-collapse:collapse ;}
+table.grid td { border:1px solid #bbb ;}
+table.grid td.tableTitle { font-weight:bold ; text-align:center ;}
+table.mmap { border-collapse:collapse ; text-size:11px ; border:1px solid #d8d8d8 ;}
+table.mmap td { border-color:#d8d8d8 ; border-width:1px ; border-style:solid ;}
+table.mmap td.empty { border-style:none ; background-color:#f0f0f0 ;}
+table.mmap td.slavemodule { text-align:left ; font-size:11px ; border-style:solid solid none solid ;}
+table.mmap td.slavem { text-align:right ; font-size:9px ; font-style:italic ; border-style:none solid none solid ;}
+table.mmap td.slaveb { text-align:right ; font-size:9px ; font-style:italic ; border-style:none solid solid solid ;}
+table.mmap td.mastermodule { text-align:center ; font-size:11px ; border-style:solid solid none solid ;}
+table.mmap td.masterlr { text-align:center ; font-size:9px ; font-style:italic ; border-style:none solid solid solid ;}
+table.mmap td.masterl { text-align:center ; font-size:9px ; font-style:italic ; border-style:none none solid solid ;}
+table.mmap td.masterm { text-align:center ; font-size:9px ; font-style:italic ; border-style:none none solid none ;}
+table.mmap td.masterr { text-align:center ; font-size:9px ; font-style:italic ; border-style:none solid solid none ;}
+table.mmap td.addr { font-family:courier ; font-size:9px ; text-align:right ;}
+table.connectionboxes { border-collapse:separate ; border-spacing:0px ; font-family:arial ;}
+table.connectionboxes td.from { border-bottom:1px solid black ; font-size:9px ; font-style:italic ; vertical-align:bottom ; text-align:left ;}
+table.connectionboxes td.to { font-size:9px ; font-style:italic ; vertical-align:top ; text-align:right ;}
+table.connectionboxes td.lefthandwire { border-bottom:1px solid black ; font-size:9px ; font-style:italic ; vertical-align:bottom ; text-align:right ;}
+table.connectionboxes td.righthandwire { border-bottom:1px solid black ; font-size:9px ; font-style:italic ; vertical-align:bottom ; text-align:left ;}
+table.connectionboxes td.righthandlabel { font-size:11px ; vertical-align:bottom ; text-align:left ;}
+table.connectionboxes td.neighbor { padding:3px ; border:1px solid black ; font-size: 11px ; background:#e8e8e8 ; vertical-align:center ; text-align:center ;}
+table.connectionboxes td.main { padding:8px ; border:1px solid black ; font-size: 14px ; font-weight:bold ; background:#ffffff ; vertical-align:center ; text-align:center ;}
+.parametersbox { border:1px solid #d0d0d0 ; display:inline-block ; max-height:160px ; overflow:auto ; width:360px ; font-size:10px ;}
+.flowbox { display:inline-block ;}
+.parametersbox table { font-size:10px ;}
+td.parametername { font-style:italic ;}
+td.parametervalue { font-weight:bold ;}
+div.greydiv { vertical-align:top ; text-align:center ; background:#eeeeee ; border-top:1px solid #707070 ; border-bottom:1px solid #707070 ; padding:20px ; margin:20px ; width:auto ;}</style>
+ </head>
+ <body>
+  <table class="topTitle">
+   <tr>
+    <td class="l">mynios2</td>
+    <td class="r">mynios2
+     <br/>1.0
+     <br/>
+    </td>
+   </tr>
+  </table>
+  <table class="blueBar">
+   <tr>
+    <td class="l">2015.04.14.22:14:55</td>
+    <td class="r">Generation Report</td>
+   </tr>
+  </table>
+  <table class="items">
+   <tr>
+    <td class="label">Output Directory</td>
+    <td class="mono">C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/</td>
+   </tr>
+   <tr>
+    <td class="label">Files</td>
+    <td class="mono">C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/mynios2.v (495687 bytes VERILOG)
+     <br/>
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu.sdc (3684 bytes SDC)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu.v (192342 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu_jtag_debug_module_sysclk.v (7010 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu_jtag_debug_module_tck.v (8284 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu_jtag_debug_module_wrapper.v (10109 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu_ociram_default_contents.mif (5878 bytes MIF)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu_oci_test_bench.v (1461 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu_rf_ram_a.mif (600 bytes MIF)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu_rf_ram_b.mif (600 bytes MIF)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cpu_test_bench.v (30089 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_jtag_uart.v (23713 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_jtag_uart_input_mutex.dat (3 bytes OTHER)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_jtag_uart_input_stream.dat (10 bytes OTHER)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_jtag_uart_output_stream.dat (0 bytes OTHER)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_onchip_memory2.hex (236263 bytes HEX)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_onchip_memory2.v (4010 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_epcs_flash_controller.v (17504 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_epcs_flash_controller_boot_rom_synth.hex (5148 bytes HEX)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_pio_0.v (2399 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/slave_template.v (33002 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/interrupt_logic.v (2617 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_uart.v (34681 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_uart_input_data_mutex.dat (3 bytes OTHER)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_uart_input_data_stream.dat (7 bytes OTHER)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_uart_log_module.txt (0 bytes OTHER)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_sysid_qsys_0.v (1460 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_up_clock.v (15438 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_sdram_0.v (24421 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_sys_clk_timer.v (6991 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_master_translator.sv (16413 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_slave_translator.sv (15974 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_master_agent.sv (8689 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_slave_agent.sv (17563 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_burst_uncompressor.sv (10395 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_avalon_sc_fifo.v (32198 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_addr_router.sv (7211 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_addr_router_001.sv (8944 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_id_router.sv (5920 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_id_router_003.sv (5932 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_id_router_005.sv (5849 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_traffic_limiter.sv (13741 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_avalon_st_pipeline_base.v (4716 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_burst_adapter.sv (36987 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_reset_controller.v (3595 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_reset_synchronizer.v (3562 bytes VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_reset_controller.sdc (1179 bytes SDC)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cmd_xbar_demux.sv (6030 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cmd_xbar_demux_001.sv (9877 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_arbitrator.sv (9460 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_cmd_xbar_mux.sv (10431 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_rsp_xbar_demux.sv (4111 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_rsp_xbar_demux_005.sv (3485 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_rsp_xbar_mux.sv (13665 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_rsp_xbar_mux_001.sv (18543 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_width_adapter.sv (35840 bytes SYSTEM_VERILOG)
+     <br/>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/mynios2_irq_mapper.sv (1994 bytes SYSTEM_VERILOG)
+     <br/>
+    </td>
+   </tr>
+   <tr>
+    <td class="label">Instantiations</td>
+    <td class="mono">
+     <table class="grid">
+      <tr>
+       <td><b>mynios2</b>
+        <br/>mynios2 v1.0</td>
+       <td><b>mynios2_cpu</b> as cpu
+        <br/><b>mynios2_jtag_uart</b> as jtag_uart
+        <br/><b>mynios2_onchip_memory2</b> as onchip_memory2
+        <br/><b>mynios2_epcs_flash_controller</b> as epcs_flash_controller
+        <br/><b>mynios2_pio_0</b> as pio_0
+        <br/><b>slave_template</b> as slave_template_0, slave_template_1
+        <br/><b>mynios2_uart</b> as uart
+        <br/><b>mynios2_sysid_qsys_0</b> as sysid_qsys_0
+        <br/><b>mynios2_up_clock</b> as up_clock
+        <br/><b>mynios2_sdram_0</b> as sdram_0
+        <br/><b>mynios2_sys_clk_timer</b> as sys_clk_timer
+        <br/><b>altera_merlin_master_translator</b> as cpu_instruction_master_translator, cpu_data_master_translator
+        <br/><b>altera_merlin_slave_translator</b> as cpu_jtag_debug_module_translator, onchip_memory2_s1_translator, epcs_flash_controller_epcs_control_port_translator, sdram_0_s1_translator, sys_clk_timer_s1_translator, jtag_uart_avalon_jtag_slave_translator, pio_0_s1_translator, slave_template_0_s0_translator, uart_s1_translator, sysid_qsys_0_control_slave_translator, slave_template_1_s0_translator
+        <br/><b>altera_merlin_master_agent</b> as cpu_instruction_master_translator_avalon_universal_master_0_agent, cpu_data_master_translator_avalon_universal_master_0_agent
+        <br/><b>altera_merlin_slave_agent</b> as cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent, onchip_memory2_s1_translator_avalon_universal_slave_0_agent, epcs_flash_controller_epcs_control_port_translator_avalon_universal_slave_0_agent, sdram_0_s1_translator_avalon_universal_slave_0_agent, sys_clk_timer_s1_translator_avalon_universal_slave_0_agent, jtag_uart_avalon_jtag_slave_translator_avalon_universal_slave_0_agent, pio_0_s1_translator_avalon_universal_slave_0_agent, slave_template_0_s0_translator_avalon_universal_slave_0_agent, uart_s1_translator_avalon_universal_slave_0_agent, sysid_qsys_0_control_slave_translator_avalon_universal_slave_0_agent, slave_template_1_s0_translator_avalon_universal_slave_0_agent
+        <br/><b>altera_avalon_sc_fifo</b> as cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent_rsp_fifo, onchip_memory2_s1_translator_avalon_universal_slave_0_agent_rsp_fifo, epcs_flash_controller_epcs_control_port_translator_avalon_universal_slave_0_agent_rsp_fifo, sdram_0_s1_translator_avalon_universal_slave_0_agent_rsp_fifo, sys_clk_timer_s1_translator_avalon_universal_slave_0_agent_rsp_fifo, jtag_uart_avalon_jtag_slave_translator_avalon_universal_slave_0_agent_rsp_fifo, pio_0_s1_translator_avalon_universal_slave_0_agent_rsp_fifo, slave_template_0_s0_translator_avalon_universal_slave_0_agent_rsp_fifo, uart_s1_translator_avalon_universal_slave_0_agent_rsp_fifo, sysid_qsys_0_control_slave_translator_avalon_universal_slave_0_agent_rsp_fifo, slave_template_1_s0_translator_avalon_universal_slave_0_agent_rsp_fifo
+        <br/><b>mynios2_addr_router</b> as addr_router
+        <br/><b>mynios2_addr_router_001</b> as addr_router_001
+        <br/><b>mynios2_id_router</b> as id_router, id_router_001, id_router_002, id_router_004
+        <br/><b>mynios2_id_router_003</b> as id_router_003
+        <br/><b>mynios2_id_router_005</b> as id_router_005, id_router_006, id_router_007, id_router_008, id_router_009, id_router_010
+        <br/><b>altera_merlin_traffic_limiter</b> as limiter, limiter_001
+        <br/><b>altera_merlin_burst_adapter</b> as burst_adapter
+        <br/><b>altera_reset_controller</b> as rst_controller, rst_controller_001, rst_controller_002
+        <br/><b>mynios2_cmd_xbar_demux</b> as cmd_xbar_demux
+        <br/><b>mynios2_cmd_xbar_demux_001</b> as cmd_xbar_demux_001
+        <br/><b>mynios2_cmd_xbar_mux</b> as cmd_xbar_mux, cmd_xbar_mux_001, cmd_xbar_mux_002, cmd_xbar_mux_003, cmd_xbar_mux_004
+        <br/><b>mynios2_rsp_xbar_demux</b> as rsp_xbar_demux, rsp_xbar_demux_001, rsp_xbar_demux_002, rsp_xbar_demux_003, rsp_xbar_demux_004
+        <br/><b>mynios2_rsp_xbar_demux_005</b> as rsp_xbar_demux_005, rsp_xbar_demux_006, rsp_xbar_demux_007, rsp_xbar_demux_008, rsp_xbar_demux_009, rsp_xbar_demux_010
+        <br/><b>mynios2_rsp_xbar_mux</b> as rsp_xbar_mux
+        <br/><b>mynios2_rsp_xbar_mux_001</b> as rsp_xbar_mux_001
+        <br/><b>altera_merlin_width_adapter</b> as width_adapter, width_adapter_001
+        <br/><b>mynios2_irq_mapper</b> as irq_mapper
+        <br/>
+       </td>
+      </tr>
+      <tr>
+       <td><b>mynios2_cpu</b>
+        <br/>altera_nios2_qsys v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_jtag_uart</b>
+        <br/>altera_avalon_jtag_uart v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_onchip_memory2</b>
+        <br/>altera_avalon_onchip_memory2 v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_epcs_flash_controller</b>
+        <br/>altera_avalon_epcs_flash_controller v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_pio_0</b>
+        <br/>altera_avalon_pio v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>slave_template</b>
+        <br/>slave_template v2.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_uart</b>
+        <br/>altera_avalon_uart v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_sysid_qsys_0</b>
+        <br/>altera_avalon_sysid_qsys v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_up_clock</b>
+        <br/>altera_up_clocks v13.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_sdram_0</b>
+        <br/>altera_avalon_new_sdram_controller v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_sys_clk_timer</b>
+        <br/>altera_avalon_timer v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_merlin_master_translator</b>
+        <br/>altera_merlin_master_translator v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_merlin_slave_translator</b>
+        <br/>altera_merlin_slave_translator v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_merlin_master_agent</b>
+        <br/>altera_merlin_master_agent v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_merlin_slave_agent</b>
+        <br/>altera_merlin_slave_agent v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_avalon_sc_fifo</b>
+        <br/>altera_avalon_sc_fifo v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_addr_router</b>
+        <br/>altera_merlin_router v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_addr_router_001</b>
+        <br/>altera_merlin_router v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_id_router</b>
+        <br/>altera_merlin_router v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_id_router_003</b>
+        <br/>altera_merlin_router v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_id_router_005</b>
+        <br/>altera_merlin_router v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_merlin_traffic_limiter</b>
+        <br/>altera_merlin_traffic_limiter v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_merlin_burst_adapter</b>
+        <br/>altera_merlin_burst_adapter v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_reset_controller</b>
+        <br/>altera_reset_controller v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_cmd_xbar_demux</b>
+        <br/>altera_merlin_demultiplexer v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_cmd_xbar_demux_001</b>
+        <br/>altera_merlin_demultiplexer v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_cmd_xbar_mux</b>
+        <br/>altera_merlin_multiplexer v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_rsp_xbar_demux</b>
+        <br/>altera_merlin_demultiplexer v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_rsp_xbar_demux_005</b>
+        <br/>altera_merlin_demultiplexer v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_rsp_xbar_mux</b>
+        <br/>altera_merlin_multiplexer v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_rsp_xbar_mux_001</b>
+        <br/>altera_merlin_multiplexer v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>altera_merlin_width_adapter</b>
+        <br/>altera_merlin_width_adapter v11.0</td>
+       <td></td>
+      </tr>
+      <tr>
+       <td><b>mynios2_irq_mapper</b>
+        <br/>altera_irq_mapper v11.0</td>
+       <td></td>
+      </tr>
+     </table>
+    </td>
+   </tr>
+  </table>
+  <div style="width:100% ;  height:10px"> </div>
+  <div class="label">Generation Messages</div>
+  <div style="white-space:pre ; font-family:courier">2015.04.14.22:12:17 [Debug] mynios2.altera_nios2_qsys: When a generate simulation callback is defined a synthesis generation callback should also be defined
+2015.04.14.22:13:23 [Debug] mynios2.cpu: Timing: VAL:1/0.063s ELA:1/0.015s
+2015.04.14.22:13:23 [Info] mynios2.onchip_memory2: Memory will be initialized from onchip_memory2.hex
+2015.04.14.22:12:30 [Warning] mynios2.slave_template: <b>set_interface_property</b>: Interface <b>user_interface</b> (conduit) can't have associatedClock
+2015.04.14.22:13:23 [Debug] mynios2.slave_template_0: Timing: VAL:1/0.000s ELA:1/0.000s QME:2/5.981s/10.963s(1.5s)
+2015.04.14.22:13:23 [Info] mynios2.sysid_qsys_0: System ID will no longer be automatically assigned.
+2015.04.14.22:13:23 [Info] mynios2.sysid_qsys_0: Time stamp will be automatically updated when this component is generated.
+2015.04.14.22:13:23 [Debug] mynios2.sysid_qsys_0: Timing: VAL:2/0.000s/0.000s
+2015.04.14.22:12:30 [Warning] mynios2.slave_template: <b>set_interface_property</b>: Interface <b>user_interface</b> (conduit) can't have associatedClock
+2015.04.14.22:13:23 [Debug] mynios2.slave_template_1: Timing: VAL:1/0.000s ELA:1/0.016s QME:2/5.981s/10.963s(1.5s)
+2015.04.14.22:13:23 [Debug] mynios2.up_clock: Timing: VAL:1/0.000s ELA:1/0.000s
+2015.04.14.22:13:24 [Info] mynios2: Generating <b>mynios2</b> "<b>mynios2</b>" for QUARTUS_SYNTH
+2015.04.14.22:13:24 [Debug] mynios2: queue size: 0 starting:mynios2 "mynios2"
+2015.04.14.22:13:24 [Debug] Transform: PipelineBridgeSwap
+2015.04.14.22:13:24 [Info] pipeline_bridge_swap_transform: After transform: <b>13</b> modules, <b>57</b> connections
+2015.04.14.22:13:24 [Debug] Transform: ClockCrossingBridgeSwap
+2015.04.14.22:13:24 [Debug] Transform: QsysBetaIPSwap
+2015.04.14.22:13:24 [Debug] Transform: CustomInstructionTransform
+2015.04.14.22:13:24 [Info] No custom instruction connections, skipping transform 
+2015.04.14.22:13:24 [Debug] Transform: TristateConduitUpgradeTransform
+2015.04.14.22:13:25 [Debug] Transform: TranslatorTransform
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:25 [Info] merlin_translator_transform: After transform: <b>26</b> modules, <b>109</b> connections
+2015.04.14.22:13:25 [Debug] Transform: DomainTransform
+2015.04.14.22:13:25 [Debug] Transform merlin_domain_transform not run on matched interfaces cpu.instruction_master and cpu_instruction_master_translator.avalon_anti_master_0
+2015.04.14.22:13:25 [Debug] Transform merlin_domain_transform not run on matched interfaces cpu.data_master and cpu_data_master_translator.avalon_anti_master_0
+2015.04.14.22:13:25 [Progress] min: 0
+2015.04.14.22:13:25 [Progress] max: 1
+2015.04.14.22:13:25 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces cpu_jtag_debug_module_translator.avalon_anti_slave_0 and cpu.jtag_debug_module
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces onchip_memory2_s1_translator.avalon_anti_slave_0 and onchip_memory2.s1
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces epcs_flash_controller_epcs_control_port_translator.avalon_anti_slave_0 and epcs_flash_controller.epcs_control_port
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces sdram_0_s1_translator.avalon_anti_slave_0 and sdram_0.s1
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces sys_clk_timer_s1_translator.avalon_anti_slave_0 and sys_clk_timer.s1
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces jtag_uart_avalon_jtag_slave_translator.avalon_anti_slave_0 and jtag_uart.avalon_jtag_slave
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces pio_0_s1_translator.avalon_anti_slave_0 and pio_0.s1
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces slave_template_0_s0_translator.avalon_anti_slave_0 and slave_template_0.s0
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces uart_s1_translator.avalon_anti_slave_0 and uart.s1
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces sysid_qsys_0_control_slave_translator.avalon_anti_slave_0 and sysid_qsys_0.control_slave
+2015.04.14.22:13:26 [Debug] Transform merlin_domain_transform not run on matched interfaces slave_template_1_s0_translator.avalon_anti_slave_0 and slave_template_1.s0
+2015.04.14.22:13:26 [Info] merlin_domain_transform: After transform: <b>51</b> modules, <b>276</b> connections
+2015.04.14.22:13:26 [Debug] Transform: RouterTransform
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:26 [Progress] min: 0
+2015.04.14.22:13:26 [Progress] max: 1
+2015.04.14.22:13:26 [Progress] current: 1
+2015.04.14.22:13:27 [Info] merlin_router_transform: After transform: <b>64</b> modules, <b>328</b> connections
+2015.04.14.22:13:27 [Debug] Transform: TrafficLimiterTransform
+2015.04.14.22:13:27 [Progress] min: 0
+2015.04.14.22:13:27 [Progress] max: 1
+2015.04.14.22:13:27 [Progress] current: 1
+2015.04.14.22:13:27 [Progress] min: 0
+2015.04.14.22:13:27 [Progress] max: 1
+2015.04.14.22:13:27 [Progress] current: 1
+2015.04.14.22:13:27 [Info] merlin_traffic_limiter_transform: After transform: <b>66</b> modules, <b>338</b> connections
+2015.04.14.22:13:27 [Debug] Transform: BurstTransform
+2015.04.14.22:13:27 [Progress] min: 0
+2015.04.14.22:13:27 [Progress] max: 1
+2015.04.14.22:13:27 [Progress] current: 1
+2015.04.14.22:13:27 [Info] merlin_burst_transform: After transform: <b>67</b> modules, <b>342</b> connections
+2015.04.14.22:13:27 [Debug] Transform: ResetAdaptation
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Info] reset_adaptation_transform: After transform: <b>70</b> modules, <b>273</b> connections
+2015.04.14.22:13:28 [Debug] Transform: NetworkToSwitchTransform
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:28 [Progress] min: 0
+2015.04.14.22:13:28 [Progress] max: 1
+2015.04.14.22:13:28 [Progress] current: 1
+2015.04.14.22:13:29 [Progress] min: 0
+2015.04.14.22:13:29 [Progress] max: 1
+2015.04.14.22:13:29 [Progress] current: 1
+2015.04.14.22:13:29 [Progress] min: 0
+2015.04.14.22:13:29 [Progress] max: 1
+2015.04.14.22:13:29 [Progress] current: 1
+2015.04.14.22:13:29 [Info] merlin_network_to_switch_transform: After transform: <b>95</b> modules, <b>331</b> connections
+2015.04.14.22:13:29 [Debug] Transform: WidthTransform
+2015.04.14.22:13:29 [Progress] min: 0
+2015.04.14.22:13:29 [Progress] max: 1
+2015.04.14.22:13:29 [Progress] current: 1
+2015.04.14.22:13:29 [Progress] min: 0
+2015.04.14.22:13:29 [Progress] max: 1
+2015.04.14.22:13:29 [Progress] current: 1
+2015.04.14.22:13:29 [Info] merlin_width_transform: After transform: <b>97</b> modules, <b>337</b> connections
+2015.04.14.22:13:29 [Debug] Transform: RouterTableTransform
+2015.04.14.22:13:30 [Debug] Transform: ClockCrossingTransform
+2015.04.14.22:13:30 [Debug] Transform: PipelineTransform
+2015.04.14.22:13:31 [Debug] Transform: TrafficLimiterUpdateTransform
+2015.04.14.22:13:32 [Info] limiter_update_transform: After transform: <b>97</b> modules, <b>339</b> connections
+2015.04.14.22:13:32 [Debug] Transform: InterruptMapperTransform
+2015.04.14.22:13:32 [Progress] min: 0
+2015.04.14.22:13:32 [Progress] max: 1
+2015.04.14.22:13:32 [Progress] current: 1
+2015.04.14.22:13:32 [Info] merlin_interrupt_mapper_transform: After transform: <b>98</b> modules, <b>342</b> connections
+2015.04.14.22:13:32 [Debug] Transform: InterruptSyncTransform
+2015.04.14.22:13:33 [Debug] Transform: InterruptFanoutTransform
+2015.04.14.22:13:34 [Warning] system: "No matching role found for epcs_flash_controller:epcs_control_port:endofpacket (endofpacket)"
+2015.04.14.22:13:34 [Warning] system: "No matching role found for epcs_flash_controller:epcs_control_port:dataavailable (dataavailable)"
+2015.04.14.22:13:34 [Warning] system: "No matching role found for epcs_flash_controller:epcs_control_port:readyfordata (readyfordata)"
+2015.04.14.22:13:34 [Warning] system: "No matching role found for jtag_uart:avalon_jtag_slave:dataavailable (dataavailable)"
+2015.04.14.22:13:34 [Warning] system: "No matching role found for jtag_uart:avalon_jtag_slave:readyfordata (readyfordata)"
+2015.04.14.22:13:34 [Warning] system: "No matching role found for uart:s1:dataavailable (dataavailable)"
+2015.04.14.22:13:34 [Warning] system: "No matching role found for uart:s1:readyfordata (readyfordata)"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_nios2_qsys</b> "<b>submodules/mynios2_cpu</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_jtag_uart</b> "<b>submodules/mynios2_jtag_uart</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_onchip_memory2</b> "<b>submodules/mynios2_onchip_memory2</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_epcs_flash_controller</b> "<b>submodules/mynios2_epcs_flash_controller</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_pio</b> "<b>submodules/mynios2_pio_0</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>slave_template</b> "<b>submodules/slave_template</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_uart</b> "<b>submodules/mynios2_uart</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sysid_qsys</b> "<b>submodules/mynios2_sysid_qsys_0</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>slave_template</b> "<b>submodules/slave_template</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_up_clocks</b> "<b>submodules/mynios2_up_clock</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_new_sdram_controller</b> "<b>submodules/mynios2_sdram_0</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_timer</b> "<b>submodules/mynios2_sys_clk_timer</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_master_translator</b> "<b>submodules/altera_merlin_master_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_master_translator</b> "<b>submodules/altera_merlin_master_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_translator</b> "<b>submodules/altera_merlin_slave_translator</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_master_agent</b> "<b>submodules/altera_merlin_master_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_master_agent</b> "<b>submodules/altera_merlin_master_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_slave_agent</b> "<b>submodules/altera_merlin_slave_agent</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_avalon_sc_fifo</b> "<b>submodules/altera_avalon_sc_fifo</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_addr_router</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_addr_router_001</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router_003</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_router</b> "<b>submodules/mynios2_id_router_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_traffic_limiter</b> "<b>submodules/altera_merlin_traffic_limiter</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_traffic_limiter</b> "<b>submodules/altera_merlin_traffic_limiter</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_burst_adapter</b> "<b>submodules/altera_merlin_burst_adapter</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_reset_controller</b> "<b>submodules/altera_reset_controller</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_reset_controller</b> "<b>submodules/altera_reset_controller</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_reset_controller</b> "<b>submodules/altera_reset_controller</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_cmd_xbar_demux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_cmd_xbar_demux_001</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_multiplexer</b> "<b>submodules/mynios2_cmd_xbar_mux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_multiplexer</b> "<b>submodules/mynios2_cmd_xbar_mux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_multiplexer</b> "<b>submodules/mynios2_cmd_xbar_mux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_multiplexer</b> "<b>submodules/mynios2_cmd_xbar_mux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_multiplexer</b> "<b>submodules/mynios2_cmd_xbar_mux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_demultiplexer</b> "<b>submodules/mynios2_rsp_xbar_demux_005</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_multiplexer</b> "<b>submodules/mynios2_rsp_xbar_mux</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_multiplexer</b> "<b>submodules/mynios2_rsp_xbar_mux_001</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_width_adapter</b> "<b>submodules/altera_merlin_width_adapter</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_merlin_width_adapter</b> "<b>submodules/altera_merlin_width_adapter</b>"
+2015.04.14.22:13:34 [Debug] mynios2: "<b>mynios2</b>" reuses <b>altera_irq_mapper</b> "<b>submodules/mynios2_irq_mapper</b>"
+2015.04.14.22:13:34 [Debug] mynios2: queue size: 90 starting:altera_nios2_qsys "submodules/mynios2_cpu"
+2015.04.14.22:13:34 [Info] cpu: Starting RTL generation for module 'mynios2_cpu'
+2015.04.14.22:13:34 [Info] cpu:   Generation command is [exec C:/altera/11.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2/eperl.exe -I C:/altera/11.0sp1/quartus/common/ip/altera/common/perl/5.8.3 -I C:/altera/11.0sp1/quartus/sopc_builder/bin/europa -I C:/altera/11.0sp1/quartus/sopc_builder/bin/perl_lib -I C:/altera/11.0sp1/quartus/sopc_builder/bin -I C:/altera/11.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2/cpu_lib -I C:/altera/11.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2/nios_lib -I C:/altera/11.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2 -I C:/altera/11.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2 -- C:/altera/11.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2/generate_rtl.epl --name=mynios2_cpu --dir=C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0003_cpu_gen/ --quartus_dir=C:/altera/11.0sp1/quartus --verilog --config=C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0003_cpu_gen//mynios2_cpu_processor_configuration.pl  --do_build_sim=0    --bogus  ]
+2015.04.14.22:13:39 [Info] cpu: # 2015.04.14 22:13:35 (*) Starting Nios II generation
+2015.04.14.22:13:39 [Info] cpu: # 2015.04.14 22:13:35 (*)   No license required to generate encrypted Nios II/e.
+2015.04.14.22:13:39 [Info] cpu: # 2015.04.14 22:13:35 (*)   Elaborating CPU configuration settings
+2015.04.14.22:13:39 [Info] cpu: # 2015.04.14 22:13:35 (*)   Creating all objects for CPU
+2015.04.14.22:13:39 [Info] cpu: # 2015.04.14 22:13:37 (*)   Generating RTL from CPU objects
+2015.04.14.22:13:39 [Info] cpu: # 2015.04.14 22:13:37 (*)   Creating plain-text RTL
+2015.04.14.22:13:39 [Info] cpu: # 2015.04.14 22:13:39 (*) Done Nios II generation
+2015.04.14.22:13:39 [Info] cpu: Done RTL generation for module 'mynios2_cpu'
+2015.04.14.22:13:39 [Info] cpu: "<b>mynios2</b>" instantiated <b>altera_nios2_qsys</b> "<b>cpu</b>"
+2015.04.14.22:13:39 [Debug] mynios2: queue size: 89 starting:altera_avalon_jtag_uart "submodules/mynios2_jtag_uart"
+2015.04.14.22:13:39 [Info] Starting classic module elaboration.
+2015.04.14.22:13:42 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0004_sopclgen  --no_splash --refresh C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0004_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:13:45 [Info] Finished elaborating classic module.
+2015.04.14.22:13:45 [Progress] Executing: C:/altera/11.0sp1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0004_sopclgen/yysystem.ptf
+2015.04.14.22:13:45 [Info] Running sopc_builder...
+2015.04.14.22:13:47 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0004_sopclgen  --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0004_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:13:49 [Progress] No .sopc_builder configuration file(!)
+2015.04.14.22:13:49 [Progress] .
+2015.04.14.22:13:51 [Progress] # 2015.04.14 22:13:51 (*) Success: sopc_builder finished.
+2015.04.14.22:13:51 [Info] jtag_uart: "<b>mynios2</b>" instantiated <b>altera_avalon_jtag_uart</b> "<b>jtag_uart</b>"
+2015.04.14.22:13:51 [Debug] mynios2: queue size: 88 starting:altera_avalon_onchip_memory2 "submodules/mynios2_onchip_memory2"
+2015.04.14.22:13:51 [Info] Starting classic module elaboration.
+2015.04.14.22:13:53 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0005_sopclgen  --no_splash --refresh C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0005_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:13:55 [Info] Finished elaborating classic module.
+2015.04.14.22:13:55 [Progress] Executing: C:/altera/11.0sp1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0005_sopclgen/yysystem.ptf
+2015.04.14.22:13:55 [Info] Running sopc_builder...
+2015.04.14.22:13:57 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0005_sopclgen  --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0005_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:13:59 [Progress] No .sopc_builder configuration file(!)
+2015.04.14.22:13:59 [Progress] .
+2015.04.14.22:14:01 [Progress] # 2015.04.14 22:14:01 (*) Success: sopc_builder finished.
+2015.04.14.22:14:01 [Info] onchip_memory2: "<b>mynios2</b>" instantiated <b>altera_avalon_onchip_memory2</b> "<b>onchip_memory2</b>"
+2015.04.14.22:14:01 [Debug] mynios2: queue size: 87 starting:altera_avalon_epcs_flash_controller "submodules/mynios2_epcs_flash_controller"
+2015.04.14.22:14:01 [Info] Starting classic module elaboration.
+2015.04.14.22:14:04 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0006_sopclgen  --no_splash --refresh C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0006_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:07 [Info] Finished elaborating classic module.
+2015.04.14.22:14:07 [Progress] Executing: C:/altera/11.0sp1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0006_sopclgen/yysystem.ptf
+2015.04.14.22:14:07 [Info] Running sopc_builder...
+2015.04.14.22:14:09 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0006_sopclgen  --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0006_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:10 [Progress] No .sopc_builder configuration file(!)
+2015.04.14.22:14:10 [Progress] .
+2015.04.14.22:14:12 [Progress] # 2015.04.14 22:14:12 (*) Success: sopc_builder finished.
+2015.04.14.22:14:13 [Info] epcs_flash_controller: "<b>mynios2</b>" instantiated <b>altera_avalon_epcs_flash_controller</b> "<b>epcs_flash_controller</b>"
+2015.04.14.22:14:13 [Debug] mynios2: queue size: 86 starting:altera_avalon_pio "submodules/mynios2_pio_0"
+2015.04.14.22:14:13 [Info] Starting classic module elaboration.
+2015.04.14.22:14:15 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0007_sopclgen  --no_splash --refresh C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0007_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:17 [Info] Finished elaborating classic module.
+2015.04.14.22:14:17 [Progress] Executing: C:/altera/11.0sp1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0007_sopclgen/yysystem.ptf
+2015.04.14.22:14:17 [Info] Running sopc_builder...
+2015.04.14.22:14:19 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0007_sopclgen  --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0007_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:20 [Progress] No .sopc_builder configuration file(!)
+2015.04.14.22:14:20 [Progress] .
+2015.04.14.22:14:22 [Progress] # 2015.04.14 22:14:22 (*) Success: sopc_builder finished.
+2015.04.14.22:14:22 [Info] pio_0: "<b>mynios2</b>" instantiated <b>altera_avalon_pio</b> "<b>pio_0</b>"
+2015.04.14.22:14:22 [Debug] mynios2: queue size: 85 starting:slave_template "submodules/slave_template"
+2015.04.14.22:12:29 [Debug] set ALTERA_HW_TCL_KEEP_TEMP_FILES=1 to retain temp files
+2015.04.14.22:12:29 [Debug] Command: C:/altera/11.0sp1/quartus/bin/quartus_map.exe not_a_project --generate_hdl_interface=C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/ip/Slave_Template/slave_template.v --source=C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/ip/Slave_Template/interrupt_logic.v --source=C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/ip/Slave_Template/slave_template.v --set=HDL_INTERFACE_OUTPUT_PATH=C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0002_sopcqmap/
+2015.04.14.22:12:30 [Debug] Command took 1.000s
+2015.04.14.22:14:22 [Debug] set ALTERA_HW_TCL_KEEP_TEMP_FILES=1 to retain temp files
+2015.04.14.22:14:22 [Debug] Command: C:/altera/11.0sp1/quartus/bin/quartus_map.exe "not_a_project" "--generate_hdl_interface=C:\\Users\\Mike\\Documents\\FPGA_PROJECTS\\CNC_V00\\FPGA_PROJECT_BASE_SYSTEM_V3\\ip\\Slave_Template\\slave_template.v" "--source=C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/ip/Slave_Template/interrupt_logic.v" "--source=C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/ip/Slave_Template/slave_template.v" "--set=HDL_INTERFACE_OUTPUT_PATH=C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0008_sopcqmap/" "--set=HDL_INTERFACE_INSTANCE_NAME=inst" "--set=HDL_INTERFACE_INSTANCE_ENTITY=slave_template" "--set=HDL_INTERFACE_INSTANCE_PARAMETERS=DATA_WIDTH=D\"32\";ENABLE_SYNC_SIGNALS=D\"0\";MODE_0=D\"2\";MODE_1=D\"2\";MODE_2=D\"2\";MODE_3=D\"2\";MODE_4=D\"2\";MODE_5=D\"2\";MODE_6=D\"2\";MODE_7=D\"2\";MODE_8=D\"2\";MODE_9=D\"2\";MODE_10=D\"2\";MODE_11=D\"2\";MODE_12=D\"2\";MODE_13=D\"2\";MODE_14=D\"2\";MODE_15=D\"2\";IRQ_EN=D\"0\";"
+2015.04.14.22:14:23 [Debug] Command took 0.922s
+2015.04.14.22:14:23 [Info] slave_template_0: "<b>mynios2</b>" instantiated <b>slave_template</b> "<b>slave_template_0</b>"
+2015.04.14.22:14:23 [Debug] mynios2: queue size: 84 starting:altera_avalon_uart "submodules/mynios2_uart"
+2015.04.14.22:14:23 [Info] Starting classic module elaboration.
+2015.04.14.22:14:25 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0009_sopclgen  --no_splash --refresh C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0009_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:27 [Info] Finished elaborating classic module.
+2015.04.14.22:14:27 [Progress] Executing: C:/altera/11.0sp1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0009_sopclgen/yysystem.ptf
+2015.04.14.22:14:27 [Info] Running sopc_builder...
+2015.04.14.22:14:29 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0009_sopclgen  --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0009_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:31 [Progress] No .sopc_builder configuration file(!)
+2015.04.14.22:14:31 [Progress] .
+2015.04.14.22:14:33 [Progress] # 2015.04.14 22:14:33 (*) Success: sopc_builder finished.
+2015.04.14.22:14:33 [Info] uart: "<b>mynios2</b>" instantiated <b>altera_avalon_uart</b> "<b>uart</b>"
+2015.04.14.22:14:33 [Debug] mynios2: queue size: 83 starting:altera_avalon_sysid_qsys "submodules/mynios2_sysid_qsys_0"
+2015.04.14.22:14:33 [Info] sysid_qsys_0: "<b>mynios2</b>" instantiated <b>altera_avalon_sysid_qsys</b> "<b>sysid_qsys_0</b>"
+2015.04.14.22:14:33 [Debug] mynios2: queue size: 81 starting:altera_up_clocks "submodules/mynios2_up_clock"
+2015.04.14.22:14:33 [Info] up_clock: Starting Generation of Required Clocks for DE-Series Boards
+2015.04.14.22:14:33 [Info] up_clock: "<b>mynios2</b>" instantiated <b>altera_up_clocks</b> "<b>up_clock</b>"
+2015.04.14.22:14:33 [Debug] mynios2: queue size: 80 starting:altera_avalon_new_sdram_controller "submodules/mynios2_sdram_0"
+2015.04.14.22:14:33 [Info] Starting classic module elaboration.
+2015.04.14.22:14:35 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0012_sopclgen  --no_splash --refresh C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0012_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:37 [Info] Finished elaborating classic module.
+2015.04.14.22:14:37 [Progress] Executing: C:/altera/11.0sp1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0012_sopclgen/yysystem.ptf
+2015.04.14.22:14:37 [Info] Running sopc_builder...
+2015.04.14.22:14:39 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0012_sopclgen  --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0012_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:41 [Progress] No .sopc_builder configuration file(!)
+2015.04.14.22:14:41 [Progress] .
+2015.04.14.22:14:42 [Progress] .
+2015.04.14.22:14:42 [Progress] # 2015.04.14 22:14:42 (*) Running Test Generator Program for mynios2_sdram_0
+2015.04.14.22:14:44 [Progress] # 2015.04.14 22:14:44 (*) Success: sopc_builder finished.
+2015.04.14.22:14:44 [Info] sdram_0: "<b>mynios2</b>" instantiated <b>altera_avalon_new_sdram_controller</b> "<b>sdram_0</b>"
+2015.04.14.22:14:44 [Debug] mynios2: queue size: 79 starting:altera_avalon_timer "submodules/mynios2_sys_clk_timer"
+2015.04.14.22:14:45 [Info] Starting classic module elaboration.
+2015.04.14.22:14:47 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0013_sopclgen  --no_splash --refresh C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0013_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:48 [Info] Finished elaborating classic module.
+2015.04.14.22:14:48 [Progress] Executing: C:/altera/11.0sp1/quartus//sopc_builder/bin/sopc_builder --classic --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0013_sopclgen/yysystem.ptf
+2015.04.14.22:14:48 [Info] Running sopc_builder...
+2015.04.14.22:14:50 [Progress] "c:/altera/11.0sp1/quartus/bin/jre/bin/java.exe" -Xmx512M -classpath "c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_builder.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/PinAssigner.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/sopc_wizard.jar;c:/altera/11.0sp1/quartus/sopc_builder/bin/jptf.jar" sopc_builder.sopc_builder  -d"c:/altera/11.0sp1/quartus/sopc_builder" -notalkback=1 -projectnameyysystem.qpf -projectpathC:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0013_sopclgen  --generate C:/Users/Mike/AppData/Local/Temp/alt6540_6864367077482296117.dir/0013_sopclgen/yysystem.v --quartus_dir="c:/altera/11.0sp1/quartus" --sopc_perl="c:/altera/11.0sp1/quartus/bin/perl" --sopc_lib_path="++c:/altera/11.0sp1/quartus/../ip/altera/sopc_builder_ip+c:/altera/11.0sp1/quartus/../ip/altera/nios2_ip"
+2015.04.14.22:14:52 [Progress] No .sopc_builder configuration file(!)
+2015.04.14.22:14:52 [Progress] .
+2015.04.14.22:14:53 [Progress] # 2015.04.14 22:14:53 (*) Success: sopc_builder finished.
+2015.04.14.22:14:54 [Info] sys_clk_timer: "<b>mynios2</b>" instantiated <b>altera_avalon_timer</b> "<b>sys_clk_timer</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 78 starting:altera_merlin_master_translator "submodules/altera_merlin_master_translator"
+2015.04.14.22:14:54 [Info] cpu_instruction_master_translator: "<b>mynios2</b>" instantiated <b>altera_merlin_master_translator</b> "<b>cpu_instruction_master_translator</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 76 starting:altera_merlin_slave_translator "submodules/altera_merlin_slave_translator"
+2015.04.14.22:14:54 [Info] cpu_jtag_debug_module_translator: "<b>mynios2</b>" instantiated <b>altera_merlin_slave_translator</b> "<b>cpu_jtag_debug_module_translator</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 65 starting:altera_merlin_master_agent "submodules/altera_merlin_master_agent"
+2015.04.14.22:14:54 [Info] cpu_instruction_master_translator_avalon_universal_master_0_agent: "<b>mynios2</b>" instantiated <b>altera_merlin_master_agent</b> "<b>cpu_instruction_master_translator_avalon_universal_master_0_agent</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 63 starting:altera_merlin_slave_agent "submodules/altera_merlin_slave_agent"
+2015.04.14.22:14:54 [Info] cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent: "<b>mynios2</b>" instantiated <b>altera_merlin_slave_agent</b> "<b>cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 62 starting:altera_avalon_sc_fifo "submodules/altera_avalon_sc_fifo"
+2015.04.14.22:14:54 [Info] cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent_rsp_fifo: "<b>mynios2</b>" instantiated <b>altera_avalon_sc_fifo</b> "<b>cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent_rsp_fifo</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 41 starting:altera_merlin_router "submodules/mynios2_addr_router"
+2015.04.14.22:14:54 [Info] addr_router: "<b>mynios2</b>" instantiated <b>altera_merlin_router</b> "<b>addr_router</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 40 starting:altera_merlin_router "submodules/mynios2_addr_router_001"
+2015.04.14.22:14:54 [Info] addr_router_001: "<b>mynios2</b>" instantiated <b>altera_merlin_router</b> "<b>addr_router_001</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 39 starting:altera_merlin_router "submodules/mynios2_id_router"
+2015.04.14.22:14:54 [Info] id_router: "<b>mynios2</b>" instantiated <b>altera_merlin_router</b> "<b>id_router</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 36 starting:altera_merlin_router "submodules/mynios2_id_router_003"
+2015.04.14.22:14:54 [Info] id_router_003: "<b>mynios2</b>" instantiated <b>altera_merlin_router</b> "<b>id_router_003</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 34 starting:altera_merlin_router "submodules/mynios2_id_router_005"
+2015.04.14.22:14:54 [Info] id_router_005: "<b>mynios2</b>" instantiated <b>altera_merlin_router</b> "<b>id_router_005</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 28 starting:altera_merlin_traffic_limiter "submodules/altera_merlin_traffic_limiter"
+2015.04.14.22:14:54 [Info] limiter: "<b>mynios2</b>" instantiated <b>altera_merlin_traffic_limiter</b> "<b>limiter</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 26 starting:altera_merlin_burst_adapter "submodules/altera_merlin_burst_adapter"
+2015.04.14.22:14:54 [Info] burst_adapter: "<b>mynios2</b>" instantiated <b>altera_merlin_burst_adapter</b> "<b>burst_adapter</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 25 starting:altera_reset_controller "submodules/altera_reset_controller"
+2015.04.14.22:14:54 [Info] rst_controller: "<b>mynios2</b>" instantiated <b>altera_reset_controller</b> "<b>rst_controller</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 22 starting:altera_merlin_demultiplexer "submodules/mynios2_cmd_xbar_demux"
+2015.04.14.22:14:54 [Info] cmd_xbar_demux: "<b>mynios2</b>" instantiated <b>altera_merlin_demultiplexer</b> "<b>cmd_xbar_demux</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 21 starting:altera_merlin_demultiplexer "submodules/mynios2_cmd_xbar_demux_001"
+2015.04.14.22:14:54 [Info] cmd_xbar_demux_001: "<b>mynios2</b>" instantiated <b>altera_merlin_demultiplexer</b> "<b>cmd_xbar_demux_001</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 20 starting:altera_merlin_multiplexer "submodules/mynios2_cmd_xbar_mux"
+2015.04.14.22:14:54 [Info] cmd_xbar_mux: "<b>mynios2</b>" instantiated <b>altera_merlin_multiplexer</b> "<b>cmd_xbar_mux</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 15 starting:altera_merlin_demultiplexer "submodules/mynios2_rsp_xbar_demux"
+2015.04.14.22:14:54 [Info] rsp_xbar_demux: "<b>mynios2</b>" instantiated <b>altera_merlin_demultiplexer</b> "<b>rsp_xbar_demux</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 10 starting:altera_merlin_demultiplexer "submodules/mynios2_rsp_xbar_demux_005"
+2015.04.14.22:14:54 [Info] rsp_xbar_demux_005: "<b>mynios2</b>" instantiated <b>altera_merlin_demultiplexer</b> "<b>rsp_xbar_demux_005</b>"
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 4 starting:altera_merlin_multiplexer "submodules/mynios2_rsp_xbar_mux"
+2015.04.14.22:14:54 [Info] rsp_xbar_mux: "<b>mynios2</b>" instantiated <b>altera_merlin_multiplexer</b> "<b>rsp_xbar_mux</b>"
+2015.04.14.22:14:54 [Info] Reusing file <b>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_arbitrator.sv</b>
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 3 starting:altera_merlin_multiplexer "submodules/mynios2_rsp_xbar_mux_001"
+2015.04.14.22:14:54 [Info] rsp_xbar_mux_001: "<b>mynios2</b>" instantiated <b>altera_merlin_multiplexer</b> "<b>rsp_xbar_mux_001</b>"
+2015.04.14.22:14:54 [Info] Reusing file <b>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_arbitrator.sv</b>
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 2 starting:altera_merlin_width_adapter "submodules/altera_merlin_width_adapter"
+2015.04.14.22:14:54 [Info] width_adapter: "<b>mynios2</b>" instantiated <b>altera_merlin_width_adapter</b> "<b>width_adapter</b>"
+2015.04.14.22:14:54 [Info] Reusing file <b>C:/Users/Mike/Documents/FPGA_PROJECTS/CNC_V00/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_burst_uncompressor.sv</b>
+2015.04.14.22:14:54 [Debug] mynios2: queue size: 0 starting:altera_irq_mapper "submodules/mynios2_irq_mapper"
+2015.04.14.22:14:54 [Info] irq_mapper: "<b>mynios2</b>" instantiated <b>altera_irq_mapper</b> "<b>irq_mapper</b>"
+2015.04.14.22:14:54 [Info] mynios2: Done <b>mynios2</b>" with 34 modules, 136 files, 2539541 bytes
+</div>
+  <div style="width:100% ; background:#eee ; height:10px"> </div>
+ </body>
+</html>

@@ -1,0 +1,2861 @@
+(header "symbol"
+  (version "1.1")
+)
+(symbol
+  (rect 0 0 248 1672)
+  (text "mynios2"
+    (rect 8 -4 71 16)  
+    (font "Arial"
+      (color 0 64 0)    
+      (font_size 20)    
+    )  
+  )
+  (text "inst"
+    (rect 0 1660 18 1670)  
+    (font "Arial"
+      (color 255 255 255)    
+      (font_size 10)    
+    )  
+  )
+  (port
+    (pt 0 72)  
+    (input)  
+    (text "clk_clk "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 72)    
+      (pt 0 72)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 128)  
+    (input)  
+    (text "reset_reset_n "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 128)    
+      (pt 0 128)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 184)  
+    (output)  
+    (text "epcs_dclk "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 184)    
+      (pt 0 184)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 200)  
+    (output)  
+    (text "epcs_sce "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 200)    
+      (pt 0 200)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 216)  
+    (output)  
+    (text "epcs_sdo "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 216)    
+      (pt 0 216)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 232)  
+    (input)  
+    (text "epcs_data0 "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 232)    
+      (pt 0 232)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 288)  
+    (output)  
+    (text "pio_led_export[15..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 288)    
+      (pt 0 288)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 344)  
+    (output)  
+    (text "multi_reg_dataout_0[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 344)    
+      (pt 0 344)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 360)  
+    (output)  
+    (text "multi_reg_dataout_1[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 360)    
+      (pt 0 360)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 376)  
+    (output)  
+    (text "multi_reg_dataout_2[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 376)    
+      (pt 0 376)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 392)  
+    (output)  
+    (text "multi_reg_dataout_3[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 392)    
+      (pt 0 392)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 408)  
+    (output)  
+    (text "multi_reg_dataout_4[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 408)    
+      (pt 0 408)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 424)  
+    (output)  
+    (text "multi_reg_dataout_5[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 424)    
+      (pt 0 424)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 440)  
+    (output)  
+    (text "multi_reg_dataout_6[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 440)    
+      (pt 0 440)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 456)  
+    (output)  
+    (text "multi_reg_dataout_7[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 456)    
+      (pt 0 456)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 472)  
+    (output)  
+    (text "multi_reg_dataout_8[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 472)    
+      (pt 0 472)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 488)  
+    (output)  
+    (text "multi_reg_dataout_9[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 488)    
+      (pt 0 488)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 504)  
+    (output)  
+    (text "multi_reg_dataout_10[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 504)    
+      (pt 0 504)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 520)  
+    (output)  
+    (text "multi_reg_dataout_11[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 520)    
+      (pt 0 520)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 536)  
+    (output)  
+    (text "multi_reg_dataout_12[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 536)    
+      (pt 0 536)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 552)  
+    (output)  
+    (text "multi_reg_dataout_13[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 552)    
+      (pt 0 552)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 568)  
+    (output)  
+    (text "multi_reg_dataout_14[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 568)    
+      (pt 0 568)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 584)  
+    (output)  
+    (text "multi_reg_dataout_15[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 584)    
+      (pt 0 584)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 600)  
+    (input)  
+    (text "multi_reg_datain_0[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 600)    
+      (pt 0 600)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 616)  
+    (input)  
+    (text "multi_reg_datain_1[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 616)    
+      (pt 0 616)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 632)  
+    (input)  
+    (text "multi_reg_datain_2[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 632)    
+      (pt 0 632)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 648)  
+    (input)  
+    (text "multi_reg_datain_3[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 648)    
+      (pt 0 648)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 664)  
+    (input)  
+    (text "multi_reg_datain_4[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 664)    
+      (pt 0 664)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 680)  
+    (input)  
+    (text "multi_reg_datain_5[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 680)    
+      (pt 0 680)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 696)  
+    (input)  
+    (text "multi_reg_datain_6[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 696)    
+      (pt 0 696)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 712)  
+    (input)  
+    (text "multi_reg_datain_7[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 712)    
+      (pt 0 712)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 728)  
+    (input)  
+    (text "multi_reg_datain_8[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 728)    
+      (pt 0 728)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 744)  
+    (input)  
+    (text "multi_reg_datain_9[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 744)    
+      (pt 0 744)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 760)  
+    (input)  
+    (text "multi_reg_datain_10[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 760)    
+      (pt 0 760)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 776)  
+    (input)  
+    (text "multi_reg_datain_11[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 776)    
+      (pt 0 776)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 792)  
+    (input)  
+    (text "multi_reg_datain_12[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 792)    
+      (pt 0 792)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 808)  
+    (input)  
+    (text "multi_reg_datain_13[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 808)    
+      (pt 0 808)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 824)  
+    (input)  
+    (text "multi_reg_datain_14[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 824)    
+      (pt 0 824)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 840)  
+    (input)  
+    (text "multi_reg_datain_15[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 840)    
+      (pt 0 840)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 896)  
+    (input)  
+    (text "uart_export_rxd "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 896)    
+      (pt 0 896)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 912)  
+    (output)  
+    (text "uart_export_txd "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 912)    
+      (pt 0 912)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 968)  
+    (output)  
+    (text "multi_reg_1_dataout_0[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 968)    
+      (pt 0 968)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 984)  
+    (output)  
+    (text "multi_reg_1_dataout_1[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 984)    
+      (pt 0 984)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1000)  
+    (output)  
+    (text "multi_reg_1_dataout_2[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1000)    
+      (pt 0 1000)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1016)  
+    (output)  
+    (text "multi_reg_1_dataout_3[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1016)    
+      (pt 0 1016)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1032)  
+    (output)  
+    (text "multi_reg_1_dataout_4[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1032)    
+      (pt 0 1032)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1048)  
+    (output)  
+    (text "multi_reg_1_dataout_5[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1048)    
+      (pt 0 1048)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1064)  
+    (output)  
+    (text "multi_reg_1_dataout_6[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1064)    
+      (pt 0 1064)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1080)  
+    (output)  
+    (text "multi_reg_1_dataout_7[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1080)    
+      (pt 0 1080)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1096)  
+    (output)  
+    (text "multi_reg_1_dataout_8[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1096)    
+      (pt 0 1096)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1112)  
+    (output)  
+    (text "multi_reg_1_dataout_9[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1112)    
+      (pt 0 1112)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1128)  
+    (output)  
+    (text "multi_reg_1_dataout_10[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1128)    
+      (pt 0 1128)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1144)  
+    (output)  
+    (text "multi_reg_1_dataout_11[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1144)    
+      (pt 0 1144)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1160)  
+    (output)  
+    (text "multi_reg_1_dataout_12[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1160)    
+      (pt 0 1160)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1176)  
+    (output)  
+    (text "multi_reg_1_dataout_13[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1176)    
+      (pt 0 1176)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1192)  
+    (output)  
+    (text "multi_reg_1_dataout_14[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1192)    
+      (pt 0 1192)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1208)  
+    (output)  
+    (text "multi_reg_1_dataout_15[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1208)    
+      (pt 0 1208)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1224)  
+    (input)  
+    (text "multi_reg_1_datain_0[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1224)    
+      (pt 0 1224)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1240)  
+    (input)  
+    (text "multi_reg_1_datain_1[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1240)    
+      (pt 0 1240)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1256)  
+    (input)  
+    (text "multi_reg_1_datain_2[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1256)    
+      (pt 0 1256)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1272)  
+    (input)  
+    (text "multi_reg_1_datain_3[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1272)    
+      (pt 0 1272)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1288)  
+    (input)  
+    (text "multi_reg_1_datain_4[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1288)    
+      (pt 0 1288)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1304)  
+    (input)  
+    (text "multi_reg_1_datain_5[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1304)    
+      (pt 0 1304)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1320)  
+    (input)  
+    (text "multi_reg_1_datain_6[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1320)    
+      (pt 0 1320)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1336)  
+    (input)  
+    (text "multi_reg_1_datain_7[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1336)    
+      (pt 0 1336)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1352)  
+    (input)  
+    (text "multi_reg_1_datain_8[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1352)    
+      (pt 0 1352)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1368)  
+    (input)  
+    (text "multi_reg_1_datain_9[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1368)    
+      (pt 0 1368)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1384)  
+    (input)  
+    (text "multi_reg_1_datain_10[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1384)    
+      (pt 0 1384)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1400)  
+    (input)  
+    (text "multi_reg_1_datain_11[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1400)    
+      (pt 0 1400)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1416)  
+    (input)  
+    (text "multi_reg_1_datain_12[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1416)    
+      (pt 0 1416)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1432)  
+    (input)  
+    (text "multi_reg_1_datain_13[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1432)    
+      (pt 0 1432)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1448)  
+    (input)  
+    (text "multi_reg_1_datain_14[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1448)    
+      (pt 0 1448)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1464)  
+    (input)  
+    (text "multi_reg_1_datain_15[31..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1464)    
+      (pt 0 1464)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1520)  
+    (output)  
+    (text "sdram_addr[12..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1520)    
+      (pt 0 1520)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1536)  
+    (output)  
+    (text "sdram_ba[1..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1536)    
+      (pt 0 1536)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1552)  
+    (output)  
+    (text "sdram_cas_n "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1552)    
+      (pt 0 1552)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1568)  
+    (output)  
+    (text "sdram_cke "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1568)    
+      (pt 0 1568)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1584)  
+    (output)  
+    (text "sdram_cs_n "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1584)    
+      (pt 0 1584)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1600)  
+    (bidir)  
+    (text "sdram_dq[15..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1600)    
+      (pt 0 1600)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1616)  
+    (output)  
+    (text "sdram_dqm[1..0]"
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1616)    
+      (pt 0 1616)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1632)  
+    (output)  
+    (text "sdram_ras_n "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1632)    
+      (pt 0 1632)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 0 1648)  
+    (output)  
+    (text "sdram_we_n "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 0 1648)    
+      (pt 0 1648)    
+      (line_width 0)    
+    )  
+  )
+  (port
+    (pt 248 72)  
+    (output)  
+    (text "sdram_clk_clk "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (text " "
+      (rect 0 0 1 1)    
+      (font "Arial")    
+    )  
+    (line
+      (pt 248 72)    
+      (pt 248 72)    
+      (line_width 0)    
+    )  
+  )
+  (drawing
+    (text "mynios2"
+      (rect 194 0 231 12)    
+      (font "Arial"
+        (color 128 128 128)      
+        (font_size 12)      
+      )    
+    )  
+    (text "clk"
+      (rect 8 40 26 54)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "clk_clk"
+      (rect 16 64 47 74)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "reset"
+      (rect 8 96 39 110)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "reset_reset_n"
+      (rect 16 120 74 130)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "epcs"
+      (rect 8 152 33 166)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "epcs_dclk"
+      (rect 16 176 56 186)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "epcs_sce"
+      (rect 16 192 52 202)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "epcs_sdo"
+      (rect 16 208 52 218)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "epcs_data0"
+      (rect 16 224 61 234)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "pio_led"
+      (rect 8 256 52 270)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "pio_led_export[16]"
+      (rect 16 280 97 290)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg"
+      (rect 8 312 64 326)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "multi_reg_dataout_0[32]"
+      (rect 16 336 119 346)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_1[32]"
+      (rect 16 352 119 362)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_2[32]"
+      (rect 16 368 119 378)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_3[32]"
+      (rect 16 384 119 394)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_4[32]"
+      (rect 16 400 119 410)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_5[32]"
+      (rect 16 416 119 426)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_6[32]"
+      (rect 16 432 119 442)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_7[32]"
+      (rect 16 448 119 458)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_8[32]"
+      (rect 16 464 119 474)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_9[32]"
+      (rect 16 480 119 490)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_10[32]"
+      (rect 16 496 124 506)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_11[32]"
+      (rect 16 512 124 522)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_12[32]"
+      (rect 16 528 124 538)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_13[32]"
+      (rect 16 544 124 554)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_14[32]"
+      (rect 16 560 124 570)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_dataout_15[32]"
+      (rect 16 576 124 586)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_0[32]"
+      (rect 16 592 115 602)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_1[32]"
+      (rect 16 608 115 618)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_2[32]"
+      (rect 16 624 115 634)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_3[32]"
+      (rect 16 640 115 650)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_4[32]"
+      (rect 16 656 115 666)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_5[32]"
+      (rect 16 672 115 682)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_6[32]"
+      (rect 16 688 115 698)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_7[32]"
+      (rect 16 704 115 714)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_8[32]"
+      (rect 16 720 115 730)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_9[32]"
+      (rect 16 736 115 746)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_10[32]"
+      (rect 16 752 119 762)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_11[32]"
+      (rect 16 768 119 778)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_12[32]"
+      (rect 16 784 119 794)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_13[32]"
+      (rect 16 800 119 810)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_14[32]"
+      (rect 16 816 119 826)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_datain_15[32]"
+      (rect 16 832 119 842)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "uart_export"
+      (rect 8 864 77 878)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "uart_export_rxd"
+      (rect 16 888 83 898)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "uart_export_txd"
+      (rect 16 904 83 914)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1"
+      (rect 8 936 77 950)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_0[32]"
+      (rect 16 960 128 970)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_1[32]"
+      (rect 16 976 128 986)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_2[32]"
+      (rect 16 992 128 1002)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_3[32]"
+      (rect 16 1008 128 1018)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_4[32]"
+      (rect 16 1024 128 1034)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_5[32]"
+      (rect 16 1040 128 1050)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_6[32]"
+      (rect 16 1056 128 1066)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_7[32]"
+      (rect 16 1072 128 1082)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_8[32]"
+      (rect 16 1088 128 1098)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_9[32]"
+      (rect 16 1104 128 1114)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_10[32]"
+      (rect 16 1120 133 1130)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_11[32]"
+      (rect 16 1136 133 1146)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_12[32]"
+      (rect 16 1152 133 1162)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_13[32]"
+      (rect 16 1168 133 1178)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_14[32]"
+      (rect 16 1184 133 1194)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_dataout_15[32]"
+      (rect 16 1200 133 1210)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_0[32]"
+      (rect 16 1216 124 1226)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_1[32]"
+      (rect 16 1232 124 1242)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_2[32]"
+      (rect 16 1248 124 1258)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_3[32]"
+      (rect 16 1264 124 1274)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_4[32]"
+      (rect 16 1280 124 1290)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_5[32]"
+      (rect 16 1296 124 1306)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_6[32]"
+      (rect 16 1312 124 1322)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_7[32]"
+      (rect 16 1328 124 1338)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_8[32]"
+      (rect 16 1344 124 1354)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_9[32]"
+      (rect 16 1360 124 1370)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_10[32]"
+      (rect 16 1376 128 1386)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_11[32]"
+      (rect 16 1392 128 1402)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_12[32]"
+      (rect 16 1408 128 1418)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_13[32]"
+      (rect 16 1424 128 1434)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_14[32]"
+      (rect 16 1440 128 1450)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "multi_reg_1_datain_15[32]"
+      (rect 16 1456 128 1466)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram"
+      (rect 8 1488 39 1502)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "sdram_addr[13]"
+      (rect 16 1512 79 1522)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_ba[2]"
+      (rect 16 1528 65 1538)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_cas_n"
+      (rect 16 1544 65 1554)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_cke"
+      (rect 16 1560 56 1570)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_cs_n"
+      (rect 16 1576 61 1586)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_dq[16]"
+      (rect 16 1592 70 1602)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_dqm[2]"
+      (rect 16 1608 70 1618)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_ras_n"
+      (rect 16 1624 65 1634)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_we_n"
+      (rect 16 1640 61 1650)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (text "sdram_clk"
+      (rect 174 40 230 54)    
+      (font "Arial"
+        (color 64 0 0)      
+        (font_size 14)      
+      )    
+    )  
+    (text "sdram_clk_clk"
+      (rect 168 64 226 74)    
+      (font "Arial"
+        (color 48 0 64)      
+        (font_size 10)      
+      )    
+    )  
+    (line
+      (pt 4 28)    
+      (pt 244 28)    
+      (color 240 240 240)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 4 36)    
+      (pt 42 36)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 42 36)    
+      (pt 50 44)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 50 44)    
+      (pt 50 76)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 50 76)    
+      (pt 42 84)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 42 84)    
+      (pt 4 84)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 0 72)    
+      (pt 12 72)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 4 92)    
+      (pt 76 92)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 76 92)    
+      (pt 84 100)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 84 100)    
+      (pt 84 132)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 84 132)    
+      (pt 76 140)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 76 140)    
+      (pt 4 140)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 0 128)    
+      (pt 12 128)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 4 148)    
+      (pt 67 148)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 67 148)    
+      (pt 75 156)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 75 156)    
+      (pt 75 236)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 75 236)    
+      (pt 67 244)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 67 244)    
+      (pt 4 244)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 0 184)    
+      (pt 12 184)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 200)    
+      (pt 12 200)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 216)    
+      (pt 12 216)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 232)    
+      (pt 12 232)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 4 252)    
+      (pt 99 252)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 99 252)    
+      (pt 107 260)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 107 260)    
+      (pt 107 292)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 107 292)    
+      (pt 99 300)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 99 300)    
+      (pt 4 300)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 0 288)    
+      (pt 12 288)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 4 308)    
+      (pt 132 308)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 132 308)    
+      (pt 140 316)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 140 316)    
+      (pt 140 844)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 140 844)    
+      (pt 132 852)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 132 852)    
+      (pt 4 852)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 0 344)    
+      (pt 12 344)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 360)    
+      (pt 12 360)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 376)    
+      (pt 12 376)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 392)    
+      (pt 12 392)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 408)    
+      (pt 12 408)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 424)    
+      (pt 12 424)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 440)    
+      (pt 12 440)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 456)    
+      (pt 12 456)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 472)    
+      (pt 12 472)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 488)    
+      (pt 12 488)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 504)    
+      (pt 12 504)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 520)    
+      (pt 12 520)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 536)    
+      (pt 12 536)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 552)    
+      (pt 12 552)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 568)    
+      (pt 12 568)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 584)    
+      (pt 12 584)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 600)    
+      (pt 12 600)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 616)    
+      (pt 12 616)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 632)    
+      (pt 12 632)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 648)    
+      (pt 12 648)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 664)    
+      (pt 12 664)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 680)    
+      (pt 12 680)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 696)    
+      (pt 12 696)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 712)    
+      (pt 12 712)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 728)    
+      (pt 12 728)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 744)    
+      (pt 12 744)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 760)    
+      (pt 12 760)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 776)    
+      (pt 12 776)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 792)    
+      (pt 12 792)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 808)    
+      (pt 12 808)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 824)    
+      (pt 12 824)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 840)    
+      (pt 12 840)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 4 860)    
+      (pt 85 860)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 85 860)    
+      (pt 93 868)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 93 868)    
+      (pt 93 916)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 93 916)    
+      (pt 85 924)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 85 924)    
+      (pt 4 924)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 0 896)    
+      (pt 12 896)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 912)    
+      (pt 12 912)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 4 932)    
+      (pt 144 932)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 144 932)    
+      (pt 152 940)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 152 940)    
+      (pt 152 1468)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 152 1468)    
+      (pt 144 1476)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 144 1476)    
+      (pt 4 1476)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 0 968)    
+      (pt 12 968)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 984)    
+      (pt 12 984)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1000)    
+      (pt 12 1000)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1016)    
+      (pt 12 1016)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1032)    
+      (pt 12 1032)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1048)    
+      (pt 12 1048)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1064)    
+      (pt 12 1064)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1080)    
+      (pt 12 1080)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1096)    
+      (pt 12 1096)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1112)    
+      (pt 12 1112)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1128)    
+      (pt 12 1128)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1144)    
+      (pt 12 1144)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1160)    
+      (pt 12 1160)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1176)    
+      (pt 12 1176)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1192)    
+      (pt 12 1192)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1208)    
+      (pt 12 1208)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1224)    
+      (pt 12 1224)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1240)    
+      (pt 12 1240)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1256)    
+      (pt 12 1256)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1272)    
+      (pt 12 1272)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1288)    
+      (pt 12 1288)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1304)    
+      (pt 12 1304)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1320)    
+      (pt 12 1320)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1336)    
+      (pt 12 1336)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1352)    
+      (pt 12 1352)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1368)    
+      (pt 12 1368)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1384)    
+      (pt 12 1384)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1400)    
+      (pt 12 1400)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1416)    
+      (pt 12 1416)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1432)    
+      (pt 12 1432)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1448)    
+      (pt 12 1448)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1464)    
+      (pt 12 1464)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 4 1484)    
+      (pt 85 1484)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 85 1484)    
+      (pt 93 1492)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 93 1492)    
+      (pt 93 1652)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 93 1652)    
+      (pt 85 1660)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 85 1660)    
+      (pt 4 1660)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 0 1520)    
+      (pt 12 1520)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1536)    
+      (pt 12 1536)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1552)    
+      (pt 12 1552)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1568)    
+      (pt 12 1568)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1584)    
+      (pt 12 1584)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1600)    
+      (pt 12 1600)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1616)    
+      (pt 12 1616)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1632)    
+      (pt 12 1632)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 0 1648)    
+      (pt 12 1648)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+    (line
+      (pt 244 36)    
+      (pt 172 36)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 172 36)    
+      (pt 164 44)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 164 44)    
+      (pt 164 76)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 164 76)    
+      (pt 172 84)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 172 84)    
+      (pt 244 84)    
+      (color 240 240 240)    
+      (line_width 2)    
+    )  
+    (line
+      (pt 248 72)    
+      (pt 236 72)    
+      (color 96 0 128)    
+      (line_width 1)    
+    )  
+  )
+  (fill
+    (color 224 224 224)  
+  )
+)

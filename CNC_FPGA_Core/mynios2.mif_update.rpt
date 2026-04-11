@@ -1,0 +1,76 @@
+MIF/HEX Update report for mynios2
+Sat Jan 18 17:43:59 2014
+Quartus II 64-Bit Version 11.0 Build 208 07/03/2011 Service Pack 1 SJ Full Version
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. MIF/HEX Update Summary
+  3. MIF/HEX Update Processed Files
+  4. MIF/HEX Update Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2011 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++---------------------------------------------------------------+
+; MIF/HEX Update Summary                                        ;
++-----------------------+---------------------------------------+
+; MIF/HEX Update Status ; Successful - Sat Jan 18 17:43:59 2014 ;
+; Revision Name         ; mynios2                               ;
+; Top-level Entity Name ; my_top_system                         ;
+; Family                ; Cyclone IV E                          ;
+; Device                ; EP4CE22F17C6                          ;
++-----------------------+---------------------------------------+
+
+
++--------------------------------------------------------------------------------------------+
+; MIF/HEX Update Processed Files                                                             ;
++--------------------------------------------------------------------------------------------+
+; File Name                                                                                  ;
++--------------------------------------------------------------------------------------------+
+; C:/Users/Mike/Documents/FPGA_PROJECTS/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/onchip_memory2.hex ;
++--------------------------------------------------------------------------------------------+
+
+
++-------------------------+
+; MIF/HEX Update Messages ;
++-------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 64-Bit MIF/HEX Update
+    Info: Version 11.0 Build 208 07/03/2011 Service Pack 1 SJ Full Version
+    Info: Processing started: Sat Jan 18 17:43:56 2014
+Info: Command: quartus_cdb mynios2 -c mynios2 --update_mif
+Warning: Can't find Memory Initialization File mynios2_cpu_rf_ram_a.mif -- skipped updates for this file
+Warning: Can't find Memory Initialization File mynios2_cpu_rf_ram_b.mif -- skipped updates for this file
+Warning: Can't find Memory Initialization File mynios2_cpu_ociram_default_contents.mif -- skipped updates for this file
+Warning: Can't find Memory Initialization File mynios2_epcs_flash_controller_boot_rom_synth.hex -- skipped updates for this file
+Critical Warning: Memory depth (11250) in the design file differs from memory depth (6500) in the Memory Initialization File "C:/Users/Mike/Documents/FPGA_PROJECTS/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/onchip_memory2.hex" -- setting initial value for remaining addresses to 0
+Info: Processed the following Memory Initialization File(s)
+    Info: Processed Memory Initialization File C:/Users/Mike/Documents/FPGA_PROJECTS/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/onchip_memory2.hex
+Info: Quartus II 64-Bit MIF/HEX Update was successful. 0 errors, 5 warnings
+    Info: Peak virtual memory: 342 megabytes
+    Info: Processing ended: Sat Jan 18 17:43:59 2014
+    Info: Elapsed time: 00:00:03
+    Info: Total CPU time (on all processors): 00:00:03
+
+

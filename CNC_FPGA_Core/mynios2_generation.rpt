@@ -1,0 +1,218 @@
+Info: Starting: Create block symbol file (.bsf)
+Info: ip-generate --project-directory=C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/ --output-directory=C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/ --report-file=bsf:C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2.bsf --system-info=DEVICE_FAMILY="Cyclone IV E" --system-info=DEVICE=EP4CE22F17C6 --system-info=DEVICE_SPEEDGRADE=6 --component-file=C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2.qsys
+Progress: Loading FPGA_PROJECT_BASE_SYSTEM_V3/mynios2.qsys
+Progress: Reading input file
+Progress: Adding clk_50 [clock_source 11.0]
+Warning: clk_50: Used clock_source 13.0 (instead of 11.0)
+Progress: Parameterizing module clk_50
+Progress: Adding cpu [altera_nios2_qsys 11.0]
+Warning: cpu: Used altera_nios2_qsys 13.0 (instead of 11.0)
+Progress: Parameterizing module cpu
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 11.0]
+Warning: jtag_uart: Used altera_avalon_jtag_uart 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module jtag_uart
+Progress: Adding onchip_memory2 [altera_avalon_onchip_memory2 11.0]
+Warning: onchip_memory2: Used altera_avalon_onchip_memory2 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module onchip_memory2
+Progress: Adding epcs_flash_controller [altera_avalon_epcs_flash_controller 11.0]
+Warning: epcs_flash_controller: Used altera_avalon_epcs_flash_controller 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module epcs_flash_controller
+Progress: Adding pio_0 [altera_avalon_pio 11.0]
+Warning: pio_0: Used altera_avalon_pio 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module pio_0
+Progress: Adding slave_template_0 [slave_template 2.0]
+Progress: Parameterizing module slave_template_0
+Progress: Adding uart [altera_avalon_uart 11.0]
+Warning: uart: Used altera_avalon_uart 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module uart
+Progress: Adding sysid_qsys_0 [altera_avalon_sysid_qsys 11.0]
+Warning: sysid_qsys_0: Used altera_avalon_sysid_qsys 13.0 (instead of 11.0)
+Progress: Parameterizing module sysid_qsys_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: mynios2.cpu: CPUID control register value is 0. Please manually assign CPUID if creating multiple Nios II system
+Info: mynios2.epcs_flash_controller: Dedicated AS interface is not supported, signals are exported to top level design.
+Info: mynios2.sysid_qsys_0: System ID is not assigned automatically. Edit the System ID parameter to provide a unique ID
+Info: mynios2.sysid_qsys_0: Time stamp will be automatically updated when this component is generated.
+Info: ip-generate succeeded.
+Info: Finished: Create block symbol file (.bsf)
+Info: 
+Info: Starting: Create HDL design files for synthesis
+Info: ip-generate --project-directory=C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/ --output-directory=C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/ --file-set=QUARTUS_SYNTH --report-file=sopcinfo:C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2.sopcinfo --report-file=html:C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2.html --report-file=qip:C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/mynios2.qip --report-file=cmp:C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2.cmp --report-file=svd --system-info=DEVICE_FAMILY="Cyclone IV E" --system-info=DEVICE=EP4CE22F17C6 --system-info=DEVICE_SPEEDGRADE=6 --component-file=C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2.qsys --language=VERILOG
+Progress: Loading FPGA_PROJECT_BASE_SYSTEM_V3/mynios2.qsys
+Progress: Reading input file
+Progress: Adding clk_50 [clock_source 11.0]
+Warning: clk_50: Used clock_source 13.0 (instead of 11.0)
+Progress: Parameterizing module clk_50
+Progress: Adding cpu [altera_nios2_qsys 11.0]
+Warning: cpu: Used altera_nios2_qsys 13.0 (instead of 11.0)
+Progress: Parameterizing module cpu
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 11.0]
+Warning: jtag_uart: Used altera_avalon_jtag_uart 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module jtag_uart
+Progress: Adding onchip_memory2 [altera_avalon_onchip_memory2 11.0]
+Warning: onchip_memory2: Used altera_avalon_onchip_memory2 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module onchip_memory2
+Progress: Adding epcs_flash_controller [altera_avalon_epcs_flash_controller 11.0]
+Warning: epcs_flash_controller: Used altera_avalon_epcs_flash_controller 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module epcs_flash_controller
+Progress: Adding pio_0 [altera_avalon_pio 11.0]
+Warning: pio_0: Used altera_avalon_pio 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module pio_0
+Progress: Adding slave_template_0 [slave_template 2.0]
+Progress: Parameterizing module slave_template_0
+Progress: Adding uart [altera_avalon_uart 11.0]
+Warning: uart: Used altera_avalon_uart 13.0.1.99.2 (instead of 11.0)
+Progress: Parameterizing module uart
+Progress: Adding sysid_qsys_0 [altera_avalon_sysid_qsys 11.0]
+Warning: sysid_qsys_0: Used altera_avalon_sysid_qsys 13.0 (instead of 11.0)
+Progress: Parameterizing module sysid_qsys_0
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: mynios2.cpu: CPUID control register value is 0. Please manually assign CPUID if creating multiple Nios II system
+Info: mynios2.epcs_flash_controller: Dedicated AS interface is not supported, signals are exported to top level design.
+Info: mynios2.sysid_qsys_0: System ID is not assigned automatically. Edit the System ID parameter to provide a unique ID
+Info: mynios2.sysid_qsys_0: Time stamp will be automatically updated when this component is generated.
+Info: mynios2: Generating mynios2 "mynios2" for QUARTUS_SYNTH
+Info: pipeline_bridge_swap_transform: After transform: 9 modules, 38 connections
+Info: No custom instruction connections, skipping transform 
+Info: merlin_translator_transform: After transform: 19 modules, 78 connections
+Info: merlin_domain_transform: After transform: 38 modules, 205 connections
+Info: merlin_router_transform: After transform: 48 modules, 245 connections
+Info: reset_adaptation_transform: After transform: 49 modules, 192 connections
+Info: merlin_network_to_switch_transform: After transform: 68 modules, 234 connections
+Info: merlin_mm_transform: After transform: 68 modules, 234 connections
+Info: merlin_interrupt_mapper_transform: After transform: 69 modules, 237 connections
+Warning: mynios2: "No matching role found for epcs_flash_controller:epcs_control_port:endofpacket (endofpacket)"
+Warning: mynios2: "No matching role found for epcs_flash_controller:epcs_control_port:dataavailable (dataavailable)"
+Warning: mynios2: "No matching role found for epcs_flash_controller:epcs_control_port:readyfordata (readyfordata)"
+Warning: mynios2: "No matching role found for uart:s1:dataavailable (dataavailable)"
+Warning: mynios2: "No matching role found for uart:s1:readyfordata (readyfordata)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Warning: mynios2: "No matching role found for rst_controller:reset_out:reset_req (reset_req)"
+Info: cpu: Starting RTL generation for module 'mynios2_cpu'
+Info: cpu:   Generation command is [exec C:/altera/13.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2/eperl.exe -I C:/altera/13.0sp1/quartus/common/ip/altera/common/perl/5.8.3 -I C:/altera/13.0sp1/quartus/sopc_builder/bin/europa -I C:/altera/13.0sp1/quartus/sopc_builder/bin/perl_lib -I C:/altera/13.0sp1/quartus/sopc_builder/bin -I C:/altera/13.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2/cpu_lib -I C:/altera/13.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2/nios_lib -I C:/altera/13.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2 -I C:/altera/13.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2 -- C:/altera/13.0sp1/quartus/../ip/altera/nios2_ip/altera_nios2/generate_rtl.epl --name=mynios2_cpu --dir=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0003_cpu_gen/ --quartus_dir=C:/altera/13.0sp1/quartus --verilog --config=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0003_cpu_gen//mynios2_cpu_processor_configuration.pl  --do_build_sim=0    --bogus  ]
+Info: cpu: # 2014.01.17 07:45:17 (*) Starting Nios II generation
+Info: cpu: # 2014.01.17 07:45:17 (*)   Checking for plaintext license.
+Info: cpu: # 2014.01.17 07:45:18 (*)   Plaintext license not found.
+Info: cpu: # 2014.01.17 07:45:18 (*)   No license required to generate encrypted Nios II/e.
+Info: cpu: # 2014.01.17 07:45:18 (*)   Elaborating CPU configuration settings
+Info: cpu: # 2014.01.17 07:45:18 (*)   Creating all objects for CPU
+Info: cpu: # 2014.01.17 07:45:19 (*)   Generating RTL from CPU objects
+Info: cpu: # 2014.01.17 07:45:19 (*)   Creating plain-text RTL
+Info: cpu: # 2014.01.17 07:45:22 (*) Done Nios II generation
+Info: cpu: Done RTL generation for module 'mynios2_cpu'
+Info: cpu: "mynios2" instantiated altera_nios2_qsys "cpu"
+Info: jtag_uart: Starting RTL generation for module 'mynios2_jtag_uart'
+Info: jtag_uart:   Generation command is [exec C:/altera/13.0sp1/quartus/bin/perl/bin/perl.exe -I C:/altera/13.0sp1/quartus/common/ip/altera/common/perl/5.8.3 -I C:/altera/13.0sp1/quartus/sopc_builder/bin/europa -I C:/altera/13.0sp1/quartus/sopc_builder/bin/perl_lib -I C:/altera/13.0sp1/quartus/sopc_builder/bin -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/common -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=mynios2_jtag_uart --dir=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0004_jtag_uart_gen/ --quartus_dir=C:/altera/13.0sp1/quartus --verilog --config=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0004_jtag_uart_gen//mynios2_jtag_uart_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart: Done RTL generation for module 'mynios2_jtag_uart'
+Info: jtag_uart: "mynios2" instantiated altera_avalon_jtag_uart "jtag_uart"
+Info: onchip_memory2: Starting RTL generation for module 'mynios2_onchip_memory2'
+Info: onchip_memory2:   Generation command is [exec C:/altera/13.0sp1/quartus/bin/perl/bin/perl.exe -I C:/altera/13.0sp1/quartus/common/ip/altera/common/perl/5.8.3 -I C:/altera/13.0sp1/quartus/sopc_builder/bin/europa -I C:/altera/13.0sp1/quartus/sopc_builder/bin/perl_lib -I C:/altera/13.0sp1/quartus/sopc_builder/bin -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/common -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2 -- C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_onchip_memory2/generate_rtl.pl --name=mynios2_onchip_memory2 --dir=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0005_onchip_memory2_gen/ --quartus_dir=C:/altera/13.0sp1/quartus --verilog --config=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0005_onchip_memory2_gen//mynios2_onchip_memory2_component_configuration.pl  --do_build_sim=0  ]
+Info: onchip_memory2: Done RTL generation for module 'mynios2_onchip_memory2'
+Info: onchip_memory2: "mynios2" instantiated altera_avalon_onchip_memory2 "onchip_memory2"
+Info: epcs_flash_controller: Starting RTL generation for module 'mynios2_epcs_flash_controller'
+Info: epcs_flash_controller:   Generation command is [exec C:/altera/13.0sp1/quartus/bin/perl/bin/perl.exe -I C:/altera/13.0sp1/quartus/common/ip/altera/common/perl/5.8.3 -I C:/altera/13.0sp1/quartus/sopc_builder/bin/europa -I C:/altera/13.0sp1/quartus/sopc_builder/bin/perl_lib -I C:/altera/13.0sp1/quartus/sopc_builder/bin -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/common -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_epcs_flash_controller -- C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_epcs_flash_controller/generate_rtl.pl --name=mynios2_epcs_flash_controller --dir=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0006_epcs_flash_controller_gen/ --quartus_dir=C:/altera/13.0sp1/quartus --verilog --config=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0006_epcs_flash_controller_gen//mynios2_epcs_flash_controller_component_configuration.pl  --do_build_sim=0  ]
+Info: epcs_flash_controller: Done RTL generation for module 'mynios2_epcs_flash_controller'
+Info: epcs_flash_controller: "mynios2" instantiated altera_avalon_epcs_flash_controller "epcs_flash_controller"
+Info: pio_0: Starting RTL generation for module 'mynios2_pio_0'
+Info: pio_0:   Generation command is [exec C:/altera/13.0sp1/quartus/bin/perl/bin/perl.exe -I C:/altera/13.0sp1/quartus/common/ip/altera/common/perl/5.8.3 -I C:/altera/13.0sp1/quartus/sopc_builder/bin/europa -I C:/altera/13.0sp1/quartus/sopc_builder/bin/perl_lib -I C:/altera/13.0sp1/quartus/sopc_builder/bin -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/common -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio -- C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_pio/generate_rtl.pl --name=mynios2_pio_0 --dir=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0007_pio_0_gen/ --quartus_dir=C:/altera/13.0sp1/quartus --verilog --config=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0007_pio_0_gen//mynios2_pio_0_component_configuration.pl  --do_build_sim=0  ]
+Info: pio_0: Done RTL generation for module 'mynios2_pio_0'
+Info: pio_0: "mynios2" instantiated altera_avalon_pio "pio_0"
+Info: slave_template_0: "mynios2" instantiated slave_template "slave_template_0"
+Info: uart: Starting RTL generation for module 'mynios2_uart'
+Info: uart:   Generation command is [exec C:/altera/13.0sp1/quartus/bin/perl/bin/perl.exe -I C:/altera/13.0sp1/quartus/common/ip/altera/common/perl/5.8.3 -I C:/altera/13.0sp1/quartus/sopc_builder/bin/europa -I C:/altera/13.0sp1/quartus/sopc_builder/bin/perl_lib -I C:/altera/13.0sp1/quartus/sopc_builder/bin -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/common -I C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_uart -- C:/altera/13.0sp1/quartus/../ip/altera/sopc_builder_ip/altera_avalon_uart/generate_rtl.pl --name=mynios2_uart --dir=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0009_uart_gen/ --quartus_dir=C:/altera/13.0sp1/quartus --verilog --config=C:/Users/mhouse1/AppData/Local/Temp/alt6087_122507060229027960.dir/0009_uart_gen//mynios2_uart_component_configuration.pl  --do_build_sim=0  ]
+Info: uart: Done RTL generation for module 'mynios2_uart'
+Info: uart: "mynios2" instantiated altera_avalon_uart "uart"
+Info: sysid_qsys_0: "mynios2" instantiated altera_avalon_sysid_qsys "sysid_qsys_0"
+Info: cpu_instruction_master_translator: "mynios2" instantiated altera_merlin_master_translator "cpu_instruction_master_translator"
+Info: cpu_jtag_debug_module_translator: "mynios2" instantiated altera_merlin_slave_translator "cpu_jtag_debug_module_translator"
+Info: cpu_instruction_master_translator_avalon_universal_master_0_agent: "mynios2" instantiated altera_merlin_master_agent "cpu_instruction_master_translator_avalon_universal_master_0_agent"
+Info: cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent: "mynios2" instantiated altera_merlin_slave_agent "cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent"
+Info: cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent_rsp_fifo: "mynios2" instantiated altera_avalon_sc_fifo "cpu_jtag_debug_module_translator_avalon_universal_slave_0_agent_rsp_fifo"
+Info: addr_router: "mynios2" instantiated altera_merlin_router "addr_router"
+Info: addr_router_001: "mynios2" instantiated altera_merlin_router "addr_router_001"
+Info: id_router: "mynios2" instantiated altera_merlin_router "id_router"
+Info: id_router_003: "mynios2" instantiated altera_merlin_router "id_router_003"
+Info: rst_controller: "mynios2" instantiated altera_reset_controller "rst_controller"
+Info: cmd_xbar_demux: "mynios2" instantiated altera_merlin_demultiplexer "cmd_xbar_demux"
+Info: cmd_xbar_demux_001: "mynios2" instantiated altera_merlin_demultiplexer "cmd_xbar_demux_001"
+Info: cmd_xbar_mux: "mynios2" instantiated altera_merlin_multiplexer "cmd_xbar_mux"
+Info: rsp_xbar_demux: "mynios2" instantiated altera_merlin_demultiplexer "rsp_xbar_demux"
+Info: rsp_xbar_demux_003: "mynios2" instantiated altera_merlin_demultiplexer "rsp_xbar_demux_003"
+Info: rsp_xbar_mux: "mynios2" instantiated altera_merlin_multiplexer "rsp_xbar_mux"
+Info: Reusing file C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_xbar_mux_001: "mynios2" instantiated altera_merlin_multiplexer "rsp_xbar_mux_001"
+Info: Reusing file C:/Users/mhouse1/Documents/Rover/FPGA_PROJECT_BASE_SYSTEM_V3/mynios2/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: irq_mapper: "mynios2" instantiated altera_irq_mapper "irq_mapper"
+Info: mynios2: Done mynios2" with 27 modules, 89 files, 1878689 bytes
+Info: ip-generate succeeded.
+Info: Finished: Create HDL design files for synthesis
