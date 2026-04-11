@@ -1,0 +1,26 @@
+--------------------------------------------------------------------------------
+-- Entity: mux_4bit
+-- Date:2014-01-19 
+-- Author: Mike     
+--
+-- Description: a 4 bit mux
+--------------------------------------------------------------------------------
+
+LIBRARY IEEE; 
+USE IEEE.STD_LOGIC_1164.ALL; 
+USE WORK.mult_dim_ports.ALL; 
+ENTITY mux_4bit IS 
+        GENERIC ( 
+                width : NATURAL := 16; 
+                num :   NATURAL := 4 
+        ); 
+        PORT ( 
+                a:      IN      std_logic_array(num - 1 DOWNTO 0, width - 1 DOWNTO 0); 
+                y:      OUT     STD_LOGIC_VECTOR(width - 1 DOWNTO 0); 
+                sel :   IN      INTEGER 
+        ); 
+END mux_4bit; 
+ARCHITECTURE behaviour OF mux_4bit IS 
+BEGIN 
+        y <= a(0);     
+END behaviour; 
