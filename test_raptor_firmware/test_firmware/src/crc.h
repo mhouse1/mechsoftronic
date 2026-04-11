@@ -1,5 +1,4 @@
 /*!
- * @copyright	COPYRIGHT NOTIFICATION (c) 2013 Rockwell Automation, Inc. All rights reserved.
  * @file		crc.h
  * @date		Aug 27, 2014 12:51:55 PM
  * @author		Michael House
